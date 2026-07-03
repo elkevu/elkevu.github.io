@@ -404,6 +404,52 @@ button{font-family:var(--f-ui);}
 .lista-amplia .venc-item{align-items:flex-start;padding:11px 18px;}
 .lista-amplia .venc-date{margin-top:1px;}
 
+/* ══ Secciones en mayúsculas ══ */
+.pill-nav{text-transform:uppercase;}
+.btn-side{text-transform:uppercase;}
+
+/* ══ Botón Inicio prominente en la barra de jurisprudencia ══ */
+.btn-side-inicio{width:100%;background:var(--sello);border:none;color:#fff;font-size:11px;font-weight:800;letter-spacing:0.09em;padding:10px;border-radius:8px;cursor:pointer;margin-bottom:8px;text-transform:uppercase;transition:background .15s;}
+.btn-side-inicio:hover{background:#175537;}
+
+/* ══ Listado de oficios ══ */
+.ofi-overlay{position:fixed;inset:0;background:rgba(12,31,22,.45);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:900;padding:20px;}
+.ofi-overlay.open{display:flex;}
+.ofi-modal{background:var(--papel);border:1px solid var(--filo);border-radius:14px;width:min(680px,100%);max-height:82vh;display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(12,31,22,.35);}
+.ofi-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--filo);}
+.ofi-head h3{margin:2px 0 0;font-size:16px;}
+.ofi-x{background:none;border:none;font-size:16px;cursor:pointer;color:var(--tinta-suave);padding:4px 8px;border-radius:6px;}
+.ofi-x:hover{background:var(--laurel);color:var(--tinta);}
+.ofi-body{overflow-y:auto;padding:6px 0;}
+.ofi-item{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--filo-suave);cursor:pointer;transition:background .12s;}
+.ofi-item:hover{background:#fbfaf6;}
+.ofi-item:last-child{border-bottom:none;}
+.ofi-fecha{flex:0 0 92px;text-align:center;}
+.ofi-fecha span{display:block;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;}
+.ofi-fecha i{display:block;font-style:normal;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--tinta-suave);margin-top:2px;}
+.ofi-item.vencido .ofi-fecha span{color:var(--mal);}
+.ofi-item.vencido .ofi-fecha i{color:var(--mal);font-weight:700;}
+.ofi-txt{flex:1;min-width:0;}
+.ofi-txt b{display:block;font-size:13.5px;}
+.ofi-txt span{display:block;font-size:11.5px;color:var(--tinta-suave);margin-top:2px;line-height:1.4;}
+.ofi-ir{flex:0 0 auto;font-size:11px;font-weight:700;color:var(--sello);white-space:nowrap;}
+
+/* ══ Pantalla de acceso ══ */
+#loginGate{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%, #14301f, var(--bosque) 70%);padding:20px;}
+body.locked #loginGate{display:flex;}
+body.locked .page-shell{display:none !important;}
+body.locked #paginaJurisprudencia{display:none !important;}
+body.locked #landing{display:none !important;}
+body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !important;}
+.login-caja{background:var(--papel);border:1px solid var(--filo);border-radius:16px;padding:34px 36px;width:min(360px,100%);box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.login-marca{font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--tinta);}
+.login-marca em{font-style:normal;color:var(--sello);}
+.login-sub{font-size:11px;color:var(--tinta-suave);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;}
+.login-caja label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--tinta-suave);margin-bottom:4px;}
+.login-caja input{width:100%;padding:10px 12px;border:1px solid var(--filo);border-radius:8px;background:#fff;font-size:14px;font-family:inherit;}
+.login-caja input:focus{outline:none;border-color:var(--sello);box-shadow:0 0 0 3px var(--laurel);}
+.login-error{color:var(--mal);font-size:12px;margin-top:10px;min-height:16px;font-weight:600;}
+
 </style>
 </head>
 <body>
@@ -445,12 +491,12 @@ button{font-family:var(--f-ui);}
           Importar
         </button>
       </div>
+      <button class="btn-side-inicio" onclick="navTo('inicio')" title="Volver al tablero">🏠 VOLVER AL INICIO</button>
       <div class="side-links">
-        <button class="btn-side" onclick="navTo('inicio')" title="Tablero de inicio">🏠 Inicio</button>
         <button class="btn-side" onclick="navTo('expedientes')" title="Seguimiento de prueba">📁 Exped.</button>
         <button class="btn-side" onclick="navTo('agenda')" title="Tareas y audiencias">📅 Agenda</button>
         <button class="btn-side" onclick="navTo('caja')" title="Control de ingresos">💰 Caja</button>
-        <button class="btn-side" onclick="navTo('herramientas')" title="Calculadoras procesales" style="grid-column:1/-1">🧮 Herramientas</button>
+        <button class="btn-side" onclick="navTo('herramientas')" title="Calculadoras procesales">🧮 Herram.</button>
       </div>
     </div>
   </aside>
@@ -791,6 +837,7 @@ button{font-family:var(--f-ui);}
           <div class="panel-h"><div><span class="tool-eyebrow">Laboral · LCT</span><h3>Liquidación estimada por despido sin causa</h3></div></div>
           <div class="panel-b">
             <div class="f-row">
+              <div class="f-col" style="flex:1.4"><label>Trabajador (opcional)</label><input id="lqNombre" placeholder="Ej: Juan Pérez"></div>
               <div class="f-col"><label>Fecha de ingreso</label><input type="date" id="lqIngreso"></div>
               <div class="f-col"><label>Fecha de despido</label><input type="date" id="lqEgreso"></div>
               <div class="f-col"><label>Mejor remuneración mensual, normal y habitual ($)</label><input type="text" inputmode="decimal" id="lqRemu" oninput="fmtMiles(this)" placeholder="Ej: 1.200.000"></div>
@@ -965,6 +1012,32 @@ button{font-family:var(--f-ui);}
   </div>
 </div>
 <input type="file" id="cajaAdjInput" accept="image/*,.pdf" style="display:none" onchange="cajaAdjuntoElegido(this)">
+
+<!-- ═══════════ LISTADO DE OFICIOS A REITERAR ═══════════ -->
+<div class="ofi-overlay" id="oficiosOverlay" onclick="if(event.target===this)cerrarListadoOficios()">
+  <div class="ofi-modal">
+    <div class="ofi-head">
+      <div><span class="tool-eyebrow">Prueba informativa</span><h3>Oficios sin contestar — para reiterar</h3></div>
+      <button class="ofi-x" onclick="cerrarListadoOficios()">✕</button>
+    </div>
+    <div class="ofi-body" id="oficiosListado"></div>
+  </div>
+</div>
+
+<!-- ═══════════ ACCESO ═══════════ -->
+<div id="loginGate">
+  <div class="login-caja">
+    <div class="login-marca">Juris<em>Cannabis</em></div>
+    <div class="login-sub">Estudio WE Legal · acceso privado</div>
+    <div class="doble-filete" style="margin:14px 0 18px"></div>
+    <label>Usuario</label>
+    <input id="loginUser" autocomplete="username" onkeydown="if(event.key==='Enter')intentarLogin()">
+    <label style="margin-top:10px">Contraseña</label>
+    <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')intentarLogin()">
+    <button class="btn-primary" style="width:100%;margin-top:16px;justify-content:center" onclick="intentarLogin()">INGRESAR</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
 
 
 <!-- Modal vinculación Cámara -->
@@ -3588,6 +3661,24 @@ function getOficiosPendientes() {
   });
   return out;
 }
+// ── Listado de oficios sin contestar (para reiterar) ──
+function abrirListadoOficios() {
+  const cont = document.getElementById('oficiosListado');
+  const hoy = hoyISO();
+  const ofs = getOficiosPendientes().slice().sort((a, b) => (a.vencimiento || '9999').localeCompare(b.vencimiento || '9999'));
+  cont.innerHTML = ofs.length ? ofs.map(o => {
+    const vencido = o.vencimiento && o.vencimiento <= hoy;
+    const base = (o.oficio.reiteraciones && o.oficio.reiteraciones.length) ? 'última reiteración ' + formatFechaCorta(o.oficio.reiteraciones[o.oficio.reiteraciones.length - 1]) : (o.oficio.enviado ? 'enviado ' + formatFechaCorta(o.oficio.enviado) : '');
+    return `<div class="ofi-item ${vencido ? 'vencido' : ''}" onclick="cerrarListadoOficios();verCausa(${o.exp.id})">
+      <div class="ofi-fecha"><span>${o.vencimiento ? formatFechaCorta(o.vencimiento) : '—'}</span><i>${vencido ? 'Vencido · reiterar' : 'control'}</i></div>
+      <div class="ofi-txt"><b>${esc(o.oficio.entidad || 'Oficio')}</b><span>${esc(o.exp.caratula)} · ${esc(o.exp.jurisdiccion || 'CABA')}${base ? ' · ' + base : ''}</span></div>
+      <span class="ofi-ir">Ver causa →</span>
+    </div>`;
+  }).join('') : '<div class="panel-empty" style="padding:30px">No hay oficios pendientes de contestación.</div>';
+  document.getElementById('oficiosOverlay').classList.add('open');
+}
+function cerrarListadoOficios() { document.getElementById('oficiosOverlay').classList.remove('open'); }
+
 function getAudienciasProximas(incluirPasadas) {
   const hoy = hoyISO();
   const out = [];
@@ -3646,7 +3737,7 @@ function renderInicio() {
       <div class="num">${expedientes.length}</div><div class="lbl">Causas en prueba</div>
       <div class="sub">${expedientes.filter(e=>(e.jurisdiccion||'CABA')==='CABA').length} CABA · ${expedientes.filter(e=>e.jurisdiccion==='PBA').length} PBA</div>
     </div>
-    <div class="tile" onclick="navTo('expedientes')">
+    <div class="tile" onclick="abrirListadoOficios()">
       <div class="num">${oficios.length}</div><div class="lbl">Oficios sin contestar</div>
       <div class="sub ${ofVencidos ? 'alerta' : ''}">${ofVencidos ? ofVencidos + ' con plazo de control vencido' : 'Ninguno vencido'}</div>
     </div>
@@ -3905,6 +3996,7 @@ function calcularLiquidacion() {
   box.classList.add('on');
   const fi = document.getElementById('lqIngreso').value;
   const fe = document.getElementById('lqEgreso').value;
+  const nombreTrab = (document.getElementById('lqNombre').value || '').trim();
   const remu = numDe(document.getElementById('lqRemu').value);
   if (!fi || !fe || !remu || remu <= 0) { box.innerHTML = '<span style="color:var(--mal)">Completá ingreso, egreso y remuneración.</span>'; document.getElementById('lqCopiar').hidden = true; return; }
   const ing = parseISO(fi), egr = parseISO(fe);
@@ -3986,12 +4078,13 @@ function calcularLiquidacion() {
   const total = filas.reduce((s, f) => s + f[1], 0);
 
   box.innerHTML = `
+    ${nombreTrab ? `<div class="res-row" style="border-bottom:1px solid var(--filo);margin-bottom:6px;padding-bottom:8px"><span class="k" style="font-weight:700;color:var(--tinta)">Trabajador</span><span class="v" style="font-weight:700">${esc(nombreTrab)}</span></div>` : ''}
     <div class="res-row"><span class="k">Antigüedad</span><span class="v">${antigTxt}</span></div>
     ${filas.map(f => `<div class="res-row"><span class="k">${f[0]}${f[2] ? ` <span style="color:#a3a292">· ${f[2]}</span>` : ''}</span><span class="v">${fmtARS.format(f[1])}</span></div>`).join('')}
     <div class="res-row" style="border-top:1.5px solid var(--tinta);margin-top:4px;padding-top:8px"><span class="k" style="font-weight:700;color:var(--tinta)">TOTAL ESTIMADO</span><span class="v res-strong">${fmtARS.format(total)}</span></div>
     ${mesesTot <= 6 ? '<div class="res-warn">⚠ Antigüedad menor a 6 meses: podría regir el período de prueba (art. 92 bis LCT, texto Ley 27.742) y no corresponder indemnización por antigüedad.</div>' : ''}`;
 
-  __liqDetalle = `LIQUIDACIÓN ESTIMADA POR DESPIDO SIN CAUSA\nIngreso: ${formatFechaCorta(fi)} — Egreso: ${formatFechaCorta(fe)} — Antigüedad: ${antigTxt}\nMejor remuneración mensual, normal y habitual: ${fmtARS.format(remu)}\n\n` +
+  __liqDetalle = `LIQUIDACIÓN ESTIMADA POR DESPIDO SIN CAUSA${nombreTrab ? '\nTrabajador: ' + nombreTrab : ''}\nIngreso: ${formatFechaCorta(fi)} — Egreso: ${formatFechaCorta(fe)} — Antigüedad: ${antigTxt}\nMejor remuneración mensual, normal y habitual: ${fmtARS.format(remu)}\n\n` +
     filas.map(f => `${f[0]}${f[2] ? ' (' + f[2] + ')' : ''}: ${fmtARS.format(f[1])}`).join('\n') +
     `\n\nTOTAL ESTIMADO: ${fmtARS.format(total)}\n\n(Estimación orientativa — no incluye rubros salariales adeudados, topes ni intereses.)`;
   document.getElementById('lqCopiar').hidden = false;
@@ -4001,27 +4094,53 @@ function copiarLiquidacion() {
 }
 
 // ── Herramientas: actualización por índice (CER/IPC) e intereses ──
-// API pública de estadísticas del BCRA (sin clave): idVariable 30 = CER diario, 27 = inflación mensual (%)
+// API pública del BCRA — Estadísticas Monetarias v4.0, sin clave (v2 y v3 fueron dadas de baja).
+// La v4 devuelve los datos anidados en results[].detalle y publica el catálogo de variables,
+// así que buscamos CER e IPC por descripción y usamos los ids históricos solo como último recurso.
+const BCRA_BASE = 'https://api.bcra.gob.ar/estadisticas/v4.0';
+let __bcraVars = null;
+async function bcraGet(url) {
+  const r = await fetch(url);
+  let j = null; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) throw new Error('HTTP ' + r.status + (j && j.errorMessages ? ' — ' + j.errorMessages.join('; ') : ''));
+  return j || {};
+}
+function bcraPuntos(j) {
+  const crudos = [];
+  (j.results || []).forEach(x => {
+    if (x && Array.isArray(x.detalle)) crudos.push(...x.detalle);
+    else if (x && x.fecha !== undefined) crudos.push(x); // tolera formato plano por compatibilidad
+  });
+  return crudos.map(x => ({ fecha: x.fecha, valor: parseFloat(x.valor) }))
+    .filter(x => x.fecha && isFinite(x.valor))
+    .sort((a, b) => a.fecha.localeCompare(b.fecha));
+}
+async function bcraVariableId(patrones, idHistorico) {
+  try {
+    if (!__bcraVars) {
+      __bcraVars = [];
+      let offset = 0, total = 1;
+      while (offset < total && offset < 5000) {
+        const j = await bcraGet(`${BCRA_BASE}/monetarias?limit=1000&offset=${offset}`);
+        const lote = j.results || [];
+        lote.forEach(v => __bcraVars.push({ id: v.idVariable, d: v.descripcion || '' }));
+        total = (j.metadata && j.metadata.resultset && j.metadata.resultset.count) || __bcraVars.length;
+        offset += 1000;
+        if (!lote.length) break;
+      }
+    }
+    for (const rx of patrones) {
+      const hit = __bcraVars.find(v => rx.test(v.d));
+      if (hit) return hit.id;
+    }
+  } catch (e) { /* si el catálogo no responde, probamos con el id histórico */ }
+  return idHistorico;
+}
 async function bcraSerie(idVar, d1, d2) {
-  const urls = [
-    `https://api.bcra.gob.ar/estadisticas/v3.0/monetarias/${idVar}?desde=${d1}&hasta=${d2}&limit=3000`,
-    `https://api.bcra.gob.ar/estadisticas/v2.0/datosvariable/${idVar}/${d1}/${d2}`
-  ];
-  let ultimoError = null;
-  for (const url of urls) {
-    try {
-      const r = await fetch(url);
-      if (!r.ok) { ultimoError = 'HTTP ' + r.status; continue; }
-      const j = await r.json();
-      const datos = (j.results || j.Results || [])
-        .map(x => ({ fecha: x.fecha, valor: parseFloat(x.valor) }))
-        .filter(x => x.fecha && isFinite(x.valor))
-        .sort((a, b) => a.fecha.localeCompare(b.fecha));
-      if (datos.length) return datos;
-      ultimoError = 'sin datos en el período';
-    } catch (e) { ultimoError = e.message || 'sin conexión'; }
-  }
-  throw new Error(ultimoError || 'sin datos');
+  const j = await bcraGet(`${BCRA_BASE}/monetarias/${idVar}?desde=${d1}&hasta=${d2}&limit=3000`);
+  const puntos = bcraPuntos(j);
+  if (!puntos.length) throw new Error('el BCRA no tiene datos publicados en ese período');
+  return puntos;
 }
 async function traerIndices() {
   const info = document.getElementById('acFetchInfo');
@@ -4032,14 +4151,16 @@ async function traerIndices() {
   info.textContent = 'Consultando al BCRA…';
   try {
     if (tipo === 'cer') {
-      const serie = await bcraSerie(30, d1, d2);
+      const idCer = await bcraVariableId([/coeficiente de estabilizaci/i, /\bCER\b/], 30);
+      const serie = await bcraSerie(idCer, d1, d2);
       const ini = serie[0], fin = serie[serie.length - 1];
       document.getElementById('acIndiceIni').value = ini.valor;
       document.getElementById('acIndiceFin').value = fin.valor;
       info.innerHTML = `✓ CER del BCRA — ${formatFechaCorta(ini.fecha)}: <b>${fmtNumStr(ini.valor)}</b> · ${formatFechaCorta(fin.fecha)}: <b>${fmtNumStr(fin.valor)}</b>. Verificá y calculá.`;
     } else {
       // IPC: encadena las variaciones mensuales de los meses posteriores al inicial, hasta el final
-      const serie = await bcraSerie(27, d1.slice(0, 8) + '01', d2);
+      const idIpc = await bcraVariableId([/inflaci[o\u00f3]n mensual/i, /IPC.*variaci[o\u00f3]n mensual/i], 27);
+      const serie = await bcraSerie(idIpc, d1.slice(0, 8) + '01', d2);
       const m1 = d1.slice(0, 7), m2 = d2.slice(0, 7);
       const usadas = serie.filter(x => x.fecha.slice(0, 7) > m1 && x.fecha.slice(0, 7) <= m2);
       if (!usadas.length) throw new Error('el INDEC aún no publicó variaciones para ese período');
@@ -4283,7 +4404,7 @@ function limpiarHerramientas() {
   cargarUmaCampo();
 }
 function resetLiquidacion() {
-  ['lqIngreso','lqEgreso','lqRemu'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['lqNombre','lqIngreso','lqEgreso','lqRemu'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
   setC('lqDiasTrab', true); setC('lqPreaviso', true); setC('lqIntegracion', true); setC('lqSac', true); setC('lqArt2', false);
   const box = document.getElementById('lqRes'); if (box) { box.classList.remove('on'); box.innerHTML = ''; }
@@ -4667,10 +4788,45 @@ function copiarReferencia(id, btn) {
   copiarTexto(partes.join(', ') + '.', btn, '⧉ Copiar cita');
 }
 
+// ── Acceso privado ──
+// Aviso honesto: en un HTML estático esto es una tranquera, no una caja fuerte. Cualquiera que
+// lea el código fuente puede saltearla. Sirve para que un visitante casual no entre, nada más.
+const AUTH_KEY = 'jc-auth-v1';
+const AUTH_HASH = 'mfwagv';
+function __hashCred(txt) {
+  let h = 5381;
+  for (let i = 0; i < txt.length; i++) h = ((h << 5) + h + txt.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+function sesionActiva() {
+  try { return appStore.getItem(AUTH_KEY) === AUTH_HASH; } catch (e) { return false; }
+}
+function loginCon(u, p) {
+  if (__hashCred((u || '').trim().toLowerCase() + ':' + (p || '')) === AUTH_HASH) {
+    try { appStore.setItem(AUTH_KEY, AUTH_HASH); } catch (e) {}
+    document.body.classList.remove('locked');
+    return true;
+  }
+  return false;
+}
+function intentarLogin() {
+  const ok = loginCon(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
+  const err = document.getElementById('loginError');
+  if (!ok) {
+    err.textContent = 'Usuario o contraseña incorrectos.';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  } else err.textContent = '';
+}
+
 // ── Arranque ──
 loadConfig();
 loadCaja();
 navTo('inicio');
+if (!sesionActiva()) {
+  document.body.classList.add('locked');
+  setTimeout(() => { const u = document.getElementById('loginUser'); if (u) u.focus(); }, 60);
+}
 if (typeof appStore !== 'undefined' && appStore.__mem) {
   const b = document.createElement('div');
   b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#7a5a10;color:#fff;font:12px/1.5 Inter,system-ui,sans-serif;padding:9px 34px 9px 14px;text-align:center';
