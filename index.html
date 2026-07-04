@@ -41,7 +41,7 @@ button{font-family:var(--f-ui);}
 .doble-filete{height:5px;border-top:1.5px solid var(--tinta);border-bottom:0.5px solid var(--tinta);opacity:0.85;}
 .doble-filete.claro{border-color:rgba(255,255,255,0.55);}
 
-.app{display:flex;height:100vh;overflow:hidden;}
+.app{display:grid;grid-template-columns:236px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);height:100vh;overflow:hidden;}
 
 /* ══════════ Cinta de navegación superior (páginas nuevas + expedientes) ══════════ */
 .ribbon{background:var(--bosque);display:flex;align-items:center;gap:14px;padding:0 18px;height:54px;flex-shrink:0;border-bottom:1px solid rgba(94,205,146,0.18);}
@@ -205,7 +205,7 @@ button{font-family:var(--f-ui);}
 .filter-row select option{background:var(--bosque-2);color:#fff;}
 
 .list-area{flex:1;overflow-y:auto;padding:16px 18px 40px;background:var(--papel);}
-.casos-grid{display:flex;flex-direction:column;gap:10px;max-width:1080px;}
+.casos-grid{display:flex;flex-direction:column;gap:10px;max-width:1080px;margin:0 auto;width:100%;}
 
 /* Fichas de fallo */
 .caso-card{background:var(--carta);border-radius:var(--radio);border:1px solid var(--filo);display:flex;overflow:hidden;cursor:pointer;transition:border-color .16s,box-shadow .16s,transform .16s;}
@@ -270,7 +270,7 @@ button{font-family:var(--f-ui);}
 .jur-toggle{display:flex;gap:0;border:1px solid rgba(255,255,255,0.2);border-radius:99px;overflow:hidden;}
 .jur-btn{font-size:11.5px;font-weight:700;letter-spacing:0.04em;padding:6px 15px;cursor:pointer;background:transparent;border:none;color:rgba(255,255,255,0.55);transition:all .15s;}
 .jur-btn.active{background:var(--brote);color:var(--bosque);}
-.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px;align-items:stretch;max-width:1200px;}
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px;align-items:stretch;max-width:1200px;margin:0 auto;width:100%;}
 .exp-card{background:var(--carta);border:1px solid var(--filo);border-radius:var(--radio);padding:15px 17px;cursor:pointer;transition:border-color .16s,box-shadow .16s,transform .16s;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden;}
 .exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sello);opacity:0.85;}
 .exp-card:hover{border-color:#c6d6c9;box-shadow:var(--sombra-2);transform:translateY(-2px);}
@@ -450,10 +450,62 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .login-caja input:focus{outline:none;border-color:var(--sello);box-shadow:0 0 0 3px var(--laurel);}
 .login-error{color:var(--mal);font-size:12px;margin-top:10px;min-height:16px;font-weight:600;}
 
+/* ══ Navegación unificada: cinta estándar también en Jurisprudencia y Expedientes ══ */
+.app>.ribbon{grid-column:1/-1;}
+.app>.sidebar{grid-row:2;width:auto;}
+.app>.main{grid-row:2;}
+.exp-toolbar{display:flex;align-items:center;gap:12px;padding:10px 26px;background:#fbfaf6;border-bottom:1px solid var(--filo);flex-wrap:wrap;}
+@media (max-width:700px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr);}
+  .app>.sidebar{grid-row:2;}
+  .app>.main{grid-row:3;}
+  .exp-toolbar{padding:10px 14px;}
+}
+/* Botón de resumen en la tarjeta del expediente */
+.exp-resumen{margin-top:11px;background:none;border:1px solid var(--filo);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;color:var(--tinta-suave);cursor:pointer;font-family:inherit;transition:all .15s;}
+.exp-resumen:hover{border-color:var(--sello);color:var(--sello);background:var(--laurel);}
+
+/* ══ Contraste en la barra de expedientes (fondo claro) ══ */
+.exp-toolbar .search-wrap input{background:#fff;border-color:var(--filo);color:var(--tinta);}
+.exp-toolbar .search-wrap input::placeholder{color:#9a998c;}
+.exp-toolbar .search-wrap input:focus{border-color:var(--sello);background:#fff;box-shadow:0 0 0 3px var(--laurel);}
+.exp-toolbar .search-icon{color:#9a998c;}
+.exp-toolbar .jur-toggle{border-color:var(--filo);background:#fff;}
+.exp-toolbar .jur-btn{color:var(--tinta-suave);}
+.exp-toolbar .jur-btn.active{background:var(--sello);color:#fff;}
+.exp-toolbar .filter-row select{background:#fff;border:1px solid var(--filo);color:var(--tinta);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit;}
+
+/* ══ Jurisprudencia: buscador con contraste y mejor aprovechamiento del ancho ══ */
+.topbar .search-wrap input{background:#fff;border-color:#fff;color:var(--tinta);}
+.topbar .search-wrap input::placeholder{color:#9a998c;}
+.topbar .search-wrap input:focus{background:#fff;border-color:var(--brote);box-shadow:0 0 0 3px rgba(94,205,146,0.25);}
+.topbar .search-icon{color:#8b8a7d;}
+.list-area{padding:16px 32px 40px;}
+.casos-grid{max-width:1560px;}
+
+/* La cinta superior ya lleva la marca */
+#paginaJurisprudencia .sidebar-logo{display:none;}
+#paginaJurisprudencia .sidebar-stats{margin-top:16px;}
+
 </style>
 </head>
 <body>
 <div class="app" id="paginaJurisprudencia" style="display:none">
+    <div class="ribbon">
+    <div>
+      <div class="ribbon-brand" onclick="navTo('inicio')">Juris<em>Cannabis</em></div>
+      <div class="ribbon-sub">Estudio WE Legal</div>
+    </div>
+    <div class="ribbon-sep"></div>
+    <nav class="ribbon-nav" data-navbar>
+      <button class="pill-nav" data-nav="inicio" onclick="navTo('inicio')">🏠 Inicio</button>
+      <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
+      <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
+      <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
+    </nav>
+  </div>
   <aside class="sidebar">
     <div class="sidebar-logo" onclick="navTo('inicio')" title="Ir al inicio">
       <h1>Juris<em>Cannabis</em></h1>
@@ -492,12 +544,6 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         </button>
       </div>
       <button class="btn-side-inicio" onclick="navTo('inicio')" title="Volver al tablero">🏠 VOLVER AL INICIO</button>
-      <div class="side-links">
-        <button class="btn-side" onclick="navTo('expedientes')" title="Seguimiento de prueba">📁 Exped.</button>
-        <button class="btn-side" onclick="navTo('agenda')" title="Tareas y audiencias">📅 Agenda</button>
-        <button class="btn-side" onclick="navTo('caja')" title="Control de ingresos">💰 Caja</button>
-        <button class="btn-side" onclick="navTo('herramientas')" title="Calculadoras procesales">🧮 Herram.</button>
-      </div>
     </div>
   </aside>
 
@@ -551,39 +597,41 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 <!-- PÁGINA EXPEDIENTES — completamente separada -->
 <div id="paginaExpedientes" style="display:none;position:fixed;inset:0;background:var(--papel);flex-direction:column;overflow:hidden;z-index:5">
   <!-- Topbar de expedientes -->
-  <div class="exp-topbar">
+  <div class="ribbon">
     <div>
       <div class="ribbon-brand" onclick="navTo('inicio')">Juris<em>Cannabis</em></div>
-      <div class="ribbon-sub">Expedientes en prueba</div>
+      <div class="ribbon-sub">Estudio WE Legal</div>
     </div>
     <div class="ribbon-sep"></div>
+    <nav class="ribbon-nav" data-navbar>
+      <button class="pill-nav" data-nav="inicio" onclick="navTo('inicio')">🏠 Inicio</button>
+      <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
+      <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
+      <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
+    </nav>
+  </div>
+  <div class="exp-toolbar">
     <div class="jur-toggle">
       <button class="jur-btn active" id="btn-caba" onclick="setModuloExp('expedientes-caba')">CABA</button>
       <button class="jur-btn" id="btn-pba" onclick="setModuloExp('expedientes-pba')">PBA</button>
     </div>
-    <div style="flex:1;display:flex;justify-content:center;align-items:center;padding:0 14px;gap:8px">
-      <div class="search-wrap" style="max-width:340px">
-        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="searchExpedientes" type="text" placeholder="Buscar por carátula o expediente…" oninput="renderExpedientes()">
-      </div>
-      <div class="filter-row">
-        <select id="filtFuero" onchange="renderExpedientes()">
-          <option value="">Todos los fueros</option>
-          <option value="Laboral">Laboral</option>
-          <option value="Civil y Comercial">Civil y Comercial</option>
-          <option value="Contencioso Administrativo">Cont. Administrativo</option>
-        </select>
-      </div>
+    <div style="flex:1"></div>
+    <div class="search-wrap" style="max-width:340px;flex:1">
+      <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchExpedientes" type="text" placeholder="Buscar por carátula o expediente…" oninput="renderExpedientes()">
     </div>
+    <div class="filter-row">
+      <select id="filtFuero" onchange="renderExpedientes()">
+        <option value="">Todos los fueros</option>
+        <option value="Laboral">Laboral</option>
+        <option value="Civil y Comercial">Civil y Comercial</option>
+        <option value="Contencioso Administrativo">Cont. Administrativo</option>
+      </select>
+    </div>
+    <div style="flex:1"></div>
     <button class="btn-add" style="width:auto;padding:8px 16px" onclick="openNuevaCausa()">+ Nueva causa</button>
-    <div class="ribbon-sep"></div>
-    <nav class="ribbon-nav" data-navbar>
-      <button class="pill-nav" data-nav="inicio" onclick="navTo('inicio')" title="Inicio">🏠</button>
-      <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')" title="Base de jurisprudencia">⚖ Jurisprudencia</button>
-      <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')" title="Agenda">📅</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')" title="Caja">💰</button>
-      <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')" title="Herramientas">🧮</button>
-    </nav>
   </div>
 
   <!-- Contenido -->
@@ -836,7 +884,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel" id="toolLiq" style="grid-column:1/-1">
           <div class="panel-h"><div><span class="tool-eyebrow">Laboral · LCT</span><h3>Liquidación estimada por despido sin causa</h3></div></div>
           <div class="panel-b">
-            <div class="f-row">
+            <div class="f-row" style="align-items:flex-end">
               <div class="f-col" style="flex:1.4"><label>Trabajador (opcional)</label><input id="lqNombre" placeholder="Ej: Juan Pérez"></div>
               <div class="f-col"><label>Fecha de ingreso</label><input type="date" id="lqIngreso"></div>
               <div class="f-col"><label>Fecha de despido</label><input type="date" id="lqEgreso"></div>
@@ -844,6 +892,16 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px 20px">
               <label class="check-row"><input type="checkbox" id="lqDiasTrab" checked> Días trabajados del mes del despido (salario)</label>
+              <label class="check-row"><input type="checkbox" id="lqAdeudados" onchange="toggleAdeudados()"> Salarios adeudados de meses anteriores <span class="nota">Se calculan con la última remuneración (art. 208 LCT).</span></label>
+              <div id="lqAdeudadosBox" style="display:none;padding:6px 0 4px 22px">
+                <div class="f-col" style="flex:0 0 220px"><label>¿Cuántos meses adeuda?</label>
+                  <select id="lqAdeudadosMeses" onchange="renderAdeudadosMeses()">
+                    <option value="1">1 mes</option><option value="2">2 meses</option><option value="3">3 meses</option>
+                    <option value="4">4 meses</option><option value="5">5 meses</option><option value="6">6 meses</option>
+                  </select>
+                </div>
+                <div id="lqAdeudadosLista" style="margin-top:4px;font-size:12px;color:var(--tinta-suave)"></div>
+              </div>
               <label class="check-row"><input type="checkbox" id="lqPreaviso" checked> Preaviso omitido (art. 232 LCT)</label>
               <label class="check-row"><input type="checkbox" id="lqIntegracion" checked> Integración del mes de despido (art. 233 LCT)</label>
               <label class="check-row"><input type="checkbox" id="lqSac" checked> SAC sobre preaviso, integración y vacaciones</label>
@@ -871,22 +929,21 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               <div class="f-col"><label>Capital ($)</label><input type="text" inputmode="decimal" id="inCapital" oninput="fmtMiles(this)" placeholder="Ej: 1.500.000"></div>
             </div>
             <div class="f-row">
-              <div class="f-col"><label>Desde</label><input type="date" id="inDesde"></div>
-              <div class="f-col"><label>Hasta</label><input type="date" id="inHasta"></div>
+              <div class="f-col"><label>Desde</label><input type="date" id="inDesde" onchange="autoTraerIndices()"></div>
+              <div class="f-col"><label>Hasta</label><input type="date" id="inHasta" onchange="autoTraerIndices()"></div>
             </div>
             <div id="acCamposIndice">
               <div class="f-row" style="align-items:end">
                 <div class="f-col" style="flex:0 0 130px"><label>Índice</label>
-                  <select id="acIndice"><option value="cer">CER (diario)</option><option value="ipc">IPC (mensual)</option></select>
+                  <select id="acIndice" onchange="autoTraerIndices()"><option value="cer">CER (diario)</option><option value="ipc">IPC (mensual)</option></select>
                 </div>
-                <button class="btn-ghost" style="margin-bottom:2px" onclick="traerIndices()">🔄 Traer valores del BCRA</button>
                 <div class="f-col"><label>Tasa pura anual (%)</label><input type="number" id="acTasaPura" step="0.01" value="3"></div>
               </div>
               <div class="f-row">
                 <div class="f-col"><label>Valor del índice al inicio</label><input type="number" id="acIndiceIni" step="0.0001" placeholder="Se completa solo, o cargalo a mano"></div>
                 <div class="f-col"><label>Valor del índice al final</label><input type="number" id="acIndiceFin" step="0.0001" placeholder="Se completa solo, o cargalo a mano"></div>
               </div>
-              <div class="res-nota" id="acFetchInfo" style="margin-top:4px;margin-bottom:8px">Con fechas cargadas, «Traer valores del BCRA» completa el índice automáticamente (requiere internet). También podés cargar los valores a mano.</div>
+              <div class="res-nota" id="acFetchInfo" style="margin-top:4px;margin-bottom:8px">Elegí índice y fechas: los valores se traen solos del BCRA (requiere internet). También podés cargarlos a mano.</div>
             </div>
             <div id="acCamposTasa" style="display:none">
               <div class="f-row">
@@ -898,7 +955,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
             </div>
             <button class="btn-primary" onclick="calcularActualizacion()">Calcular</button>
             <div class="res-box" id="inRes"></div>
-            <div class="res-nota">El coeficiente (índice final ÷ inicial) actualiza el capital; la tasa pura se aplica sobre el capital actualizado por los días corridos. El resultado incluye el 67 % del total conforme el art. 55 de la Ley de Modernización Laboral. Los valores traídos del BCRA son informativos: verificalos contra la fuente oficial y el criterio vigente de tu fuero antes de usarlos en un escrito.</div>
+            <div class="res-nota">CER: replica la fórmula oficial del BCRA para el art. 55 de la Ley 27.802 (índice del día previo al inicio e interés compuesto). IPC: índice INDEC nivel general del mes anterior a cada fecha, con tasa pura simple (convención de las liquidaciones judiciales). El resultado incluye la referencia del art. 55 de la Ley 27.802: capital original más el 67 % de los intereses (actualización + tasa pura). Los valores traídos del BCRA son informativos: verificalos contra la fuente oficial y el criterio vigente de tu fuero antes de usarlos en un escrito.</div>
           </div>
         </div>
 
@@ -984,7 +1041,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               <label>Comprobante</label>
               <button class="btn-ghost" onclick="document.getElementById('cajaAdjInput').click()" id="cjAdjBtn">📎 Adjuntar foto / PDF</button>
             </div>
-            <label class="check-row" style="margin:0 0 8px"><input type="checkbox" id="cjComOri"> Comisión de Ori <span class="nota">Kevin 5 % y Ori 5 % (en vez de 10 % / 0 %)</span></label>
+            <label class="check-row" style="margin:0 0 8px"><input type="checkbox" id="cjComOri"> Comisión de Ori</label>
             <button class="btn-primary" style="margin-bottom:2px" onclick="registrarPago()">+ Registrar pago</button>
           </div>
           <datalist id="clientesList"></datalist>
@@ -1003,9 +1060,15 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
           <div class="panel-h"><h3>Qué generó más ingresos</h3><span class="mini">ranking del mes por concepto / servicio</span></div>
           <div id="cajaRanking"></div>
         </div>
-        <div class="panel">
-          <div class="panel-h"><h3>Comisiones del mes</h3><span class="mini">Kevin 10 % · con «comisión de Ori»: 5 % y 5 %</span></div>
-          <div class="panel-b" id="cajaComisiones"></div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="panel">
+            <div class="panel-h"><h3>Comisiones de Kevin</h3></div>
+            <div class="panel-b" id="cajaComisionesK"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-h"><h3>Comisiones de Ori</h3></div>
+            <div class="panel-b" id="cajaComisionesO"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -2231,9 +2294,8 @@ async function procesarPdfAuto(input) {
 async function generarResumenPDF(id) {
   const exp = expedientes.find(e => e.id === id);
   if (!exp) return;
-  const btn = document.querySelector(`[data-resumen-id="${id}"]`);
-  const textoOriginal = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Generando...'; btn.disabled = true; }
+  const btns = [...document.querySelectorAll(`[data-resumen-id="${id}"]`)];
+  btns.forEach(b => { b.dataset.lblOriginal = b.innerHTML; b.innerHTML = '⏳ Generando...'; b.disabled = true; });
 
   const tieneTextos = exp.textoDemanda || exp.textoContestacion;
   let resumenTexto = '';
@@ -2250,7 +2312,7 @@ async function generarResumenPDF(id) {
     resumenTexto = 'Este expediente no tiene textos de demanda o contestacion cargados.';
   }
 
-  if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; }
+  btns.forEach(b => { b.innerHTML = b.dataset.lblOriginal || b.innerHTML; b.disabled = false; });
 
   const fecha = new Date().toLocaleDateString('es-AR');
   const htmlResumen = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Resumen — ${exp.caratula}</title>
@@ -3060,6 +3122,7 @@ function renderExpedientes() {
         ${exp.fuero ? `<span class="exp-chip fuero">${exp.fuero}</span>` : ''}
         ${alertas ? `<span class="exp-chip alerta">${alertas} a revisar</span>` : ''}
       </div>
+      <button class="exp-resumen" data-resumen-id="${exp.id}" onclick="event.stopPropagation();generarResumenPDF(${exp.id})">📄 Ver resumen</button>
     </div>`;
   }).join('');
 }
@@ -3634,7 +3697,7 @@ function verCausa(id) {
 function navTo(p) {
   if (!PAGE_IDS[p]) p = 'inicio';
   Object.values(PAGE_IDS).forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  document.getElementById(PAGE_IDS[p]).style.display = 'flex';
+  document.getElementById(PAGE_IDS[p]).style.display = p === 'jurisprudencia' ? 'grid' : 'flex';
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === p));
   try {
     if (p === 'jurisprudencia') renderCasos();
@@ -4003,6 +4066,8 @@ function calcularLiquidacion() {
   if (egr <= ing) { box.innerHTML = '<span style="color:var(--mal)">La fecha de despido debe ser posterior al ingreso.</span>'; document.getElementById('lqCopiar').hidden = true; return; }
 
   const conDiasTrab = document.getElementById('lqDiasTrab').checked;
+  const conAdeudados = document.getElementById('lqAdeudados').checked;
+  const nAdeudados = parseInt(document.getElementById('lqAdeudadosMeses').value, 10) || 0;
   const conPreaviso = document.getElementById('lqPreaviso').checked;
   const conIntegracion = document.getElementById('lqIntegracion').checked;
   const conSac = document.getElementById('lqSac').checked;
@@ -4043,6 +4108,17 @@ function calcularLiquidacion() {
   const diasDelMes = egr.getDate();
   const sueldoDias = conDiasTrab ? (remu / 30) * diasDelMes : 0;
 
+  // Salarios adeudados de meses anteriores al despido — base: última remuneración
+  const adeudadosMeses = [];
+  if (conAdeudados && nAdeudados > 0) {
+    for (let i = 1; i <= nAdeudados; i++) {
+      let mm = egr.getMonth() - i + 1, yy = egr.getFullYear();
+      while (mm <= 0) { mm += 12; yy -= 1; }
+      adeudadosMeses.push({ etiqueta: MESES[mm - 1] + ' ' + yy, monto: remu });
+    }
+    adeudadosMeses.reverse();
+  }
+
   // Vacaciones proporcionales no gozadas (art. 156 LCT; escala de días del art. 150)
   // Días base según antigüedad computada al 31/12 del año del cese (art. 150 in fine):
   // hasta 5 años → 14 · más de 5 y hasta 10 → 21 · más de 10 y hasta 20 → 28 · más de 20 → 35
@@ -4068,6 +4144,7 @@ function calcularLiquidacion() {
     sacPre > 0 && ['SAC sobre preaviso', sacPre, ''],
     integracion > 0 && ['Integración del mes de despido (art. 233)', integracion, diasRestantes + ' días'],
     sacInt > 0 && ['SAC sobre integración', sacInt, ''],
+    ...adeudadosMeses.map(m => [`Salarios adeudados — ${m.etiqueta}`, m.monto, 'sueldo completo, última remuneración']),
     conDiasTrab && ['Días trabajados del mes del despido (salario)', sueldoDias, diasDelMes + ' día' + (diasDelMes!==1?'s':'')],
     ['SAC proporcional (art. 123)', sacProp, diasSem + ' días del semestre'],
     ['Vacaciones proporcionales no gozadas (art. 156)', vacaciones, `${diasAnio}/365 del año × ${diasVacBase} días = ${vacFraccion.toFixed(2).replace('.', ',')} → ${diasVacProp} días`],
@@ -4115,6 +4192,7 @@ function bcraPuntos(j) {
     .filter(x => x.fecha && isFinite(x.valor))
     .sort((a, b) => a.fecha.localeCompare(b.fecha));
 }
+var __bcraSerieUsada = '';
 async function bcraVariableId(patrones, idHistorico) {
   try {
     if (!__bcraVars) {
@@ -4131,16 +4209,41 @@ async function bcraVariableId(patrones, idHistorico) {
     }
     for (const rx of patrones) {
       const hit = __bcraVars.find(v => rx.test(v.d));
-      if (hit) return hit.id;
+      if (hit) { __bcraSerieUsada = hit.d; return hit.id; }
     }
   } catch (e) { /* si el catálogo no responde, probamos con el id histórico */ }
+  __bcraSerieUsada = '';
   return idHistorico;
 }
 async function bcraSerie(idVar, d1, d2) {
-  const j = await bcraGet(`${BCRA_BASE}/monetarias/${idVar}?desde=${d1}&hasta=${d2}&limit=3000`);
+  const j = await bcraGet(`${BCRA_BASE}/monetarias/${idVar}?desde=${d1}&hasta=${d2}&limit=1000`);
   const puntos = bcraPuntos(j);
   if (!puntos.length) throw new Error('el BCRA no tiene datos publicados en ese período');
   return puntos;
+}
+function mesAnteriorISO(iso) { const [y, m] = iso.slice(0, 7).split('-').map(Number); return m === 1 ? (y - 1) + '-12' : y + '-' + String(m - 1).padStart(2, '0'); }
+function sumarDiasISO(iso, n) { const d = parseISO(iso); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+// El CER es diario: pedir el rango completo excede el tope de la API y trunca la serie.
+// Por eso se consulta una ventana corta alrededor de cada punta y se toma el valor exacto.
+// Valor del índice en una fecha exacta (ventana corta hacia atrás; toma el último ≤ fecha)
+async function bcraValorFecha(idVar, fecha) {
+  const pts = await bcraSerie(idVar, sumarDiasISO(fecha, -7), fecha);
+  return pts[pts.length - 1];
+}
+async function bcraPrimerValor(idVar, desde, tope) {
+  const fin = sumarDiasISO(desde, 20) < tope ? sumarDiasISO(desde, 20) : tope;
+  const pts = await bcraSerie(idVar, desde, fin);
+  return pts[0];
+}
+async function bcraUltimoValor(idVar, hasta, piso) {
+  const ini = sumarDiasISO(hasta, -20) > piso ? sumarDiasISO(hasta, -20) : piso;
+  const pts = await bcraSerie(idVar, ini, hasta);
+  return pts[pts.length - 1];
+}
+function autoTraerIndices() {
+  if (document.getElementById('acModo').value !== 'indice') return;
+  const d1 = document.getElementById('inDesde').value, d2 = document.getElementById('inHasta').value;
+  if (d1 && d2 && d2 > d1) traerIndices();
 }
 async function traerIndices() {
   const info = document.getElementById('acFetchInfo');
@@ -4151,32 +4254,72 @@ async function traerIndices() {
   info.textContent = 'Consultando al BCRA…';
   try {
     if (tipo === 'cer') {
-      const idCer = await bcraVariableId([/coeficiente de estabilizaci/i, /\bCER\b/], 30);
-      const serie = await bcraSerie(idCer, d1, d2);
-      const ini = serie[0], fin = serie[serie.length - 1];
+      const idCer = await bcraVariableId([/^CER \(Base 2\.2\.2002/i, /^CER\b/, /^coeficiente de estabilizaci[oó]n de referencia/i], 30);
+      // Fórmula oficial BCRA (Notas aclaratorias, Ley 27.802): la base es el CER del DÍA PREVIO al inicio
+      const ini = await bcraValorFecha(idCer, sumarDiasISO(d1, -1));
+      const fin = await bcraUltimoValor(idCer, d2, d1);
       document.getElementById('acIndiceIni').value = ini.valor;
       document.getElementById('acIndiceFin').value = fin.valor;
-      info.innerHTML = `✓ CER del BCRA — ${formatFechaCorta(ini.fecha)}: <b>${fmtNumStr(ini.valor)}</b> · ${formatFechaCorta(fin.fecha)}: <b>${fmtNumStr(fin.valor)}</b>. Verificá y calculá.`;
+      info.innerHTML = `✓ CER del BCRA — base día previo ${formatFechaCorta(ini.fecha)}: <b>${fmtNumStr(ini.valor)}</b> · ${formatFechaCorta(fin.fecha)}: <b>${fmtNumStr(fin.valor)}</b>${fin.fecha < d2 ? ' <i>(último publicado)</i>' : ''}.${__bcraSerieUsada ? ' Serie: <i>' + esc(__bcraSerieUsada) + '</i>.' : ''} Verificá y calculá.`;
     } else {
-      // IPC: encadena las variaciones mensuales de los meses posteriores al inicial, hasta el final
-      const idIpc = await bcraVariableId([/inflaci[o\u00f3]n mensual/i, /IPC.*variaci[o\u00f3]n mensual/i], 27);
-      const serie = await bcraSerie(idIpc, d1.slice(0, 8) + '01', d2);
-      const m1 = d1.slice(0, 7), m2 = d2.slice(0, 7);
-      const usadas = serie.filter(x => x.fecha.slice(0, 7) > m1 && x.fecha.slice(0, 7) <= m2);
-      if (!usadas.length) throw new Error('el INDEC aún no publicó variaciones para ese período');
-      const coef = usadas.reduce((acc, x) => acc * (1 + x.valor / 100), 1);
-      document.getElementById('acIndiceIni').value = 100;
-      document.getElementById('acIndiceFin').value = (100 * coef).toFixed(4);
-      info.innerHTML = `✓ IPC (BCRA/INDEC) — ${usadas.length} variaciones mensuales encadenadas (${usadas.map(x => x.valor.toFixed(1).replace('.', ',') + '%').join(' · ')}). Coeficiente ${coef.toFixed(4).replace('.', ',')}. Verificá y calculá.`;
+      // IPC: usa el ÍNDICE nivel general del INDEC (datos.gob.ar) con la convención de las
+      // liquidaciones judiciales: índice del mes ANTERIOR a cada fecha (como nomotica/colproba).
+      const m1 = mesAnteriorISO(d1);
+      const mTope = mesAnteriorISO(d2);
+      if (mTope <= m1) throw new Error('el período es demasiado corto para el índice mensual');
+      try {
+        const url = `https://apis.datos.gob.ar/series/api/series/?ids=148.3_INIVELNAL_DICI_M_26&format=json&start_date=${m1}-01&end_date=${mTope}-28&limit=1000`;
+        const r = await fetch(url);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        const datos = (j.data || []).map(x => ({ fecha: String(x[0]).slice(0, 7), valor: parseFloat(x[1]) }))
+          .filter(x => isFinite(x.valor)).sort((x, y) => x.fecha.localeCompare(y.fecha));
+        const base = datos.find(x => x.fecha === m1);
+        const fin = datos[datos.length - 1];
+        if (!base || !fin || fin.fecha === base.fecha) throw new Error('el INDEC aún no publicó índices para ese período');
+        document.getElementById('acIndiceIni').value = base.valor;
+        document.getElementById('acIndiceFin').value = fin.valor;
+        info.innerHTML = `✓ IPC INDEC nivel general (datos.gob.ar) — índice ${base.fecha} (mes anterior al inicio): <b>${fmtNumStr(base.valor)}</b> · índice ${fin.fecha}: <b>${fmtNumStr(fin.valor)}</b>${fin.fecha < mTope ? ' <i>(último publicado)</i>' : ''}. Tasa pura simple. Verificá y calculá.`;
+      } catch (e2) {
+        // Plan B: variaciones mensuales del BCRA (vienen redondeadas a 1 decimal → resultado aproximado)
+        const idIpc = await bcraVariableId([/^inflaci[oó]n mensual \(variaci[oó]n en %\)/i, /^inflaci[oó]n mensual\b/], 27);
+        const serie = await bcraSerie(idIpc, d1.slice(0, 8) + '01', d2);
+        const usadas = serie.filter(x => x.fecha.slice(0, 7) >= d1.slice(0, 7) && x.fecha.slice(0, 7) <= d2.slice(0, 7));
+        if (!usadas.length) throw new Error('sin datos de IPC (' + (e2.message || 'datos.gob.ar no responde') + ')');
+        const coef = usadas.reduce((acc, x) => acc * (1 + x.valor / 100), 1);
+        document.getElementById('acIndiceIni').value = 100;
+        document.getElementById('acIndiceFin').value = (100 * coef).toFixed(4);
+        info.innerHTML = `⚠ datos.gob.ar no respondió: coeficiente APROXIMADO con ${usadas.length} variaciones mensuales del BCRA (redondeadas a 1 decimal). Coeficiente ${coef.toFixed(4).replace('.', ',')}. Verificá contra el índice oficial.`;
+      }
     }
   } catch (e) {
     info.innerHTML = `<span style="color:var(--mal)">No se pudo consultar al BCRA (${esc(e.message)}). Necesitás conexión a internet; si persiste, cargá los valores a mano desde bcra.gob.ar / indec.gob.ar.</span>`;
   }
 }
+function toggleAdeudados() {
+  const on = document.getElementById('lqAdeudados').checked;
+  document.getElementById('lqAdeudadosBox').style.display = on ? 'block' : 'none';
+  if (on) renderAdeudadosMeses();
+}
+function renderAdeudadosMeses() {
+  const n = parseInt(document.getElementById('lqAdeudadosMeses').value, 10) || 1;
+  const egr = document.getElementById('lqEgreso').value;
+  const cont = document.getElementById('lqAdeudadosLista');
+  if (!egr) { cont.textContent = 'Cargá la fecha de egreso para ver qué meses se computarán.'; return; }
+  const [y, m] = egr.slice(0, 7).split('-').map(Number);
+  const meses = [];
+  for (let i = 1; i <= n; i++) {
+    let mm = m - i, yy = y;
+    while (mm <= 0) { mm += 12; yy -= 1; }
+    meses.push(MESES[mm - 1] + ' ' + yy);
+  }
+  cont.innerHTML = 'Se computarán ' + n + ' sueldo' + (n !== 1 ? 's' : '') + ' completo' + (n !== 1 ? 's' : '') + ' con la última remuneración: <b>' + meses.reverse().join(' · ') + '</b>.';
+}
 function toggleModoActualizacion() {
   const modo = document.getElementById('acModo').value;
   document.getElementById('acCamposIndice').style.display = modo === 'indice' ? '' : 'none';
   document.getElementById('acCamposTasa').style.display = modo === 'tasa' ? '' : 'none';
+  if (modo === 'indice') autoTraerIndices();
 }
 function calcularActualizacion() {
   const box = document.getElementById('inRes');
@@ -4194,17 +4337,23 @@ function calcularActualizacion() {
     const i1 = parseFloat(document.getElementById('acIndiceFin').value);
     const tasaPura = parseFloat(document.getElementById('acTasaPura').value) || 0;
     if (!i0 || i0 <= 0 || !i1 || i1 <= 0) { box.innerHTML = '<span style="color:var(--mal)">Cargá el valor del índice al inicio y al final del período.</span>'; return; }
+    const esCER = (document.getElementById('acIndice') ? document.getElementById('acIndice').value : 'cer') === 'cer';
     const coef = i1 / i0;
     const capAct = cap * coef;
-    const interesPuro = capAct * (tasaPura / 100) * (dias / 365);
-    const total = capAct + interesPuro;
+    // CER: fórmula oficial BCRA (Notas aclaratorias, art. 55 Ley 27.802): compuesto (1+i)^((días+1)/365)
+    // con base al día previo al inicio. IPC: convención de índice mensual con tasa pura SIMPLE.
+    const total = esCER
+      ? capAct * Math.pow(1 + tasaPura / 100, (dias + 1) / 365)
+      : capAct * (1 + (tasaPura / 100) * (dias / 365));
+    const interesPuro = total - capAct;
     box.innerHTML = `
       <div class="res-row"><span class="k">Días corridos</span><span class="v">${dias}</span></div>
       <div class="res-row"><span class="k">Coeficiente de actualización (índice final ÷ inicial)</span><span class="v">${coef.toFixed(4).replace('.', ',')}</span></div>
       <div class="res-row"><span class="k">Capital actualizado</span><span class="v">${fmtARS.format(capAct)}</span></div>
-      <div class="res-row"><span class="k">Interés puro (${tasaPura}% anual s/ capital actualizado)</span><span class="v">${fmtARS.format(interesPuro)}</span></div>
+      <div class="res-row"><span class="k">Interés puro (${tasaPura}% ${esCER ? 'efectivo anual — fórmula BCRA' : 'anual simple — tasa pura'})</span><span class="v">${fmtARS.format(interesPuro)}</span></div>
       <div class="res-row"><span class="k" style="font-weight:700;color:var(--tinta)">TOTAL ACTUALIZADO</span><span class="v res-strong">${fmtARS.format(total)}</span></div>
-      <div class="res-row" style="border-top:1px dashed var(--filo);margin-top:4px;padding-top:8px"><span class="k">67 % del total — art. 55, Ley de Modernización Laboral</span><span class="v res-strong" style="color:var(--sello)">${fmtARS.format(total * 0.67)}</span></div>`;
+      <div class="res-row"><span class="k">Intereses totales (actualización + tasa pura)</span><span class="v">${fmtARS.format(total - cap)}</span></div>
+      <div class="res-row" style="border-top:1px dashed var(--filo);margin-top:4px;padding-top:8px"><span class="k">Art. 55, Ley 27.802 — capital + 67 % de los intereses</span><span class="v res-strong" style="color:var(--sello)">${fmtARS.format(cap + (total - cap) * 0.67)}</span></div>`;
   } else {
     const tasa = parseFloat(document.getElementById('inTasa').value);
     const per = document.getElementById('inPer').value;
@@ -4395,7 +4544,7 @@ function limpiarHerramientas() {
   setV('pzDias','5'); setV('pzTipo','habiles'); setV('pzJur','nacion'); setV('inPer','mensual');
   setV('acModo','indice'); setV('acTasaPura','3'); setV('acIndice','cer');
   const fi = document.getElementById('acFetchInfo');
-  if (fi) fi.textContent = 'Con fechas cargadas, «Traer valores del BCRA» completa el índice automáticamente (requiere internet). También podés cargar los valores a mano.';
+  if (fi) fi.textContent = 'Elegí índice y fechas: los valores se traen solos del BCRA (requiere internet). También podés cargarlos a mano.';
   if (document.getElementById('acModo')) toggleModoActualizacion();
   const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
   setC('pzFeria', true);
@@ -4404,9 +4553,13 @@ function limpiarHerramientas() {
   cargarUmaCampo();
 }
 function resetLiquidacion() {
+  document.getElementById('lqEgreso').addEventListener && document.getElementById('lqEgreso').addEventListener('change', () => { if (document.getElementById('lqAdeudados').checked) renderAdeudadosMeses(); });
   ['lqNombre','lqIngreso','lqEgreso','lqRemu'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
   setC('lqDiasTrab', true); setC('lqPreaviso', true); setC('lqIntegracion', true); setC('lqSac', true); setC('lqArt2', false);
+  setC('lqAdeudados', false); document.getElementById('lqAdeudadosMeses').value = '1';
+  document.getElementById('lqAdeudadosBox').style.display = 'none';
+  document.getElementById('lqAdeudadosLista').innerHTML = '';
   const box = document.getElementById('lqRes'); if (box) { box.classList.remove('on'); box.innerHTML = ''; }
   const bc = document.getElementById('lqCopiar'); if (bc) bc.hidden = true;
   __liqDetalle = '';
@@ -4622,13 +4775,14 @@ function renderCaja() {
       <span class="rank-monto">${r.ars ? '$ ' + fmtNumStr(r.ars) : ''}${r.ars && r.usd ? ' · ' : ''}${r.usd ? 'u$s ' + fmtNumStr(r.usd) : ''}</span>
     </div>`).join('') : '<div class="panel-empty">Sin pagos este mes.</div>';
 
-  document.getElementById('cajaComisiones').innerHTML = `
-    <div class="res-row"><span class="k">Kevin — pesos</span><span class="v">$ ${fmtNumStr(t.kArs)}</span></div>
-    <div class="res-row"><span class="k">Kevin — dólares</span><span class="v">u$s ${fmtNumStr(t.kUsd)}</span></div>
-    ${dolar > 0 ? `<div class="res-row"><span class="k">Kevin — total pesificado</span><span class="v res-strong">$ ${fmtNumStr(kPes)}</span></div>` : ''}
-    <div class="res-row" style="margin-top:6px"><span class="k">Ori — pesos</span><span class="v">$ ${fmtNumStr(t.oArs)}</span></div>
-    <div class="res-row"><span class="k">Ori — dólares</span><span class="v">u$s ${fmtNumStr(t.oUsd)}</span></div>
-    ${dolar > 0 ? `<div class="res-row"><span class="k">Ori — total pesificado</span><span class="v res-strong">$ ${fmtNumStr(oPes)}</span></div>` : ''}`;
+  document.getElementById('cajaComisionesK').innerHTML = `
+    <div class="res-row"><span class="k">Pesos</span><span class="v">$ ${fmtNumStr(t.kArs)}</span></div>
+    <div class="res-row"><span class="k">Dólares</span><span class="v">u$s ${fmtNumStr(t.kUsd)}</span></div>
+    ${dolar > 0 ? `<div class="res-row"><span class="k">Total pesificado</span><span class="v res-strong">$ ${fmtNumStr(kPes)}</span></div>` : ''}`;
+  document.getElementById('cajaComisionesO').innerHTML = `
+    <div class="res-row"><span class="k">Pesos</span><span class="v">$ ${fmtNumStr(t.oArs)}</span></div>
+    <div class="res-row"><span class="k">Dólares</span><span class="v">u$s ${fmtNumStr(t.oUsd)}</span></div>
+    ${dolar > 0 ? `<div class="res-row"><span class="k">Total pesificado</span><span class="v res-strong">$ ${fmtNumStr(oPes)}</span></div>` : ''}`;
 }
 // ── Balance mensual descargable (HTML interactivo e imprimible) ──
 function descargarReporteCaja() {
