@@ -393,6 +393,22 @@ button{font-family:var(--f-ui);}
   .tile .num{font-size:26px;}
 }
 
+/* ══ Navegación mobile (opción B): los 6 módulos siempre visibles, sin scroll oculto ══ */
+@media (max-width:700px){
+  .ribbon{height:auto;padding:8px 10px 6px;flex-wrap:wrap;gap:8px;}
+  .ribbon>div:first-child{flex:0 0 auto;}
+  .ribbon-sep{display:none;}
+  .ribbon-brand{font-size:17px;}
+  .ribbon-sub{font-size:9px;}
+  /* La cinta pasa a grilla de 3 columnas → 2 filas de 3, entran los 6 sin cortar */
+  .ribbon-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;flex-wrap:wrap;}
+  .ribbon-nav .pill-nav{justify-content:center;font-size:11px;padding:9px 4px;border:1px solid rgba(255,255,255,0.14);border-radius:10px;gap:4px;min-height:38px;}
+  .ribbon-nav .pill-nav.active{background:var(--sello);border-color:var(--sello);color:#fff;}
+}
+@media (max-width:400px){
+  .ribbon-nav .pill-nav{font-size:10px;padding:8px 3px;}
+}
+
 /* ══ Caja ══ */
 .tabla-caja{width:100%;border-collapse:collapse;font-size:12.5px;}
 .tabla-caja th{padding:9px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--tinta-suave);border-bottom:1px solid var(--filo);background:#fbfaf6;white-space:nowrap;}
@@ -1558,7 +1574,7 @@ function loadCasos() {
   }
   try { pdfs = JSON.parse(appStore.getItem(PDF_LS_KEY)) || {}; } catch(e) { pdfs = {}; }
   Object.entries(pdfs).forEach(([id, pdf]) => {
-    if (pdf && pdf.data) extractPdfText(pdf.data).then(txt => { pdfTextos[parseInt(id)] = txt; }).catch(() => {});
+    if (pdf && (pdf.data || pdf.url)) extractPdfDePdf(pdf).then(txt => { pdfTextos[parseInt(id)] = txt; }).catch(() => {});
   });
 }
 function saveCasosLocal() { appStore.setItem(LS_KEY, JSON.stringify(casos)); }
@@ -2032,9 +2048,18 @@ function finalizarGuardado(obj) {
   else casos.unshift(obj);
   // Si se cargó desde PDF automático, adjuntarlo al fallo
   if (window._pdfAutoData && !editId) {
-    pdfs[obj.id] = window._pdfAutoData;
-    window._pdfAutoData = null;
-    savePdfs();
+    const auto = window._pdfAutoData; window._pdfAutoData = null;
+    if (auto.file && typeof sbGuardarPdfFallo === 'function') {
+      sbGuardarPdfFallo(obj.id, auto.file).then(info => {
+        pdfs[obj.id] = { name: auto.name, path: info.path, url: info.url };
+        savePdfs();
+        const c = casos.find(x => x.id === obj.id); if (c) sbPushCaso(c);
+        renderCasos();
+      }).catch(e => { sbAvisarError(e); pdfs[obj.id] = { name: auto.name, data: auto.data }; savePdfs(); });
+    } else {
+      pdfs[obj.id] = { name: auto.name, data: auto.data };
+      savePdfs();
+    }
   }
   saveCasos();
   actualizarFiltroSalas();
@@ -2062,13 +2087,32 @@ async function abrirCitas(id) {
     document.getElementById('citasBody').innerHTML=`<div class="citas-sin-pdf"><div style="font-size:2rem;margin-bottom:10px">📄</div><strong>Este fallo no tiene PDF adjunto.</strong><br><br>Expandí el fallo y usá "Adjuntar PDF del fallo" para poder extraer citas textuales.</div>`;
     return;
   }
-  try { const txt=await extractPdfText(pdf.data); generarCitas(txt,ref,c); }
+  try { const txt = await extractPdfDePdf(pdf); generarCitas(txt,ref,c); }
   catch(e){ document.getElementById('citasBody').innerHTML=`<div class="citas-sin-pdf">Error al leer el PDF: ${e.message}</div>`; }
 }
 
-async function extractPdfText(base64data) {
-  const base64 = base64data.split(',')[1];
-  const bin = atob(base64);
+async function extractPdfDePdf(pdf) {
+  // Modo nube: el PDF está en el Storage → bajarlo como bytes.
+  if (pdf && pdf.url && !pdf.data) {
+    const r = await fetch(pdf.url);
+    if (!r.ok) throw new Error('no se pudo descargar el PDF de la nube (HTTP ' + r.status + ')');
+    const buf = new Uint8Array(await r.arrayBuffer());
+    return extractPdfText(buf);
+  }
+  // Modo local heredado: base64 en pdf.data
+  if (pdf && pdf.data) return extractPdfText(pdf.data);
+  throw new Error('el fallo no tiene PDF disponible');
+}
+async function extractPdfText(fuente) {
+  // Acepta tanto un dataURL base64 (string) como bytes ya descargados (Uint8Array)
+  let bin;
+  if (typeof fuente === 'string') {
+    const base64 = (fuente.split(',')[1] || fuente);
+    bin = atob(base64);
+  } else {
+    bin = '';
+    for (let i = 0; i < fuente.length; i++) bin += String.fromCharCode(fuente[i]);
+  }
 
   // Intentar con pdf.js si está disponible (requiere internet)
   if (typeof pdfjsLib !== 'undefined') {
@@ -2309,7 +2353,7 @@ async function procesarPdfAuto(input) {
       if (campos.sala) document.getElementById('fSala').value = campos.sala;
     } else { detectarInstancia(); }
 
-    window._pdfAutoData = { name: file.name, data: base64data };
+    window._pdfAutoData = { name: file.name, data: base64data, file: file };
     status.innerHTML = '<span style="color:#164f33">✓ Completado — revisá y guardá</span>';
 
   } catch(e) {
