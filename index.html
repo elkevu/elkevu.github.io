@@ -536,6 +536,22 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .pag-info{font-size:11px;color:var(--tinta-suave);margin-left:auto;white-space:nowrap;}
 @media (max-width:700px){.pag-info{width:100%;margin-left:0;text-align:center;order:3;}}
 
+/* ══ Adjuntos de expediente ══ */
+.exp-adj-panel{border:1px solid var(--filo);border-radius:12px;padding:16px 18px;margin-bottom:20px;background:#fbfaf6;}
+.exp-adj-h{font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--tinta);text-transform:uppercase;margin-bottom:12px;}
+.exp-adj-h span{font-weight:400;text-transform:none;letter-spacing:0;color:#9aaa98;font-size:11px;margin-left:6px;}
+.exp-adj-grupo{margin-bottom:12px;}
+.exp-adj-lbl{font-size:11.5px;font-weight:600;color:#5c6157;margin-bottom:5px;}
+.exp-adj-lbl em{font-style:normal;color:#9aaa98;font-weight:400;}
+.exp-adj-item{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--filo);border-radius:8px;padding:7px 11px;margin-bottom:5px;}
+.exp-adj-doc{flex:1;font-size:12.5px;color:var(--sello);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.exp-adj-doc:hover{text-decoration:underline;}
+.exp-adj-x{background:none;border:none;color:#b3372a;cursor:pointer;font-size:13px;padding:2px 6px;border-radius:5px;}
+.exp-adj-x:hover{background:#fde8e6;}
+.exp-adj-add{background:var(--laurel);border:1px dashed var(--sello);color:var(--sello);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+.exp-adj-add:hover{background:#dcebdf;}
+.exp-adj-status{font-size:11.5px;color:#c07030;min-height:16px;margin-top:4px;}
+
 </style>
 </head>
 <body>
@@ -3348,6 +3364,7 @@ function closeCausaDetalle() { document.getElementById('causaDetalleOverlay').cl
 function renderCausaDetalle(exp) {
   const hoy = new Date(); hoy.setHours(0,0,0,0);
   let html = '';
+  if (typeof htmlAdjuntosExp === 'function') html += htmlAdjuntosExp(exp.id);
 
   (exp.partes||[]).forEach((parte, pi) => {
     const esNosotros = parte.somos_nosotros;
@@ -3628,6 +3645,7 @@ function eliminarCausa(id) {
 
 // ── Init expedientes ──
 loadExpedientes();
+if (typeof loadExpAdj === 'function') loadExpAdj();
 
 // ── Override: incluir expedientes en exportar/importar ──
 const _exportarOriginal = exportarDatos;
@@ -3753,7 +3771,9 @@ function casoAFila(c) {
   return { id: c.id, caratula: c.caratula ?? null, objeto: c.objeto ?? null, expediente: c.expediente ?? null,
     tribunal: c.tribunal ?? null, fecha: c.fecha ?? null, tema: c.tema ?? null, resultado: c.resultado ?? null,
     holding: c.holding ?? null, analisis: c.analisis ?? null, normas: c.normas ?? null, link: c.link ?? null,
-    notas: c.notas ?? null, pdf_path: (pdfs[c.id] && pdfs[c.id].path) || null };
+    notas: c.notas ?? null, umas1: c.umas1 ?? 0, umas2: c.umas2 ?? 0,
+    instancia: c.instancia ?? null, sala: c.sala ?? null, vinculo: c.vinculo ?? null,
+    pdf_path: (pdfs[c.id] && pdfs[c.id].path) || null };
 }
 function expedienteAFila(e) {
   return { id: e.id, caratula: e.caratula ?? null, expediente: e.expediente ?? null, fuero: e.fuero ?? null,
@@ -3775,18 +3795,33 @@ function filaAPago(f) {
     moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado };
 }
 
+
+function tareaAFila(t) {
+  return { id: t.id, tipo: t.tipo ?? 'tarea', titulo: t.titulo ?? null, fecha: t.fecha ?? null,
+    hora: t.hora ?? null, prio: t.prio ?? null, asignada: t.asignada ?? null,
+    modalidad: t.modalidad ?? null, link: t.link ?? null, done: !!t.done };
+}
+function filaATarea(f) {
+  return { id: f.id, tipo: f.tipo || 'tarea', titulo: f.titulo, fecha: f.fecha || '',
+    hora: f.hora || '', prio: f.prio || '', asignada: f.asignada || '',
+    modalidad: f.modalidad || '', link: f.link || '', done: !!f.done };
+}
+
 // ── Carga inicial: pisa los stores locales con lo que hay en Supabase ──
 async function sbCargarTodo() {
   if (!SB_ON) return;
   try {
-    const [rCasos, rExp, rCaja, rCfg] = await Promise.all([
-      sbSelect('casos'), sbSelect('expedientes'), sbSelect('caja'), sbSelect('config')
+    const [rCasos, rExp, rCaja, rCfg, rTareas] = await Promise.all([
+      sbSelect('casos'), sbSelect('expedientes'), sbSelect('caja'), sbSelect('config'),
+      sbSelect('tareas').catch(() => null)
     ]);
 
     // Jurisprudencia
     casos = rCasos.map(f => ({ id: f.id, caratula: f.caratula, objeto: f.objeto, expediente: f.expediente,
       tribunal: f.tribunal, fecha: f.fecha, tema: f.tema, resultado: f.resultado, holding: f.holding,
-      analisis: f.analisis, normas: f.normas, link: f.link, notas: f.notas }));
+      analisis: f.analisis, normas: f.normas, link: f.link, notas: f.notas,
+      umas1: f.umas1 || 0, umas2: f.umas2 || 0,
+      instancia: f.instancia || null, sala: f.sala || null, vinculo: f.vinculo || null }));
     pdfs = {};
     rCasos.forEach(f => { if (f.pdf_path) pdfs[f.id] = { name: f.pdf_path.split('/').pop(), path: f.pdf_path, url: sbPubUrl(f.pdf_path) }; });
     if (typeof saveCasosLocal === 'function') saveCasosLocal();
@@ -3795,6 +3830,11 @@ async function sbCargarTodo() {
     expedientes = rExp.map(filaAExpediente);
     expedientes.forEach(exp => { if (!exp.fuero && typeof detectarFuero === 'function') exp.fuero = detectarFuero(exp); });
     if (typeof saveExpedientesLocal === 'function') saveExpedientesLocal();
+    // Adjuntos de expediente (columna docs jsonb)
+    if (typeof EXP_ADJ !== 'undefined') {
+      rExp.forEach(f => { if (f.docs) EXP_ADJ[f.id] = f.docs; });
+      if (typeof saveExpAdjLocal === 'function') saveExpAdjLocal();
+    }
 
     // Caja
     CAJA = rCaja.map(filaAPago).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
@@ -3806,6 +3846,12 @@ async function sbCargarTodo() {
     const cfg = {}; (rCfg || []).forEach(x => cfg[x.clave] = x.valor);
     if (cfg.dolar) appStore.setItem(DOLAR_KEY, cfg.dolar);
     if (cfg.uma) appStore.setItem(UMA_KEY, cfg.uma);
+
+    // Agenda (tareas + audiencias manuales)
+    if (rTareas && typeof TAREAS !== 'undefined') {
+      TAREAS = rTareas.map(filaATarea);
+      if (typeof saveTareasLocal === 'function') saveTareasLocal();
+    }
 
     return true;
   } catch (e) {
@@ -3822,6 +3868,27 @@ function sbDelCaso(id) { if (SB_ON) sbDelete('casos', id).catch(sbAvisarError); 
 function sbDelExpediente(id) { if (SB_ON) sbDelete('expedientes', id).catch(sbAvisarError); }
 function sbDelPago(id) { if (SB_ON) sbDelete('caja', id).catch(sbAvisarError); }
 function sbPushConfig(clave, valor) { if (SB_ON) sbUpsert('config', { clave, valor: String(valor) }).catch(sbAvisarError); }
+function sbPushTarea(t) { if (SB_ON) sbUpsert('tareas', tareaAFila(t)).catch(sbAvisarError); }
+function sbDelTarea(id) { if (SB_ON) sbDelete('tareas', id).catch(sbAvisarError); }
+
+
+// ── Adjuntos de expediente (demanda / contestaciones / prueba) ──
+async function sbSubirDocExpediente(expId, tipo, file) {
+  const nombre = (file.name || (tipo + '.pdf')).replace(/[^\w.\-]/g, '_');
+  const path = await sbUploadFile('expedientes-docs', `exp-${expId}-${tipo}-${Date.now()}-${nombre}`, file);
+  return { path, url: sbPubUrl(path) };
+}
+async function sbPushExpAdj(expId) {
+  if (!SB_ON) return;
+  const adj = (typeof EXP_ADJ !== 'undefined' && EXP_ADJ[expId]) ? EXP_ADJ[expId] : { demanda: null, contestaciones: [], prueba: null };
+  // Guardamos el mapa de adjuntos como JSON en la fila del expediente (columna docs)
+  try {
+    await fetch(`${SB_URL}/rest/v1/expedientes?id=eq.${expId}`, {
+      method: 'PATCH', headers: sbHeaders({ 'Prefer': 'return=minimal' }),
+      body: JSON.stringify({ docs: adj })
+    }).then(r => { if (!r.ok) throw new Error('docs ' + r.status); });
+  } catch (e) { sbAvisarError(e); }
+}
 
 // Sube un archivo y devuelve su ruta+URL (para PDFs de fallos y comprobantes de caja)
 async function sbGuardarPdfFallo(id, file) {
@@ -3845,6 +3912,8 @@ async function sbGuardarComprobante(id, file) {
     try { if (typeof renderExpedientes === 'function') renderExpedientes(); } catch (e) {}
     try { if (typeof renderCaja === 'function') renderCaja(); } catch (e) {}
     try { if (typeof renderInicio === 'function') renderInicio(); } catch (e) {}
+    try { if (typeof renderTareas === 'function') renderTareas(); } catch (e) {}
+    try { if (typeof renderAudiencias === 'function') renderAudiencias(); } catch (e) {}
   }).catch(e => sbAvisarError(e));
   // Esperar a que el bundle terminó de definir todo (caja.js va después en el ensamblado)
   let intentos = 0;
@@ -3892,7 +3961,8 @@ function loadConfig() {
 }
 function saveFeriados(){ appStore.setItem(FER_KEY, JSON.stringify(FERIADOS)); __ferSet = null; }
 function saveFerias(){ appStore.setItem(FERIAS_KEY, JSON.stringify(FERIAS)); }
-function saveTareas(){ appStore.setItem(TAREAS_KEY, JSON.stringify(TAREAS)); }
+function saveTareasLocal(){ appStore.setItem(TAREAS_KEY, JSON.stringify(TAREAS)); }
+function saveTareas(){ saveTareasLocal(); if (typeof sbPushTarea === 'function') (TAREAS||[]).forEach(sbPushTarea); }
 
 // ── Utilidades de fechas ──
 function isoDe(d){ const p = n => String(n).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
@@ -4167,7 +4237,7 @@ function toggleTarea(id) {
 }
 function eliminarTarea(id) {
   TAREAS = TAREAS.filter(x => x.id !== id);
-  saveTareas(); renderTareas(); renderAudiencias();
+  saveTareas(); if (typeof sbDelTarea === 'function') sbDelTarea(id); renderTareas(); renderAudiencias();
 }
 // ── Paginación reutilizable (vencimientos, tareas, audiencias) ──
 const PAGINA_TAM = 10;
@@ -5303,6 +5373,127 @@ if (typeof appStore !== 'undefined' && appStore.__mem) {
   b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#7a5a10;color:#fff;font:12px/1.5 Inter,system-ui,sans-serif;padding:9px 34px 9px 14px;text-align:center';
   b.innerHTML = '⚠ Este navegador no permite guardar datos en el dispositivo: la app funciona, pero los cambios se pierden al cerrar. Abrí el archivo con Firefox o Chrome desde la app de Archivos, o usá «Respaldo» / «Importar» para mover tus datos. <button onclick="this.parentNode.remove()" style="position:absolute;right:8px;top:7px;background:none;border:none;color:#fff;font-size:14px;cursor:pointer">✕</button>';
   document.body.appendChild(b);
+}
+
+// ══════════ ADJUNTOS DE EXPEDIENTE (demanda · contestaciones · hoja de prueba) ══════════
+// Estructura: EXP_ADJ[expId] = { demanda: {nombre,path,url}|null,
+//                                contestaciones: [{id,nombre,path,url}, ...],
+//                                prueba: {nombre,path,url}|null }
+var EXP_ADJ = {};
+const EXP_ADJ_KEY = 'jc-exp-adj-v1';
+
+function loadExpAdj() {
+  try { EXP_ADJ = JSON.parse(appStore.getItem(EXP_ADJ_KEY) || '{}'); }
+  catch (e) { EXP_ADJ = {}; }
+}
+function saveExpAdjLocal() {
+  try { appStore.setItem(EXP_ADJ_KEY, JSON.stringify(EXP_ADJ)); } catch (e) {}
+}
+function saveExpAdj() { saveExpAdjLocal(); }
+
+function expAdjDe(expId) {
+  if (!EXP_ADJ[expId]) EXP_ADJ[expId] = { demanda: null, contestaciones: [], prueba: null };
+  if (!EXP_ADJ[expId].contestaciones) EXP_ADJ[expId].contestaciones = [];
+  return EXP_ADJ[expId];
+}
+
+// Dispara la selección de archivo para un slot concreto
+let __expAdjTarget = null; // { expId, tipo }
+function elegirAdjExp(expId, tipo) {
+  __expAdjTarget = { expId, tipo };
+  let input = document.getElementById('expAdjInput');
+  if (!input) {
+    input = document.createElement('input');
+    input.type = 'file'; input.id = 'expAdjInput'; input.accept = 'application/pdf'; input.style.display = 'none';
+    input.addEventListener('change', expAdjElegido);
+    document.body.appendChild(input);
+  }
+  input.value = '';
+  input.click();
+}
+
+async function expAdjElegido(e) {
+  const file = e.target.files[0];
+  if (!file || !__expAdjTarget) return;
+  const { expId, tipo } = __expAdjTarget; __expAdjTarget = null;
+  const adj = expAdjDe(expId);
+  const status = document.getElementById('expAdjStatus');
+  if (status) status.textContent = 'Subiendo ' + file.name + '…';
+
+  try {
+    let info = { path: null, url: null };
+    if (typeof sbSubirDocExpediente === 'function') {
+      info = await sbSubirDocExpediente(expId, tipo, file);
+    } else {
+      // Sin Supabase: guardar como dataURL local
+      info.url = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+    }
+    const registro = { id: Date.now(), nombre: file.name, path: info.path, url: info.url };
+    if (tipo === 'demanda') adj.demanda = registro;
+    else if (tipo === 'prueba') adj.prueba = registro;
+    else if (tipo === 'contestacion') adj.contestaciones.push(registro);
+    saveExpAdj();
+    if (typeof sbPushExpAdj === 'function') sbPushExpAdj(expId);
+    if (status) status.textContent = '';
+    renderCausaDetalle(expedientes.find(x => x.id === expId));
+  } catch (err) {
+    console.error(err);
+    if (status) status.textContent = 'No se pudo subir el archivo.';
+    if (typeof sbAvisarError === 'function') sbAvisarError(err);
+  }
+}
+
+function quitarAdjExp(expId, tipo, regId) {
+  const adj = expAdjDe(expId);
+  if (tipo === 'demanda') adj.demanda = null;
+  else if (tipo === 'prueba') adj.prueba = null;
+  else if (tipo === 'contestacion') adj.contestaciones = adj.contestaciones.filter(c => c.id !== regId);
+  saveExpAdj();
+  if (typeof sbPushExpAdj === 'function') sbPushExpAdj(expId);
+  renderCausaDetalle(expedientes.find(x => x.id === expId));
+}
+
+function abrirAdjExp(reg) {
+  if (!reg) return;
+  if (reg.url) { window.open(reg.url, '_blank'); return; }
+}
+
+// Bloque HTML del panel de adjuntos, para inyectar en el detalle de la causa
+function htmlAdjuntosExp(expId) {
+  const adj = expAdjDe(expId);
+  const slot = (reg, tipo, quitarBtn) => reg
+    ? `<div class="exp-adj-item">
+         <span class="exp-adj-doc" onclick="abrirAdjExp(${JSON.stringify(reg).replace(/"/g, '&quot;')})">📄 ${esc(reg.nombre)}</span>
+         <button class="exp-adj-x" title="Quitar" onclick="quitarAdjExp(${expId},'${tipo}',${reg.id || 0})">✕</button>
+       </div>`
+    : '';
+
+  const contHtml = adj.contestaciones.map(c => `<div class="exp-adj-item">
+      <span class="exp-adj-doc" onclick="abrirAdjExp(${JSON.stringify(c).replace(/"/g, '&quot;')})">📄 ${esc(c.nombre)}</span>
+      <button class="exp-adj-x" title="Quitar" onclick="quitarAdjExp(${expId},'contestacion',${c.id})">✕</button>
+    </div>`).join('');
+
+  return `<div class="exp-adj-panel">
+    <div class="exp-adj-h">Documentos del expediente <span>PDF · alimentan el resumen</span></div>
+
+    <div class="exp-adj-grupo">
+      <div class="exp-adj-lbl">Demanda <em>(una)</em></div>
+      ${adj.demanda ? slot(adj.demanda, 'demanda') : `<button class="exp-adj-add" onclick="elegirAdjExp(${expId},'demanda')">+ Adjuntar demanda</button>`}
+    </div>
+
+    <div class="exp-adj-grupo">
+      <div class="exp-adj-lbl">Contestaciones de demanda <em>(las que haya)</em></div>
+      ${contHtml}
+      <button class="exp-adj-add" onclick="elegirAdjExp(${expId},'contestacion')">+ Agregar contestación</button>
+    </div>
+
+    <div class="exp-adj-grupo">
+      <div class="exp-adj-lbl">Hoja de prueba <em>(una)</em></div>
+      ${adj.prueba ? slot(adj.prueba, 'prueba') : `<button class="exp-adj-add" onclick="elegirAdjExp(${expId},'prueba')">+ Adjuntar hoja de prueba</button>`}
+    </div>
+
+    <div id="expAdjStatus" class="exp-adj-status"></div>
+  </div>`;
 }
 
 </script>
