@@ -81,6 +81,20 @@ button{font-family:var(--f-ui);}
 
 .grid-2{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start;}
 @media (max-width:860px){.grid-2{grid-template-columns:1fr;}}
+.grid-2-eq{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:16px;align-items:stretch;}
+@media (max-width:860px){.grid-2-eq{grid-template-columns:1fr;}}
+.grid-2-eq>.panel{display:flex;flex-direction:column;height:100%;}
+.grid-2-eq>.panel>div:last-child{flex:1;}
+.grid-2-eq .panel-h{min-height:56px;align-items:center;}
+/* Ficha del total pesificado destacada */
+.tile.tile-destacada{background:var(--laurel);border:1px solid var(--sello);box-shadow:0 2px 10px rgba(30,107,69,.14);}
+.tile.tile-destacada .num{color:var(--sello);}
+.tile.tile-destacada .lbl{color:var(--sello);font-weight:800;}
+
+/* Total pesificado destacado en los paneles de comisión */
+.res-row.res-total{margin-top:4px;padding-top:9px;border-top:1px solid var(--filo);}
+.res-row.res-total .k{font-weight:700;color:var(--tinta);}
+.res-row.res-total .v{font-size:15.5px;font-weight:800;color:var(--sello);background:var(--laurel);padding:3px 10px;border-radius:7px;}
 
 .panel{background:var(--carta);border:1px solid var(--filo);border-radius:var(--radio);overflow:hidden;}
 .panel + .panel{margin-top:16px;}
@@ -486,6 +500,15 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 /* La cinta superior ya lleva la marca */
 #paginaJurisprudencia .sidebar-logo{display:none;}
 #paginaJurisprudencia .sidebar-stats{margin-top:16px;}
+
+/* ══ Caja: 4 cuadros idénticos y alineados (2×2, celdas forzadas a igual tamaño) ══ */
+.grid-caja-4{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:16px;align-items:stretch;}
+.grid-caja-4>.panel{display:flex;flex-direction:column;height:100%;min-height:250px;margin:0;}
+.grid-caja-4>.panel>div:last-child{flex:1;}
+.grid-caja-4 .panel-h{min-height:52px;align-items:center;flex-wrap:nowrap;}
+.grid-caja-4 .panel-h h3{white-space:nowrap;}
+.grid-caja-4 .res-row .v{white-space:nowrap;}
+@media (max-width:860px){.grid-caja-4{grid-template-columns:1fr;grid-auto-rows:auto;}.grid-caja-4>.panel{min-height:0;}}
 
 </style>
 </head>
@@ -1055,20 +1078,22 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel-empty" id="cajaVacia" style="display:none">Sin pagos registrados este mes.</div>
       </div>
 
-      <div class="grid-2" style="margin-top:16px">
+      <div class="grid-caja-4" style="margin-top:16px">
         <div class="panel">
-          <div class="panel-h"><h3>Qué generó más ingresos</h3><span class="mini">ranking del mes por concepto / servicio</span></div>
+          <div class="panel-h"><h3>Qué generó más ingresos</h3><span class="mini">ranking por concepto / servicio</span></div>
           <div id="cajaRanking"></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="panel">
-            <div class="panel-h"><h3>Comisiones de Kevin</h3></div>
-            <div class="panel-b" id="cajaComisionesK"></div>
-          </div>
-          <div class="panel">
-            <div class="panel-h"><h3>Comisiones de Ori</h3></div>
-            <div class="panel-b" id="cajaComisionesO"></div>
-          </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Clientes que más abonaron</h3><span class="mini">ranking por cliente</span></div>
+          <div id="cajaRankingClientes"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Comisiones de Kevin</h3></div>
+          <div class="panel-b" id="cajaComisionesK"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Comisiones de Ori</h3></div>
+          <div class="panel-b" id="cajaComisionesO"></div>
         </div>
       </div>
     </div>
@@ -1091,7 +1116,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 <div id="loginGate">
   <div class="login-caja">
     <div class="login-marca">Juris<em>Cannabis</em></div>
-    <div class="login-sub">Estudio WE Legal · acceso privado</div>
+    <div class="login-sub">Estudio WE Legal · acceso privado · <span style="opacity:.55">v2026-07-05-caja4</span></div>
     <div class="doble-filete" style="margin:14px 0 18px"></div>
     <label>Usuario</label>
     <input id="loginUser" autocomplete="username" onkeydown="if(event.key==='Enter')intentarLogin()">
@@ -1536,8 +1561,9 @@ function loadCasos() {
     if (pdf && pdf.data) extractPdfText(pdf.data).then(txt => { pdfTextos[parseInt(id)] = txt; }).catch(() => {});
   });
 }
-function saveCasos() { appStore.setItem(LS_KEY, JSON.stringify(casos)); }
-function savePdfs() { try { appStore.setItem(PDF_LS_KEY, JSON.stringify(pdfs)); } catch(e) { alert('El PDF es demasiado grande para almacenar.'); } }
+function saveCasosLocal() { appStore.setItem(LS_KEY, JSON.stringify(casos)); }
+function saveCasos() { saveCasosLocal(); (casos||[]).forEach(sbPushCaso); }
+function savePdfs() { try { appStore.setItem(PDF_LS_KEY, JSON.stringify(pdfs)); } catch(e) { /* en modo nube los PDF viven en el Storage */ } }
 
 function setView(v) {
   vistaActual = v;
@@ -1810,17 +1836,16 @@ function triggerPdfInput(id) { document.getElementById('pdfInput').dataset.targe
 function attachPdf(input) {
   const file=input.files[0], id=parseInt(input.dataset.targetId);
   if(!file||!id) return;
-  const r=new FileReader();
-  r.onload=e=>{
-    pdfs[id]={name:file.name,data:e.target.result};
+  sbGuardarPdfFallo(id, file).then(info => {
+    pdfs[id] = { name: file.name, path: info.path, url: info.url };
     savePdfs();
-    // Indexar texto para búsqueda
-    extractPdfText(e.target.result).then(txt=>{ pdfTextos[id]=txt; }).catch(()=>{});
+    const c = casos.find(x => x.id === id); if (c) sbPushCaso(c);
+    const rr = new FileReader(); rr.onload = e => { extractPdfText(e.target.result).then(txt => { pdfTextos[id] = txt; }).catch(()=>{}); }; rr.readAsDataURL(file);
     renderCasos();
-  };
-  r.readAsDataURL(file); input.value='';
+  }).catch(e => { sbAvisarError(e); alert('No se pudo subir el PDF a la nube.'); });
+  input.value='';
 }
-function downloadPdf(id) { const p=pdfs[id]; if(!p) return; const a=document.createElement('a'); a.href=p.data; a.download=p.name; a.click(); }
+function downloadPdf(id) { const p=pdfs[id]; if(!p) return; if(p.url){ window.open(p.url,'_blank'); return; } const a=document.createElement('a'); a.href=p.data; a.download=p.name; a.click(); }
 function removePdf(id) { if(!confirm('¿Eliminar el PDF adjunto?')) return; delete pdfs[id]; savePdfs(); renderCasos(); }
 function dzOver(e,id){e.preventDefault();const el=document.getElementById('dropZone_'+id);if(el)el.classList.add('drag-over');}
 function dzLeave(id){const el=document.getElementById('dropZone_'+id);if(el)el.classList.remove('drag-over');}
@@ -1829,9 +1854,12 @@ function dzDrop(e,id){
   const file=e.dataTransfer.files[0];
   if(!file||file.type!=='application/pdf'){alert('Solo se aceptan PDFs.');return;}
   document.getElementById('pdfInput').dataset.targetId=id;
-  const r=new FileReader();
-  r.onload=ev=>{pdfs[id]={name:file.name,data:ev.target.result};savePdfs();renderCasos();};
-  r.readAsDataURL(file);
+  sbGuardarPdfFallo(id, file).then(info => {
+    pdfs[id] = { name: file.name, path: info.path, url: info.url };
+    savePdfs();
+    const c = casos.find(x => x.id === id); if (c) sbPushCaso(c);
+    renderCasos();
+  }).catch(e => { sbAvisarError(e); alert('No se pudo subir el PDF a la nube.'); });
 }
 
 // ── Instancia / Sala / Vínculo ──
@@ -2018,7 +2046,7 @@ function deleteCaso(id){
   if(!confirm('¿Eliminar este fallo?'))return;
   casos=casos.filter(x=>x.id!==id);delete pdfs[id];
   if(activeId===id)activeId=null;
-  saveCasos();savePdfs();renderCasos();
+  saveCasos();savePdfs();sbDelCaso(id);renderCasos();
 }
 
 // Citas
@@ -3021,9 +3049,8 @@ function loadExpedientes() {
   // Completar fuero en los que no lo tienen
   expedientes.forEach(exp => { if (!exp.fuero) exp.fuero = detectarFuero(exp); });
 }
-function saveExpedientes() {
-  appStore.setItem(EXP_KEY, JSON.stringify(expedientes));
-}
+function saveExpedientesLocal() { appStore.setItem(EXP_KEY, JSON.stringify(expedientes)); }
+function saveExpedientes() { saveExpedientesLocal(); (expedientes||[]).forEach(sbPushExpediente); }
 
 function irA(destino) {
   navTo(destino === 'expedientes' ? 'expedientes' : 'jurisprudencia');
@@ -3541,6 +3568,7 @@ function updateTestigo(expId, pi, ti, campo, valor) {
 function eliminarCausa(id) {
   if (!confirm('¿Eliminar esta causa y toda su hoja de prueba?')) return;
   expedientes = expedientes.filter(e => e.id !== id);
+  sbDelExpediente(id);
   saveExpedientes(); renderExpedientes();
 }
 
@@ -3604,6 +3632,175 @@ renderCasos();
 // Cerrar modales de expedientes al hacer click fuera
 document.getElementById('nuevaCausaOverlay').addEventListener('click', function(e){ if(e.target===this) closeNuevaCausa(); });
 document.getElementById('causaDetalleOverlay').addEventListener('click', function(e){ if(e.target===this) closeCausaDetalle(); });
+
+// ══════════════ CAPA SUPABASE (jurisprudencia · expedientes · caja) ══════════════
+// Estrategia: al arrancar, se cargan los datos de Supabase y se pisan los stores locales.
+// Cada guardado local dispara además un "push" a Supabase. Los archivos (PDF de fallos y
+// comprobantes de caja) van al Storage; en los stores locales solo queda su ruta.
+const SB_URL = 'https://gfcnbdneelgwaktpyofr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmY25iZG5lZWxnd2FrdHB5b2ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNzMxMjMsImV4cCI6MjA5ODc0OTEyM30.YWxOZ6KyTH6zhMHdKohOuokCNWf0a_BJyJimiMfk5BA';
+const SB_ON = true; // interruptor global; si algo falla, la app sigue con el store local
+
+function sbHeaders(extra) {
+  return Object.assign({ 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }, extra || {});
+}
+function sbPubUrl(path) { // URL pública de un archivo del Storage ("bucket/archivo")
+  return `${SB_URL}/storage/v1/object/public/${path}`;
+}
+async function sbSelect(tabla) {
+  const r = await fetch(`${SB_URL}/rest/v1/${tabla}?select=*`, { headers: sbHeaders() });
+  if (!r.ok) throw new Error(tabla + ' ' + r.status);
+  return r.json();
+}
+async function sbUpsert(tabla, fila) {
+  const r = await fetch(`${SB_URL}/rest/v1/${tabla}`, {
+    method: 'POST',
+    headers: sbHeaders({ 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
+    body: JSON.stringify(fila)
+  });
+  if (!r.ok) throw new Error(tabla + ' upsert ' + r.status + ': ' + (await r.text()).slice(0, 120));
+}
+async function sbDelete(tabla, id) {
+  const r = await fetch(`${SB_URL}/rest/v1/${tabla}?id=eq.${id}`, { method: 'DELETE', headers: sbHeaders({ 'Prefer': 'return=minimal' }) });
+  if (!r.ok && r.status !== 404) throw new Error(tabla + ' delete ' + r.status);
+}
+async function sbUploadFile(bucket, nombre, blob) {
+  const path = `${bucket}/${nombre}`;
+  const r = await fetch(`${SB_URL}/storage/v1/object/${encodeURIComponent(bucket)}/${encodeURIComponent(nombre)}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': blob.type, 'x-upsert': 'true' },
+    body: blob
+  });
+  if (!r.ok) throw new Error('storage ' + r.status + ': ' + (await r.text()).slice(0, 120));
+  return path;
+}
+function sbDataURLtoBlob(dataURL) {
+  const [head, b64] = dataURL.split(',');
+  const mime = (head.match(/:(.*?);/) || [, 'application/octet-stream'])[1];
+  const bin = atob(b64); const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+// Aviso discreto y no intrusivo cuando un guardado remoto falla (no rompe la app)
+let __sbAvisado = false;
+function sbAvisarError(e) {
+  console.error('[Supabase]', e);
+  if (__sbAvisado) return; __sbAvisado = true;
+  const b = document.createElement('div');
+  b.style.cssText = 'position:fixed;bottom:16px;left:16px;z-index:9998;background:#b3372a;color:#fff;padding:10px 14px;border-radius:9px;font-size:12.5px;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.25)';
+  b.textContent = 'No se pudo sincronizar con la base en la nube. Revisá tu conexión; tus cambios quedaron guardados en este dispositivo.';
+  b.onclick = () => { b.remove(); __sbAvisado = false; };
+  document.body.appendChild(b);
+  setTimeout(() => { if (b.parentNode) { b.remove(); __sbAvisado = false; } }, 6000);
+}
+
+// ── Mapeo entre el objeto de la app (camelCase) y la fila de Supabase (snake_case) ──
+function casoAFila(c) {
+  return { id: c.id, caratula: c.caratula ?? null, objeto: c.objeto ?? null, expediente: c.expediente ?? null,
+    tribunal: c.tribunal ?? null, fecha: c.fecha ?? null, tema: c.tema ?? null, resultado: c.resultado ?? null,
+    holding: c.holding ?? null, analisis: c.analisis ?? null, normas: c.normas ?? null, link: c.link ?? null,
+    notas: c.notas ?? null, pdf_path: (pdfs[c.id] && pdfs[c.id].path) || null };
+}
+function expedienteAFila(e) {
+  return { id: e.id, caratula: e.caratula ?? null, expediente: e.expediente ?? null, fuero: e.fuero ?? null,
+    juzgado: e.juzgado ?? null, rol: e.rol ?? null, creado: e.creado ?? null, jurisdiccion: e.jurisdiccion ?? null,
+    texto_demanda: e.textoDemanda ?? null, texto_contestacion: e.textoContestacion ?? null, partes: e.partes || [] };
+}
+function filaAExpediente(f) {
+  return { id: f.id, caratula: f.caratula, expediente: f.expediente, fuero: f.fuero, juzgado: f.juzgado,
+    rol: f.rol, creado: f.creado, jurisdiccion: f.jurisdiccion, textoDemanda: f.texto_demanda,
+    textoContestacion: f.texto_contestacion, partes: f.partes || [] };
+}
+function pagoAFila(p) {
+  return { id: p.id, fecha: p.fecha ?? null, cliente: p.cliente ?? null, concepto: p.concepto ?? null,
+    monto: p.monto ?? 0, moneda: p.moneda ?? 'ARS', metodo: p.metodo ?? null, receptor: p.receptor ?? null,
+    comision_ori: !!p.comisionOri, revisado: !!p.revisado, adjunto_path: (CAJA_ADJ[p.id] && CAJA_ADJ[p.id].path) || null };
+}
+function filaAPago(f) {
+  return { id: f.id, fecha: f.fecha, cliente: f.cliente, concepto: f.concepto, monto: Number(f.monto),
+    moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado };
+}
+
+// ── Carga inicial: pisa los stores locales con lo que hay en Supabase ──
+async function sbCargarTodo() {
+  if (!SB_ON) return;
+  try {
+    const [rCasos, rExp, rCaja, rCfg] = await Promise.all([
+      sbSelect('casos'), sbSelect('expedientes'), sbSelect('caja'), sbSelect('config')
+    ]);
+
+    // Jurisprudencia
+    casos = rCasos.map(f => ({ id: f.id, caratula: f.caratula, objeto: f.objeto, expediente: f.expediente,
+      tribunal: f.tribunal, fecha: f.fecha, tema: f.tema, resultado: f.resultado, holding: f.holding,
+      analisis: f.analisis, normas: f.normas, link: f.link, notas: f.notas }));
+    pdfs = {};
+    rCasos.forEach(f => { if (f.pdf_path) pdfs[f.id] = { name: f.pdf_path.split('/').pop(), path: f.pdf_path, url: sbPubUrl(f.pdf_path) }; });
+    if (typeof saveCasosLocal === 'function') saveCasosLocal();
+
+    // Expedientes
+    expedientes = rExp.map(filaAExpediente);
+    expedientes.forEach(exp => { if (!exp.fuero && typeof detectarFuero === 'function') exp.fuero = detectarFuero(exp); });
+    if (typeof saveExpedientesLocal === 'function') saveExpedientesLocal();
+
+    // Caja
+    CAJA = rCaja.map(filaAPago).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+    CAJA_ADJ = {};
+    rCaja.forEach(f => { if (f.adjunto_path) CAJA_ADJ[f.id] = { nombre: f.adjunto_path.split('/').slice(1).join('/'), path: f.adjunto_path, url: sbPubUrl(f.adjunto_path) }; });
+    if (typeof saveCajaLocal === 'function') saveCajaLocal();
+
+    // Config compartida (dólar, uma)
+    const cfg = {}; (rCfg || []).forEach(x => cfg[x.clave] = x.valor);
+    if (cfg.dolar) appStore.setItem(DOLAR_KEY, cfg.dolar);
+    if (cfg.uma) appStore.setItem(UMA_KEY, cfg.uma);
+
+    return true;
+  } catch (e) {
+    sbAvisarError(e);
+    return false;
+  }
+}
+
+// ── Push helpers: se llaman desde las funciones save* de cada módulo ──
+function sbPushCaso(c) { if (SB_ON) sbUpsert('casos', casoAFila(c)).catch(sbAvisarError); }
+function sbPushExpediente(e) { if (SB_ON) sbUpsert('expedientes', expedienteAFila(e)).catch(sbAvisarError); }
+function sbPushPago(p) { if (SB_ON) sbUpsert('caja', pagoAFila(p)).catch(sbAvisarError); }
+function sbDelCaso(id) { if (SB_ON) sbDelete('casos', id).catch(sbAvisarError); }
+function sbDelExpediente(id) { if (SB_ON) sbDelete('expedientes', id).catch(sbAvisarError); }
+function sbDelPago(id) { if (SB_ON) sbDelete('caja', id).catch(sbAvisarError); }
+function sbPushConfig(clave, valor) { if (SB_ON) sbUpsert('config', { clave, valor: String(valor) }).catch(sbAvisarError); }
+
+// Sube un archivo y devuelve su ruta+URL (para PDFs de fallos y comprobantes de caja)
+async function sbGuardarPdfFallo(id, file) {
+  const ext = (file.name || '').toLowerCase().endsWith('.pdf') ? 'pdf' : 'bin';
+  const path = await sbUploadFile('pdfs-fallos', `caso-${id}.${ext}`, file);
+  return { path, url: sbPubUrl(path) };
+}
+async function sbGuardarComprobante(id, file) {
+  const nombre = (file.name || ('comp-' + id)).replace(/[^\w.\-]/g, '_');
+  const path = await sbUploadFile('comprobantes-caja', `pago-${id}-${nombre}`, file);
+  return { path, url: sbPubUrl(path) };
+}
+
+// ── Arranque: traer todo de Supabase y re-renderizar cuando llegue ──
+(function () {
+  if (!SB_ON || typeof fetch !== 'function') return;
+  const run = () => sbCargarTodo().then(ok => {
+    if (!ok) return;
+    try { if (typeof loadExpedientes === 'function') loadExpedientes(); } catch (e) {}
+    try { actualizarFiltroSalas(); actualizarFiltroJuzgados(); renderCasos(); } catch (e) {}
+    try { if (typeof renderExpedientes === 'function') renderExpedientes(); } catch (e) {}
+    try { if (typeof renderCaja === 'function') renderCaja(); } catch (e) {}
+    try { if (typeof renderInicio === 'function') renderInicio(); } catch (e) {}
+  }).catch(e => sbAvisarError(e));
+  // Esperar a que el bundle terminó de definir todo (caja.js va después en el ensamblado)
+  let intentos = 0;
+  const listo = () => typeof renderCaja === 'function' && typeof saveCajaLocal === 'function' && typeof loadExpedientes === 'function';
+  const esperar = () => {
+    if (listo() || intentos++ > 50) run();
+    else setTimeout(esperar, 20);
+  };
+  setTimeout(esperar, 0);
+})();
 
 /* ═══════════════════════════════════════════════════════════════
    MÓDULOS NUEVOS — Inicio · Agenda · Herramientas · Navegación
@@ -4030,7 +4227,7 @@ function cargarUmaCampo() {
 }
 function guardarUma() {
   const v = numDe(document.getElementById('umaValor').value);
-  if (v > 0) appStore.setItem(UMA_KEY, String(v));
+  if (v > 0) { appStore.setItem(UMA_KEY, String(v)); sbPushConfig('uma', v); }
 }
 function convUma(origen) {
   const box = document.getElementById('umaRes');
@@ -4578,14 +4775,15 @@ function loadCaja() {
   try { CAJA = JSON.parse(appStore.getItem(CAJA_KEY) || '[]'); } catch(e) { CAJA = []; }
   try { CAJA_ADJ = JSON.parse(appStore.getItem(CAJA_ADJ_KEY) || '{}'); } catch(e) { CAJA_ADJ = {}; }
 }
-function saveCaja() { appStore.setItem(CAJA_KEY, JSON.stringify(CAJA)); }
-function saveCajaAdj() {
-  try { appStore.setItem(CAJA_ADJ_KEY, JSON.stringify(CAJA_ADJ)); }
-  catch(e) { alert('No se pudo guardar el comprobante: el almacenamiento del navegador está lleno. El pago quedó registrado igual; podés borrar comprobantes viejos o exportar un respaldo.'); }
+function saveCajaLocal() { appStore.setItem(CAJA_KEY, JSON.stringify(CAJA)); }
+function saveCaja() { saveCajaLocal(); }
+function saveCajaLocalAdj() {
+  try { appStore.setItem(CAJA_ADJ_KEY, JSON.stringify(CAJA_ADJ)); } catch(e) { /* en modo nube los comprobantes viven en el Storage */ }
 }
+function saveCajaAdj() { saveCajaLocalAdj(); }
 function guardarDolar() {
   const v = numDe(document.getElementById('cajaDolar').value);
-  if (v > 0) appStore.setItem(DOLAR_KEY, String(v));
+  if (v > 0) { appStore.setItem(DOLAR_KEY, String(v)); sbPushConfig('dolar', v); }
 }
 function valorDolar() {
   const el = document.getElementById('cajaDolar');
@@ -4630,23 +4828,27 @@ function cajaAdjuntoElegido(input) {
     alert('El archivo supera los 3 MB. Comprimí la imagen antes de adjuntarla: el navegador tiene un límite de almacenamiento local.');
     __adjTarget = null; return;
   }
-  const r = new FileReader();
-  r.onload = () => {
-    const adj = { nombre: file.name, tipo: file.type || 'application/octet-stream', data: r.result };
-    if (__adjTarget != null) {
-      CAJA_ADJ[__adjTarget] = adj; saveCajaAdj(); __adjTarget = null; renderCaja();
-    } else {
-      __adjStaged = adj;
-      const b = document.getElementById('cjAdjBtn');
-      if (b) b.textContent = '📎 ' + (file.name.length > 24 ? file.name.slice(0, 24) + '…' : file.name);
-    }
-  };
-  r.readAsDataURL(file);
+  if (__adjTarget != null) {
+    // Pago ya existente: subir directo al Storage y actualizar la fila
+    const idPago = __adjTarget; __adjTarget = null;
+    sbGuardarComprobante(idPago, file).then(info => {
+      CAJA_ADJ[idPago] = { nombre: file.name, tipo: file.type, path: info.path, url: info.url };
+      saveCajaLocalAdj();
+      const p = CAJA.find(x => x.id === idPago); if (p) sbPushPago(p);
+      renderCaja();
+    }).catch(e => { sbAvisarError(e); alert('No se pudo subir el comprobante a la nube.'); });
+  } else {
+    // Pago nuevo aún sin registrar: se guarda el archivo en memoria y se sube al registrar
+    __adjStaged = { nombre: file.name, tipo: file.type, file };
+    const b = document.getElementById('cjAdjBtn');
+    if (b) b.textContent = '📎 ' + (file.name.length > 24 ? file.name.slice(0, 24) + '…' : file.name);
+  }
 }
 function adjuntarA(id) { __adjTarget = id; document.getElementById('cajaAdjInput').click(); }
 function verComprobante(id) {
   const adj = CAJA_ADJ[id];
   if (!adj) return;
+  if (adj.url) { window.open(adj.url, '_blank'); return; }
   const a = document.createElement('a');
   a.href = adj.data; a.download = adj.nombre || 'comprobante';
   a.click();
@@ -4668,19 +4870,26 @@ function registrarPago() {
     revisado: false
   };
   CAJA.unshift(pago); saveCaja();
-  if (__adjStaged) { CAJA_ADJ[pago.id] = __adjStaged; saveCajaAdj(); __adjStaged = null; }
+  sbPushPago(pago);
+  if (__adjStaged) {
+    const st = __adjStaged; __adjStaged = null;
+    sbGuardarComprobante(pago.id, st.file).then(info => {
+      CAJA_ADJ[pago.id] = { nombre: st.nombre, tipo: st.tipo, path: info.path, url: info.url };
+      saveCajaLocalAdj(); sbPushPago(pago); renderCaja();
+    }).catch(e => sbAvisarError(e));
+  }
   ['cjCliente','cjConcepto','cjMonto','cjReceptor'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cjComOri').checked = false;
   const b = document.getElementById('cjAdjBtn'); if (b) b.textContent = '📎 Adjuntar foto / PDF';
   document.getElementById('cajaMes').value = fecha.slice(0, 7);
   renderCajaDatalists(); renderCaja();
 }
-function toggleRevisado(id) { const p = CAJA.find(x => x.id === id); if (p) { p.revisado = !p.revisado; saveCaja(); renderCaja(); } }
+function toggleRevisado(id) { const p = CAJA.find(x => x.id === id); if (p) { p.revisado = !p.revisado; saveCaja(); sbPushPago(p); renderCaja(); } }
 function eliminarPago(id) {
   if (!confirm('¿Eliminar este pago del registro de caja?')) return;
   CAJA = CAJA.filter(x => x.id !== id);
   if (CAJA_ADJ[id]) { delete CAJA_ADJ[id]; saveCajaAdj(); }
-  saveCaja(); renderCaja();
+  saveCaja(); sbDelPago(id); renderCaja();
 }
 function pagosDelMes(mes) {
   return CAJA.filter(p => (p.fecha||'').slice(0, 7) === mes).sort((a, b) => (a.fecha||'').localeCompare(b.fecha||''));
@@ -4717,13 +4926,13 @@ function renderCaja() {
   document.getElementById('cajaMesLabel').textContent = pagos.length + ' pago' + (pagos.length !== 1 ? 's' : '') + ' · ' + mesLargo(mes);
 
   document.getElementById('cajaTiles').innerHTML = pesif ? `
-    <div class="tile"><div class="num">$ ${fmtNumStr(totalPes)}</div><div class="lbl">Total del mes pesificado</div><div class="sub">$ ${fmtNumStr(t.ars)} + u$s ${fmtNumStr(t.usd)} × ${fmtNumStr(dolar)}</div></div>
+    <div class="tile tile-destacada"><div class="num">$ ${fmtNumStr(totalPes)}</div><div class="lbl">Total del mes pesificado</div><div class="sub">$ ${fmtNumStr(t.ars)} + u$s ${fmtNumStr(t.usd)} × ${fmtNumStr(dolar)}</div></div>
     <div class="tile"><div class="num">$ ${fmtNumStr(kPes)}</div><div class="lbl">Comisión Kevin (pesificada)</div><div class="sub">$ ${fmtNumStr(t.kArs)} · u$s ${fmtNumStr(t.kUsd)}</div></div>
     <div class="tile"><div class="num">$ ${fmtNumStr(oPes)}</div><div class="lbl">Comisión Ori (pesificada)</div><div class="sub">$ ${fmtNumStr(t.oArs)} · u$s ${fmtNumStr(t.oUsd)}</div></div>
     <div class="tile"><div class="num">${pagos.length}</div><div class="lbl">Pagos registrados</div><div class="sub">${pagos.filter(p => CAJA_ADJ[p.id]).length} con comprobante · ${pagos.filter(p => p.revisado).length} revisados</div></div>` : `
     <div class="tile"><div class="num">$ ${fmtNumStr(t.ars)}</div><div class="lbl">Ingresos en pesos</div><div class="sub">${pagos.filter(p => p.moneda !== 'USD').length} pagos</div></div>
     <div class="tile"><div class="num">u$s ${fmtNumStr(t.usd)}</div><div class="lbl">Ingresos en dólares</div><div class="sub">${pagos.filter(p => p.moneda === 'USD').length} pagos</div></div>
-    ${dolar > 0 ? `<div class="tile"><div class="num">$ ${fmtNumStr(totalPes)}</div><div class="lbl">Total pesificado</div><div class="sub">dólar a $ ${fmtNumStr(dolar)}</div></div>` : ''}
+    ${dolar > 0 ? `<div class="tile tile-destacada"><div class="num">$ ${fmtNumStr(totalPes)}</div><div class="lbl">Total pesificado</div><div class="sub">dólar a $ ${fmtNumStr(dolar)}</div></div>` : ''}
     <div class="tile"><div class="num">${pagos.length}</div><div class="lbl">Pagos registrados</div><div class="sub">${pagos.filter(p => CAJA_ADJ[p.id]).length} con comprobante · ${pagos.filter(p => p.revisado).length} revisados</div></div>`;
 
   const tabla = document.getElementById('cajaTabla');
@@ -4755,36 +4964,49 @@ function renderCaja() {
     }).join('') + '</tbody>';
   }
 
-  const porConcepto = {};
-  pagos.forEach(p => {
-    const k = (p.concepto || '').trim() || '(sin concepto)';
-    porConcepto[k] = porConcepto[k] || { ars: 0, usd: 0 };
-    porConcepto[k][p.moneda === 'USD' ? 'usd' : 'ars'] += p.monto;
-  });
-  const rank = Object.entries(porConcepto)
-    .map(([nombre, v]) => ({ nombre, ...v, clave: v.ars + v.usd * (dolar || 1) }))
-    .sort((a, b) => b.clave - a.clave);
-  const maxClave = rank.length ? rank[0].clave : 1;
-  document.getElementById('cajaRanking').innerHTML = rank.length ? rank.slice(0, 8).map((r, i) => `
+  const agrupar = (campo, fallback) => {
+    const g = {};
+    pagos.forEach(p => {
+      const k = ((p[campo] || '').trim()) || fallback;
+      g[k] = g[k] || { ars: 0, usd: 0 };
+      g[k][p.moneda === 'USD' ? 'usd' : 'ars'] += p.monto;
+    });
+    return Object.entries(g).map(([nombre, v]) => ({ nombre, ...v, clave: v.ars + v.usd * (dolar || 1) })).sort((a, b) => b.clave - a.clave);
+  };
+  const filaRank = (r, i, max) => `
     <div class="rank-item">
       <span class="rank-pos">${i + 1}</span>
       <div style="flex:1;min-width:0">
         <div class="rank-nombre">${esc(r.nombre)}</div>
-        <div class="rank-barra"><i style="width:${Math.max(4, Math.round(r.clave / maxClave * 100))}%"></i></div>
+        <div class="rank-barra"><i style="width:${Math.max(4, Math.round(r.clave / max * 100))}%"></i></div>
       </div>
       <span class="rank-monto">${r.ars ? '$ ' + fmtNumStr(r.ars) : ''}${r.ars && r.usd ? ' · ' : ''}${r.usd ? 'u$s ' + fmtNumStr(r.usd) : ''}</span>
-    </div>`).join('') : '<div class="panel-empty">Sin pagos este mes.</div>';
+    </div>`;
+
+  // Qué generó más ingresos → por CONCEPTO / servicio
+  const rankConcepto = agrupar('concepto', '(sin concepto)');
+  const maxConcepto = rankConcepto.length ? rankConcepto[0].clave : 1;
+  document.getElementById('cajaRanking').innerHTML = rankConcepto.length
+    ? rankConcepto.slice(0, 8).map((r, i) => filaRank(r, i, maxConcepto)).join('')
+    : '<div class="panel-empty">Sin pagos este mes.</div>';
+
+  // Quién más abonó → por CLIENTE
+  const rankCliente = agrupar('cliente', '(sin cliente)');
+  const maxCliente = rankCliente.length ? rankCliente[0].clave : 1;
+  document.getElementById('cajaRankingClientes').innerHTML = rankCliente.length
+    ? rankCliente.slice(0, 8).map((r, i) => filaRank(r, i, maxCliente)).join('')
+    : '<div class="panel-empty">Sin pagos este mes.</div>';
 
   document.getElementById('cajaComisionesK').innerHTML = `
     <div class="res-row"><span class="k">Pesos</span><span class="v">$ ${fmtNumStr(t.kArs)}</span></div>
     <div class="res-row"><span class="k">Dólares</span><span class="v">u$s ${fmtNumStr(t.kUsd)}</span></div>
-    ${dolar > 0 ? `<div class="res-row"><span class="k">Total pesificado</span><span class="v res-strong">$ ${fmtNumStr(kPes)}</span></div>` : ''}`;
+    ${dolar > 0 ? `<div class="res-row res-total"><span class="k">Total pesificado</span><span class="v">$ ${fmtNumStr(kPes)}</span></div>` : ''}`;
   document.getElementById('cajaComisionesO').innerHTML = `
     <div class="res-row"><span class="k">Pesos</span><span class="v">$ ${fmtNumStr(t.oArs)}</span></div>
     <div class="res-row"><span class="k">Dólares</span><span class="v">u$s ${fmtNumStr(t.oUsd)}</span></div>
-    ${dolar > 0 ? `<div class="res-row"><span class="k">Total pesificado</span><span class="v res-strong">$ ${fmtNumStr(oPes)}</span></div>` : ''}`;
+    ${dolar > 0 ? `<div class="res-row res-total"><span class="k">Total pesificado</span><span class="v">$ ${fmtNumStr(oPes)}</span></div>` : ''}`;
 }
-// ── Balance mensual descargable (HTML interactivo e imprimible) ──
+// ── Balance mensual descargable (HTML imprimible) ──
 function descargarReporteCaja() {
   const mes = document.getElementById('cajaMes').value || hoyISO().slice(0, 7);
   const pagos = pagosDelMes(mes);
@@ -4803,8 +5025,7 @@ function descargarReporteCaja() {
   const rank = Object.entries(porConcepto).map(([n, v]) => ({ n, ...v, clave: v.ars + v.usd * (dolar || 1) })).sort((a, b) => b.clave - a.clave);
   const maxClave = rank.length ? rank[0].clave : 1;
   const conAdj = pagos.filter(p => CAJA_ADJ[p.id]);
-
-  const tile = (lbl, val, sub, destacado) => `<div class="ficha${destacado ? ' hi' : ''}"><span>${lbl}</span><b>${val}</b>${sub ? `<i>${sub}</i>` : ''}</div>`;
+  const ficha = (lbl, val, sub, hi) => `<div class="ficha${hi ? ' hi' : ''}"><span>${lbl}</span><b>${val}</b>${sub ? `<i>${sub}</i>` : ''}</div>`;
 
   const html = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -4828,7 +5049,7 @@ table{width:100%;border-collapse:collapse;font-size:12.5px}
 th{background:#0c1f16;color:#e8efe9;text-align:left;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.07em}
 td{padding:8px 10px;border-bottom:1px solid #eceade;vertical-align:middle}
 tr:nth-child(even) td{background:#fbfaf6}
-.r{text-align:right;font-variant-numeric:tabular-nums}.usd{color:var(--usd);font-weight:600}
+.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.usd{color:var(--usd);font-weight:600}
 .chip{display:inline-block;font-size:9.5px;font-weight:700;padding:1.5px 6px;border-radius:4px;background:#f3e2f3;color:#8a3d8a;margin-left:5px}
 .barra{height:5px;border-radius:99px;background:var(--laurel);margin-top:4px;overflow:hidden}.barra i{display:block;height:100%;background:var(--sello)}
 .comp{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
@@ -4848,20 +5069,20 @@ tr:nth-child(even) td{background:#fbfaf6}
 
 <h2>Totales del mes</h2>
 <div class="fichas">
-${tile('Ingresos en pesos', '$ ' + fmtNumStr(t.ars), pagos.filter(p => p.moneda !== 'USD').length + ' pagos')}
-${tile('Ingresos en dólares', 'u$s ' + fmtNumStr(t.usd), pagos.filter(p => p.moneda === 'USD').length + ' pagos')}
-${dolar > 0 ? tile('TOTAL PESIFICADO', '$ ' + fmtNumStr(totalPes), '$ ' + fmtNumStr(t.ars) + ' + u$s ' + fmtNumStr(t.usd) + ' × ' + fmtNumStr(dolar), true) : ''}
-${tile('Con comprobante', conAdj.length + ' de ' + pagos.length, '')}
+${ficha('Ingresos en pesos', '$ ' + fmtNumStr(t.ars), pagos.filter(p => p.moneda !== 'USD').length + ' pagos')}
+${ficha('Ingresos en dólares', 'u$s ' + fmtNumStr(t.usd), pagos.filter(p => p.moneda === 'USD').length + ' pagos')}
+${dolar > 0 ? ficha('Total pesificado', '$ ' + fmtNumStr(totalPes), '$ ' + fmtNumStr(t.ars) + ' + u$s ' + fmtNumStr(t.usd) + ' × ' + fmtNumStr(dolar), true) : ''}
+${ficha('Con comprobante', conAdj.length + ' de ' + pagos.length, '')}
 </div>
 
 <h2>Comisiones</h2>
 <div class="fichas">
-${tile('Comisión Kevin — pesos', '$ ' + fmtNumStr(t.kArs), '')}
-${tile('Comisión Kevin — dólares', 'u$s ' + fmtNumStr(t.kUsd), '')}
-${dolar > 0 ? tile('COMISIÓN KEVIN PESIFICADA', '$ ' + fmtNumStr(kPes), '', true) : ''}
-${tile('Comisión Ori — pesos', '$ ' + fmtNumStr(t.oArs), '')}
-${tile('Comisión Ori — dólares', 'u$s ' + fmtNumStr(t.oUsd), '')}
-${dolar > 0 ? tile('COMISIÓN ORI PESIFICADA', '$ ' + fmtNumStr(oPes), '', true) : ''}
+${ficha('Comisión Kevin — pesos', '$ ' + fmtNumStr(t.kArs), '')}
+${ficha('Comisión Kevin — dólares', 'u$s ' + fmtNumStr(t.kUsd), '')}
+${dolar > 0 ? ficha('Comisión Kevin — pesificada', '$ ' + fmtNumStr(kPes), '', true) : ''}
+${ficha('Comisión Ori — pesos', '$ ' + fmtNumStr(t.oArs), '')}
+${ficha('Comisión Ori — dólares', 'u$s ' + fmtNumStr(t.oUsd), '')}
+${dolar > 0 ? ficha('Comisión Ori — pesificada', '$ ' + fmtNumStr(oPes), '', true) : ''}
 </div>
 
 <h2>Qué generó más ingresos</h2>
@@ -4870,41 +5091,44 @@ ${rank.map((r, i) => `<tr><td>${i + 1}</td><td><b>${esc(r.n)}</b><div class="bar
 </tbody></table>
 
 <h2>Detalle de pagos</h2>
-<table><thead><tr><th>Fecha</th><th>Cliente</th><th>Concepto</th><th class="r">Monto</th><th>Método</th><th class="r">Com. Kevin</th><th class="r">Com. Ori</th><th>Comprob.</th><th>Rev.</th></tr></thead><tbody>
+<table><thead><tr><th>Fecha</th><th>Cliente</th><th>Concepto</th><th class="r">Monto</th><th>Método</th><th class="r">Com. Kevin</th><th class="r">Com. Ori</th><th>Comprob.</th><th style="text-align:center">Rev.</th></tr></thead><tbody>
 ${pagos.map(p => { const c = comisionesDe(p); const sim = p.moneda === 'USD' ? 'u$s ' : '$ ';
+  const adj = CAJA_ADJ[p.id];
+  const comp = adj ? (adj.url ? `<a href="${adj.url}" target="_blank">Ver</a>` : 'Sí') : '—';
   return `<tr><td style="white-space:nowrap">${formatFechaCorta(p.fecha)}</td><td><b>${esc(p.cliente)}</b>${p.comisionOri ? '<span class="chip">Ori</span>' : ''}</td><td>${esc(p.concepto || '—')}</td>
   <td class="r ${p.moneda === 'USD' ? 'usd' : ''}">${montoTxt(p)}</td><td style="font-size:11.5px">${p.metodo}${p.receptor ? ' → ' + esc(p.receptor) : ''}</td>
   <td class="r">${sim}${fmtNumStr(c.k)}</td><td class="r">${c.o ? sim + fmtNumStr(c.o) : '—'}</td>
-  <td>${CAJA_ADJ[p.id] ? '<a href="#comp-' + p.id + '" style="color:var(--sello);font-weight:600">Ver ↓</a>' : '—'}</td>
+  <td>${comp}</td>
   <td style="text-align:center"><input type="checkbox" class="rev" data-id="${p.id}" ${p.revisado ? 'checked' : ''}></td></tr>`; }).join('')}
 </tbody></table>
 
 ${conAdj.length ? `<h2>Comprobantes de pago</h2>
 <div class="comp">
-${conAdj.map(p => { const adj = CAJA_ADJ[p.id]; const esImg = (adj.tipo || '').startsWith('image/');
-  return `<figure id="comp-${p.id}">
-  ${esImg ? `<a href="${adj.data}" target="_blank"><img src="${adj.data}" alt="Comprobante ${esc(p.cliente)}"></a>` : `<div style="font-size:34px;text-align:center;padding:18px 0">📄</div>`}
-  <figcaption><b>${esc(p.cliente)}</b> · ${formatFechaCorta(p.fecha)}<br>${montoTxt(p)} — ${p.metodo}${p.receptor ? ' → ' + esc(p.receptor) : ''}<br><a href="${adj.data}" download="${esc(adj.nombre || 'comprobante')}">⬇ ${esc(adj.nombre || 'Descargar')}</a></figcaption>
+${conAdj.map(p => { const adj = CAJA_ADJ[p.id]; const esImg = (adj.tipo || '').startsWith('image/') || /\.(jpe?g|png|webp|gif)$/i.test(adj.nombre || '');
+  const src = adj.url || adj.data || '';
+  return `<figure>
+  ${esImg && src ? `<a href="${src}" target="_blank"><img src="${src}" alt="Comprobante ${esc(p.cliente)}"></a>` : `<div style="font-size:34px;text-align:center;padding:18px 0">📄</div>`}
+  <figcaption><b>${esc(p.cliente)}</b> · ${formatFechaCorta(p.fecha)}<br>${montoTxt(p)} — ${p.metodo}${p.receptor ? ' → ' + esc(p.receptor) : ''}<br>${src ? `<a href="${src}" ${adj.url ? 'target="_blank"' : `download="${esc(adj.nombre || 'comprobante')}"`}>⬇ ${esc(adj.nombre || 'Ver comprobante')}</a>` : ''}</figcaption>
 </figure>`; }).join('')}
 </div>` : ''}
 
-<div class="pie">Balance generado por JurisCannabis. Las casillas «Rev.» son interactivas: lo que marques acá se guarda en este navegador para este archivo, pero no modifica la aplicación (marcá también allá lo que revises). Imprimí a PDF desde el navegador para archivar.</div>
+<div class="pie">Balance generado por JurisCannabis. Las casillas «Rev.» son interactivas y se guardan en este archivo (en este navegador). Imprimí a PDF desde el navegador para archivar una versión fija.</div>
 </div>
-${'<scr'+'ipt>'}
+<${'scr'}${'ipt'}>
 (function(){
   var KEY = 'balance-rev-${mes}';
-  try {
-    var st = JSON.parse(appStore.getItem(KEY) || '{}');
-    document.querySelectorAll('.rev').forEach(function(cb){
-      if (KEY in appStore || Object.keys(st).length) { if (cb.dataset.id in st) cb.checked = !!st[cb.dataset.id]; }
-      cb.addEventListener('change', function(){
-        st[cb.dataset.id] = cb.checked;
-        try { appStore.setItem(KEY, JSON.stringify(st)); } catch(e) {}
-      });
+  var LS = window['local'+'Storage'];
+  var st = {};
+  try { st = JSON.parse(LS.getItem(KEY) || '{}'); } catch(e) {}
+  document.querySelectorAll('.rev').forEach(function(cb){
+    if (cb.dataset.id in st) cb.checked = !!st[cb.dataset.id];
+    cb.addEventListener('change', function(){
+      st[cb.dataset.id] = cb.checked;
+      try { LS.setItem(KEY, JSON.stringify(st)); } catch(e) {}
     });
-  } catch(e) { /* sin almacenamiento: los tildes funcionan igual, pero no persisten al cerrar */ }
+  });
 })();
-<\/script>
+</${'scr'}${'ipt'}>
 </body></html>`;
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const a = document.createElement('a');
@@ -4973,6 +5197,7 @@ function intentarLogin() {
   } else err.textContent = '';
 }
 
+console.log('JurisCannabis v2026-07-05-caja4');
 // ── Arranque ──
 loadConfig();
 loadCaja();
