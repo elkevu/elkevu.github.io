@@ -526,6 +526,16 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .grid-caja-4 .res-row .v{white-space:nowrap;}
 @media (max-width:860px){.grid-caja-4{grid-template-columns:1fr;grid-auto-rows:auto;}.grid-caja-4>.panel{min-height:0;}}
 
+/* ══ Paginador (vencimientos, tareas, audiencias) ══ */
+.paginador{display:flex;align-items:center;gap:8px;padding:12px 18px 6px;flex-wrap:wrap;border-top:1px solid var(--filo-suave);margin-top:2px;}
+.pag-nums{display:flex;gap:3px;flex-wrap:wrap;}
+.pag-btn{min-width:30px;height:30px;padding:0 8px;border:1px solid var(--filo);background:#fff;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--tinta-suave);cursor:pointer;font-family:inherit;transition:all .13s;}
+.pag-btn:hover:not(:disabled){border-color:var(--sello);color:var(--sello);background:var(--laurel);}
+.pag-btn.activo{background:var(--sello);border-color:var(--sello);color:#fff;}
+.pag-btn:disabled{opacity:.4;cursor:not-allowed;}
+.pag-info{font-size:11px;color:var(--tinta-suave);margin-left:auto;white-space:nowrap;}
+@media (max-width:700px){.pag-info{width:100%;margin-left:0;text-align:center;order:3;}}
+
 </style>
 </head>
 <body>
@@ -1132,7 +1142,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 <div id="loginGate">
   <div class="login-caja">
     <div class="login-marca">Juris<em>Cannabis</em></div>
-    <div class="login-sub">Estudio WE Legal · acceso privado · <span style="opacity:.55">v2026-07-05-caja4</span></div>
+    <div class="login-sub">Estudio WE Legal · acceso privado</div>
     <div class="doble-filete" style="margin:14px 0 18px"></div>
     <label>Usuario</label>
     <input id="loginUser" autocomplete="username" onkeydown="if(event.key==='Enter')intentarLogin()">
@@ -4064,11 +4074,12 @@ function renderInicio() {
   // Mostrar como máximo los 4 vencidos más recientes + lo que viene
   const vencidos = items.filter(i => i.fecha < hoy).slice(-4);
   const futuros = items.filter(i => i.fecha >= hoy);
-  const proximos = [...vencidos, ...futuros].slice(0, 10);
+  const todos = [...vencidos, ...futuros];
+  const { slice: proximos, controles } = paginar('venc', todos, 'renderInicio');
 
   const cont = document.getElementById('inicioVencimientos');
-  document.getElementById('vencMini').textContent = proximos.length ? proximos.length + ' próximos' : '';
-  cont.innerHTML = proximos.length ? proximos.map(i => {
+  document.getElementById('vencMini').textContent = todos.length ? todos.length + ' en total' : '';
+  const htmlVenc = proximos.map(i => {
     const rest = diasHabilesRestantes(i.fecha);
     const vencido = i.fecha < hoy;
     const cls = vencido ? 'overdue' : (rest <= 3 ? 'soon' : '');
@@ -4079,7 +4090,8 @@ function renderInicio() {
       <div class="venc-txt"><div class="t">${esc(i.t)}</div><div class="s">${esc(i.s)}</div></div>
       <span class="venc-tag ${tagCls}">${tagTxt}</span>
     </div>`;
-  }).join('') : '<div class="panel-empty">Sin vencimientos a la vista. Las tareas con fecha, las audiencias de tus expedientes y los controles de oficios aparecen acá solos.</div>';
+  }).join('');
+  cont.innerHTML = proximos.length ? (htmlVenc + controles) : '<div class="panel-empty">Sin vencimientos a la vista. Las tareas con fecha, las audiencias de tus expedientes y los controles de oficios aparecen acá solos.</div>';
 
   const contOf = document.getElementById('inicioOficios');
   document.getElementById('ofiMini').textContent = oficios.length ? oficios.length + ' en curso' : '';
@@ -4157,6 +4169,37 @@ function eliminarTarea(id) {
   TAREAS = TAREAS.filter(x => x.id !== id);
   saveTareas(); renderTareas(); renderAudiencias();
 }
+// ── Paginación reutilizable (vencimientos, tareas, audiencias) ──
+const PAGINA_TAM = 10;
+const __paginas = {}; // clave → índice de página actual (0-based)
+function irAPagina(clave, n, fnRender) {
+  __paginas[clave] = n;
+  if (typeof window[fnRender] === 'function') window[fnRender]();
+}
+// Devuelve el subconjunto de la página actual y el HTML de los controles
+function paginar(clave, lista, fnRender) {
+  const total = lista.length;
+  const paginasTotales = Math.max(1, Math.ceil(total / PAGINA_TAM));
+  let pag = __paginas[clave] || 0;
+  if (pag >= paginasTotales) { pag = paginasTotales - 1; __paginas[clave] = pag; }
+  if (pag < 0) { pag = 0; __paginas[clave] = 0; }
+  const desde = pag * PAGINA_TAM;
+  const slice = lista.slice(desde, desde + PAGINA_TAM);
+  let controles = '';
+  if (paginasTotales > 1) {
+    const btn = (n, txt, dis, activo) => `<button class="pag-btn${activo ? ' activo' : ''}" ${dis ? 'disabled' : ''} onclick="irAPagina('${clave}',${n},'${fnRender}')">${txt}</button>`;
+    let nums = '';
+    for (let i = 0; i < paginasTotales; i++) nums += btn(i, i + 1, false, i === pag);
+    controles = `<div class="paginador">
+      ${btn(pag - 1, '‹ Ant.', pag === 0, false)}
+      <div class="pag-nums">${nums}</div>
+      ${btn(pag + 1, 'Sig. ›', pag === paginasTotales - 1, false)}
+      <span class="pag-info">${desde + 1}–${Math.min(desde + PAGINA_TAM, total)} de ${total}</span>
+    </div>`;
+  }
+  return { slice, controles };
+}
+
 function renderTareas() {
   const cont = document.getElementById('tareasLista');
   if (!cont) return;
@@ -4168,7 +4211,8 @@ function renderTareas() {
       if (!!a.fecha !== !!b.fecha) return a.fecha ? -1 : 1;
       return (a.fecha||'9999').localeCompare(b.fecha||'9999');
     });
-  cont.innerHTML = lista.length ? lista.map(t => {
+  const { slice: paginaTareas, controles: ctrlTareas } = paginar('tareas', lista, 'renderTareas');
+  const htmlTareas = paginaTareas.map(t => {
     const vencida = t.fecha && !t.done && t.fecha < hoy;
     return `<div class="tarea-item ${t.done?'done':''}">
       <input type="checkbox" ${t.done?'checked':''} onchange="toggleTarea(${t.id})" title="Marcar completada">
@@ -4180,7 +4224,8 @@ function renderTareas() {
       ${t.fecha ? `<button class="btn-sm" onclick="gcalDesdeTarea(${t.id})" title="Agregar a Google Calendar">📆</button>` : ''}
       <button class="tarea-del" onclick="eliminarTarea(${t.id})" title="Eliminar tarea">✕</button>
     </div>`;
-  }).join('') : '<div class="panel-empty">Nada pendiente. Cargá un evento arriba y va a aparecer también en el tablero de Inicio.</div>';
+  }).join('');
+  cont.innerHTML = lista.length ? (htmlTareas + ctrlTareas) : '<div class="panel-empty">Nada pendiente. Cargá un evento arriba y va a aparecer también en el tablero de Inicio.</div>';
 }
 function renderAudiencias() {
   const cont = document.getElementById('agendaAudiencias');
@@ -4199,7 +4244,10 @@ function renderAudiencias() {
   items.sort((a,b) => (a.fecha||'9999').localeCompare(b.fecha||'9999'));
   __audsRender = items;
   const hoy = hoyISO();
-  cont.innerHTML = items.length ? items.map((i, idx) => {
+  const { slice: paginaAuds, controles: ctrlAuds } = paginar('auds', items, 'renderAudiencias');
+  const offsetAuds = (__paginas['auds'] || 0) * PAGINA_TAM;
+  const htmlAuds = paginaAuds.map((i, k) => {
+    const idx = offsetAuds + k;
     const pasada = i.fecha && i.fecha < hoy;
     return `<div class="venc-item ${pasada ? 'overdue' : ''}" ${i.manual ? '' : `onclick="verCausa(${i.expData.exp.id})"`}>
       <span class="venc-date">${i.fecha ? formatFechaCorta(i.fecha) : '—'}${i.hora ? `<small>${i.hora} h</small>` : ''}</span>
@@ -4210,7 +4258,8 @@ function renderAudiencias() {
            <button class="tarea-del" onclick="eliminarTarea(${i.id})" title="Eliminar">✕</button>`
         : `<span class="venc-tag aud">Expediente</span>`}
     </div>`;
-  }).join('') : '<div class="panel-empty">No hay audiencias futuras: las de tus expedientes aparecen solas y las demás (mediaciones, SECLO, previas) se cargan arriba como «Audiencia».</div>';
+  }).join('');
+  cont.innerHTML = items.length ? (htmlAuds + ctrlAuds) : '<div class="panel-empty">No hay audiencias futuras: las de tus expedientes aparecen solas y las demás (mediaciones, SECLO, previas) se cargan arriba como «Audiencia».</div>';
 }
 
 // ── Herramientas: plazos procesales ──
@@ -5241,7 +5290,6 @@ function intentarLogin() {
   } else err.textContent = '';
 }
 
-console.log('JurisCannabis v2026-07-05-caja4');
 // ── Arranque ──
 loadConfig();
 loadCaja();
