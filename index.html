@@ -6,19 +6,19 @@
 <title>JurisCannabis Argentina</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root {
   /* Paleta — papel de expediente + verde sello */
   --tinta:#1a241d; --tinta-suave:#5c6157; --papel:#f6f5ef; --carta:#ffffff;
   --filo:#e4e1d5; --filo-suave:#efede4;
-  --bosque:#0c1f16; --bosque-2:#123024; --sello:#1e6b45; --sello-osc:#164f33;
-  --brote:#5ecd92; --laurel:#e6f3ec; --laurel-2:#d3eade;
+  --bosque:#0a1626; --bosque-2:#123024; --sello:#1b3a6b; --sello-osc:#12294d;
+  --brote:#5b9be6; --laurel:#e6eef8; --laurel-2:#d3eade;
   --oro:#a07713; --oro-bg:#f7efd9;
-  --ok:#1e6b45; --ok-bg:#ddefe4; --warn:#a86e17; --warn-bg:#f8eed7; --mal:#b3372a; --mal-bg:#f9e3df;
+  --ok:#1e7a48; --ok-bg:#e6f3ec; --warn:#a86e17; --warn-bg:#f8eed7; --mal:#b3372a; --mal-bg:#f9e3df;
   --info:#1c56a5; --info-bg:#e4edfa; --csjn:#8c2457; --csjn-bg:#f7e2ec;
-  --verde:#1e6b45; --verde-light:#e6f3ec; --verde-mid:#1e6b45; --verde-dark:#0c1f16;
+  --verde:#1b3a6b; --verde-light:#e6eef8; --verde-mid:#1b3a6b; --verde-dark:#0a1626;
   --gris-bg:#f6f5ef; --gris-borde:#e4e1d5; --gris-texto:#5c6157; --negro:#1a241d; --blanco:#ffffff;
   --f-ui:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
   --f-display:var(--f-ui);
@@ -46,11 +46,13 @@ button{font-family:var(--f-ui);}
 /* ══════════ Cinta de navegación superior (páginas nuevas + expedientes) ══════════ */
 .ribbon{background:var(--bosque);display:flex;align-items:center;gap:14px;padding:0 18px;height:54px;flex-shrink:0;border-bottom:1px solid rgba(94,205,146,0.18);}
 .ribbon-brand{font-family:var(--f-display);font-size:17px;font-weight:600;color:#fff;letter-spacing:-0.01em;cursor:pointer;white-space:nowrap;}
-.ribbon-brand em{font-style:italic;color:var(--brote);}
+.ribbon-brand em{font-style:italic;color:#c9a961;}
+.ribbon>div:first-child{border-left:3px solid #c9a961;padding-left:11px;}
+.ribbon-sub{color:rgba(201,169,97,.78) !important;}
 .ribbon-sub{font-size:9.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.14em;margin-top:1px;}
 .ribbon-sep{width:1px;height:22px;background:rgba(255,255,255,0.14);flex-shrink:0;}
 .ribbon-nav{display:flex;gap:4px;align-items:center;flex-wrap:nowrap;}
-.pill-nav{font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.66);background:transparent;border:1px solid transparent;border-radius:99px;padding:6px 13px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.pill-nav{font-size:12.5px;font-weight:600;color:#fff;background:transparent;border:1px solid transparent;border-radius:99px;padding:6px 13px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
 .pill-nav:hover{color:#fff;background:rgba(255,255,255,0.08);}
 .pill-nav.active{color:var(--bosque);background:var(--brote);border-color:var(--brote);}
 .ribbon-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
@@ -86,6 +88,42 @@ button{font-family:var(--f-ui);}
 .grid-2-eq>.panel{display:flex;flex-direction:column;height:100%;}
 .grid-2-eq>.panel>div:last-child{flex:1;}
 .grid-2-eq .panel-h{min-height:56px;align-items:center;}
+/* Secciones de caja con marco y halo azul */
+#paginaCaja .panel{border:1px solid #c5d5ea;box-shadow:0 0 0 3px rgba(43,108,176,.05),0 8px 28px rgba(27,58,107,.12);position:relative;overflow:visible}
+/* Rubros de la liquidación laboral: tarjetas prolijas */
+.lq-rubros-t{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a6d1f;margin:14px 0 8px}
+.lq-rubros{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:8px;margin-bottom:10px}
+.lq-rubro{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--filo);border-radius:10px;padding:10px 13px;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;margin:0}
+.lq-rubro:hover{border-color:#b9cce6}
+.lq-rubro:has(input:checked){border-color:#d9c283;background:#fdfaf1;box-shadow:0 1px 6px rgba(169,133,60,.10)}
+.lq-rubro input{margin-top:2px;accent-color:#1b3a6b;flex-shrink:0}
+.lq-rubro .tx b{display:block;font-size:12.5px;font-weight:600;color:var(--tinta);line-height:1.3}
+.lq-rubro .tx small{display:block;font-size:11px;color:var(--tinta-suave);line-height:1.4;margin-top:2px}
+.lq-rubro-wrap{display:flex;flex-direction:column;gap:6px}
+
+/* Borde degradé azul sutil en tarjetas de expedientes y clientes del CRM */
+.exp-card{border:1px solid transparent !important;background:linear-gradient(var(--carta),var(--carta)) padding-box,linear-gradient(135deg,#7fa3d4,#dbe5f2 40%,#b9cce6 75%,#5b86bf) border-box !important}
+.exp-card:hover{border-color:transparent !important;box-shadow:0 8px 26px rgba(27,58,107,.16);transform:translateY(-2px);background:linear-gradient(var(--carta),var(--carta)) padding-box,linear-gradient(135deg,#3b6db3,#9db9dd 45%,#3b6db3) border-box !important}
+.crm-row{border:1px solid transparent !important;background:linear-gradient(var(--carta),var(--carta)) padding-box,linear-gradient(135deg,#7fa3d4,#dbe5f2 40%,#b9cce6 75%,#5b86bf) border-box !important}
+.crm-row:hover{border-color:transparent !important;box-shadow:0 6px 20px rgba(27,58,107,.14);background:linear-gradient(var(--carta),var(--carta)) padding-box,linear-gradient(135deg,#3b6db3,#9db9dd 45%,#3b6db3) border-box !important}
+
+/* Títulos de sección (caja, inicio, agenda, herramientas): banda azul marino, oscura a la izquierda */
+#paginaCaja .panel-h,#paginaInicio .panel-h,#paginaAgenda .panel-h,#paginaHerramientas .panel-h{background:#14294a;border-bottom:2px solid #c9a961;border-radius:calc(var(--radio) - 1px) calc(var(--radio) - 1px) 0 0;padding:8px 16px 7px;min-height:0}
+#paginaCaja .panel-h h3,#paginaInicio .panel-h h3,#paginaAgenda .panel-h h3,#paginaHerramientas .panel-h h3{color:#fff;font-size:14px}
+#paginaCaja .panel-h .mini,#paginaCaja .panel-h span,#paginaInicio .panel-h .mini,#paginaInicio .panel-h span,#paginaAgenda .panel-h .mini,#paginaAgenda .panel-h span,#paginaHerramientas .panel-h .mini,#paginaHerramientas .panel-h span{color:#a9c3e8}
+#paginaCaja .stat-tiles .tile{border:1px solid #cdd9ea;box-shadow:0 4px 16px rgba(27,58,107,.09)}
+
+/* Sugerencias de cliente en caja */
+.cj-sug{position:absolute;top:100%;left:0;right:0;z-index:60;background:#fff;border:1px solid #c9d8ec;border-radius:10px;margin-top:4px;box-shadow:0 10px 30px rgba(10,22,38,.18);max-height:280px;overflow-y:auto}
+.cj-sug-it{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12.5px;border-bottom:1px solid #f0f3f8}
+.cj-sug-it:last-child{border-bottom:none}
+.cj-sug-it:hover,.cj-sug-it.sel{background:#eef4fc}
+.cj-sug-it .n{font-weight:600;color:#15263f;flex:1;min-width:0;line-height:1.35}
+.cj-sug-it .t{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:5px;background:#e6eef8;color:#1b3a6b;white-space:nowrap}
+.cj-sug-it .t.hist{background:#f2f1ec;color:#8a8674}
+.cj-sug-it .e{font-size:10px;color:#8a6d1f;background:#f8f1de;border:1px solid #e6d3a0;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.cj-sug-vacio{padding:10px 12px;font-size:12px;color:#8a8f98;font-style:italic}
+
 /* Ficha del total pesificado destacada */
 .tile.tile-destacada{background:var(--laurel);border:1px solid var(--sello);box-shadow:0 2px 10px rgba(30,107,69,.14);}
 .tile.tile-destacada .num{color:var(--sello);}
@@ -204,16 +242,16 @@ button{font-family:var(--f-ui);}
 
 /* ══════════ Jurisprudencia: main ══════════ */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
-.topbar{background:var(--bosque);padding:10px 18px;border-bottom:1px solid rgba(94,205,146,0.15);display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0;}
+.topbar{background:var(--bosque);padding:9px 16px;border-bottom:1px solid rgba(120,160,220,0.15);display:flex;align-items:center;gap:9px;flex-wrap:nowrap;flex-shrink:0;overflow-x:auto;}
 .topbar-title{font-family:var(--f-display);font-size:15px;font-weight:600;color:#fff;flex:0 0 auto;letter-spacing:-0.01em;}
 .result-count{font-size:11px;color:rgba(255,255,255,0.55);font-variant-numeric:tabular-nums;}
-.search-wrap{flex:1;position:relative;min-width:150px;max-width:420px;}
+.search-wrap{flex:1 1 200px;position:relative;min-width:160px;max-width:280px;}
 .search-wrap input{width:100%;padding:8px 10px 8px 32px;border:1px solid rgba(94,205,146,0.28);border-radius:8px;font-size:13px;background:rgba(94,205,146,0.09);color:#fff;font-family:var(--f-ui);transition:border-color .15s,background .15s;}
 .search-wrap input::placeholder{color:rgba(255,255,255,0.45);}
 .search-wrap input:focus{outline:none;border-color:rgba(94,205,146,0.65);background:rgba(94,205,146,0.15);box-shadow:none;}
 .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.5);pointer-events:none;}
-.filter-row{display:flex;gap:7px;flex-wrap:wrap;}
-.filter-row select{padding:6px 9px;border:1px solid rgba(255,255,255,0.22);border-radius:7px;font-size:12px;background:transparent;color:#fff;cursor:pointer;font-family:var(--f-ui);transition:border-color .15s;}
+.filter-row{display:flex;gap:6px;flex-wrap:nowrap;flex:1 1 auto;justify-content:flex-end;}
+.filter-row select{max-width:150px;padding:6px 9px;border:1px solid rgba(255,255,255,0.22);border-radius:7px;font-size:12px;background:transparent;color:#fff;cursor:pointer;font-family:var(--f-ui);transition:border-color .15s;}
 .filter-row select:hover{border-color:rgba(255,255,255,0.4);}
 .filter-row select:focus{outline:none;border-color:rgba(94,205,146,0.6);box-shadow:none;}
 .filter-row select option{background:var(--bosque-2);color:#fff;}
@@ -223,7 +261,7 @@ button{font-family:var(--f-ui);}
 
 /* Fichas de fallo */
 .caso-card{background:var(--carta);border-radius:var(--radio);border:1px solid var(--filo);display:flex;overflow:hidden;cursor:pointer;transition:border-color .16s,box-shadow .16s,transform .16s;}
-.caso-card:hover{border-color:#c6d6c9;box-shadow:var(--sombra-1);transform:translateY(-1px);}
+.caso-card:hover{border-color:#c9d3e0;box-shadow:var(--sombra-1);transform:translateY(-1px);}
 .caso-card.active{border-color:var(--sello);box-shadow:var(--sombra-2);transform:none;}
 .caso-accent{width:4px;flex-shrink:0;}
 .caso-accent-favorable{background:var(--ok);}
@@ -361,6 +399,11 @@ button{font-family:var(--f-ui);}
 /* Chip de asignación de eventos */
 .asig-chip{font-size:10px;font-weight:600;background:var(--info-bg);color:var(--info);border-radius:4px;padding:2px 7px;white-space:nowrap;flex-shrink:0;}
 .venc-date small{display:block;font-weight:500;color:inherit;opacity:0.75;}
+.dias-pill{display:block;font-family:var(--f-ui);font-size:9.5px;font-weight:700;letter-spacing:.02em;margin-top:3px;padding:1px 0;border-radius:5px;text-transform:none;opacity:.95;}
+.dias-pill.hoy{color:#fff;background:var(--sello);padding:1px 6px;}
+.dias-pill.pronto{color:var(--warn);}
+.dias-pill.vencido{color:var(--mal);}
+.dias-pill.lejos{color:var(--tinta-suave);opacity:.7;font-weight:600;}
 
 /* ══ Móvil: teléfono en vertical ══ */
 @media (max-width:700px){
@@ -503,7 +546,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .exp-toolbar .jur-toggle{border-color:var(--filo);background:#fff;}
 .exp-toolbar .jur-btn{color:var(--tinta-suave);}
 .exp-toolbar .jur-btn.active{background:var(--sello);color:#fff;}
-.exp-toolbar .filter-row select{background:#fff;border:1px solid var(--filo);color:var(--tinta);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit;}
+.exp-toolbar .filter-row select{max-width:150px;background:#fff;border:1px solid var(--filo);color:var(--tinta);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit;}
 
 /* ══ Jurisprudencia: buscador con contraste y mejor aprovechamiento del ancho ══ */
 .topbar .search-wrap input{background:#fff;border-color:#fff;color:var(--tinta);}
@@ -552,6 +595,139 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .exp-adj-add:hover{background:#dcebdf;}
 .exp-adj-status{font-size:11.5px;color:#c07030;min-height:16px;margin-top:4px;}
 
+/* ══════════════════ MÓDULO CRM ══════════════════ */
+:root{
+  --crm-verde:#1e7a48; --crm-verde-bg:#e6f3ec;
+  --crm-rojo:#b3372a; --crm-rojo-bg:#fde8e6;
+  --crm-ambar:#8a5f00; --crm-ambar-bg:#fff3bf;
+  --crm-azul:#1c5d8f; --crm-azul-bg:#e8eff6;
+}
+.crm-mini-wrap{margin-top:2px}
+.crm-mini{font-size:12px;color:var(--tinta-suave)}
+.crm-toolbar{display:flex;gap:9px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.crm-search{flex:1;min-width:200px;position:relative}
+.crm-search input{width:100%;padding:10px 13px;border:1px solid var(--filo);border-radius:9px;font-size:13px;font-family:inherit;background:var(--carta)}
+.crm-toolbar select{padding:10px 12px;border:1px solid var(--filo);border-radius:9px;font-size:12.5px;font-family:inherit;background:var(--carta);color:var(--tinta)}
+.crm-orden{font-weight:600;border-color:var(--sello)!important;color:var(--sello)!important}
+.crm-btn-nuevo{background:var(--sello);border:none;color:#fff;border-radius:9px;padding:10px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.crm-btn-nuevo:hover{background:var(--sello-osc)}
+.crm-lista{display:flex;flex-direction:column;gap:9px}
+.crm-row{background:var(--carta);border:1px solid var(--filo);border-radius:11px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:8px 16px;cursor:pointer;transition:.13s;align-items:center}
+.crm-row:hover{border-color:var(--sello);box-shadow:0 3px 14px rgba(30,107,69,.1)}
+.crm-main{min-width:0}
+.crm-nombre{font-size:14px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;text-transform:uppercase;letter-spacing:.02em}
+.crm-ent{border-left:3px solid #c9a961;padding-left:9px;color:var(--tinta);line-height:1.3}
+.crm-sub{font-size:12px;color:var(--tinta-suave);display:flex;gap:14px;flex-wrap:wrap}
+.crm-sub b{color:var(--tinta);font-weight:600}
+.crm-nota{font-size:12px;color:var(--tinta-suave);margin-top:8px;font-style:italic;line-height:1.45;max-width:620px;background:#faf9f4;border-left:3px solid var(--laurel);padding:7px 11px;border-radius:0 6px 6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.crm-nota b{font-style:normal;color:var(--sello)}
+.crm-chips{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.cchip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.03em}
+.cchip.pack{background:var(--crm-azul-bg);color:var(--crm-azul);border:1px solid #cfe0f0}
+.cchip.pack-fin{background:#eef1ec;color:#7a8578}
+.cchip.doc-si{background:var(--crm-rojo-bg);color:var(--crm-rojo)}
+.crm-row .tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.crm-row .tag.ac{background:var(--crm-verde-bg);color:var(--crm-verde)}
+.crm-row .tag.sas{background:var(--crm-azul-bg);color:var(--crm-azul)}
+.crm-row .tag.coop{background:#f3ecdb;color:#8a6d1f}
+.crm-row .tag.pf{background:#efe8f3;color:#6b4a8a}
+.crm-row .tag.nocontactar{background:var(--crm-rojo-bg);color:var(--crm-rojo)}
+.crm-row .tag.excliente{background:#eef1ec;color:#7a8578}
+.crm-nombre .tag-enc{font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;background:#f8f1de;color:#8a6d1f;border:1px solid #e6d3a0}
+.crm-nombre .tag-enc.vacia{background:#f4f2ec;color:#a89a7a;border:1px dashed #d8cdb0}
+.crm-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right;white-space:nowrap}
+.crm-right .repro{font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px}
+.crm-right .repro .dot{width:8px;height:8px;border-radius:99px;display:inline-block}
+.crm-right .repro.ok .dot{background:var(--crm-verde)}.crm-right .repro.ok{color:var(--crm-verde)}
+.crm-right .repro.tram .dot{background:var(--crm-ambar)}.crm-right .repro.tram{color:var(--crm-ambar)}
+.crm-right .repro.no .dot{background:#bbb}.crm-right .repro.no{color:#999}
+.crm-right .repro.ini .dot{background:#7d94b5}.crm-right .repro.ini{color:#5f7290}
+.crm-alerta.ini{background:#eef1f6;border:1px solid #d2dae8}.crm-alerta.ini .a-lbl,.crm-alerta.ini b{color:#4a5b78}
+.crm-right .ult{font-size:11px;color:var(--tinta-suave)}.crm-right .ult b{color:var(--tinta)}
+.crm-prox{font-size:11px;font-weight:600;color:var(--crm-azul);background:var(--crm-azul-bg);padding:2px 8px;border-radius:5px}
+.crm-prox.vencido{color:var(--crm-rojo);background:var(--crm-rojo-bg)}
+@media(max-width:700px){
+  .crm-row{grid-template-columns:1fr}
+  .crm-right{align-items:flex-start;text-align:left;flex-direction:row;flex-wrap:wrap;gap:8px}
+}
+/* Formulario de alta (modal) */
+.crm-modal-ov{position:fixed;inset:0;background:rgba(16,28,20,.5);display:none;align-items:flex-start;justify-content:center;padding:34px 18px;overflow-y:auto;z-index:60}
+.crm-modal-ov.on{display:flex}
+.crm-modal{background:var(--papel);border-radius:16px;max-width:720px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);overflow:hidden}
+.crm-modal-cab{background:linear-gradient(100deg,var(--bosque-2),var(--bosque));color:#fff;padding:20px 26px;position:relative}
+.crm-modal-cab h2{margin:0;font-size:19px}
+.crm-modal-cab .sub{font-size:12px;color:rgba(255,255,255,.72);margin-top:4px}
+.crm-modal-x{position:absolute;top:18px;right:20px;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer}
+.crm-modal-body{padding:22px 26px}
+.crm-fsec{margin-bottom:20px}
+.crm-fsec-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sello);border-bottom:2px solid var(--sello);display:inline-block;padding-bottom:3px;margin-bottom:12px}
+.crm-fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.crm-fgrid .full{grid-column:1/-1}
+.crm-fld label{display:block;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--tinta-suave);margin-bottom:4px}
+.crm-fld input,.crm-fld select,.crm-fld textarea{width:100%;padding:9px 11px;border:1px solid var(--filo);border-radius:8px;font-size:13px;font-family:inherit;background:var(--carta)}
+.crm-fld textarea{resize:vertical;min-height:64px}
+.crm-modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid var(--filo)}
+.crm-btn-cancelar{background:var(--carta);border:1px solid var(--filo);color:var(--tinta-suave);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.crm-btn-guardar{background:var(--sello);border:none;color:#fff;border-radius:9px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* ══ CRM ficha del cliente ══ */
+.crm-ficha{max-width:760px}
+.crm-alertas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.crm-alerta{flex:1;min-width:150px;border-radius:10px;padding:11px 14px;font-size:12.5px}
+.crm-alerta .a-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:3px}
+.crm-alerta b{font-size:14px}
+.crm-alerta.rojo{background:var(--crm-rojo-bg);border:1px solid #e6b8b8}.crm-alerta.rojo .a-lbl,.crm-alerta.rojo b{color:var(--crm-rojo)}
+.crm-alerta.ambar{background:var(--crm-ambar-bg);border:1px solid #e8d26a}.crm-alerta.ambar .a-lbl,.crm-alerta.ambar b{color:var(--crm-ambar)}
+.crm-alerta.verde{background:var(--crm-verde-bg);border:1px solid #b8d6c2}.crm-alerta.verde .a-lbl,.crm-alerta.verde b{color:var(--crm-verde)}
+.acc{border:1px solid var(--filo);border-radius:11px;margin-bottom:10px;background:var(--carta);overflow:hidden}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;gap:10px}
+.acc-head:hover{background:#fbfaf6}
+.acc-title{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.acc-title .chev{transition:transform .18s;color:var(--sello);font-size:12px}
+.acc.open .chev{transform:rotate(90deg)}
+.acc-resumen{font-size:11.5px;color:var(--tinta-suave);font-weight:400}
+.acc-editbtn{background:var(--carta);border:1px solid var(--filo);border-radius:7px;padding:4px 10px;font-size:12px;font-weight:600;color:var(--sello);cursor:pointer;font-family:inherit}
+.acc-editbtn:hover{background:var(--laurel)}
+.acc-body{display:none;padding:0 16px 16px}
+.acc.open .acc-body{display:block}
+.crm-datos{display:grid;grid-template-columns:1fr 1fr;gap:9px 22px}
+.crm-dato{font-size:13px}.crm-dato span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--tinta-suave);margin-bottom:1px}.crm-dato b{font-weight:600}
+.crm-dato a{color:var(--crm-azul);text-decoration:none}
+.crm-lista-items{display:flex;flex-direction:column;gap:5px;background:#fbfaf6;border:1px solid var(--filo);border-radius:9px;padding:11px 13px}
+.crm-item-linea{display:flex;align-items:center;gap:9px;font-size:12.5px}
+.crm-item-linea.ok{color:var(--crm-verde)}.crm-item-linea.pend{color:var(--crm-rojo);font-weight:600}
+.crm-item-fecha{margin-left:auto;font-size:11px;color:var(--tinta-suave);font-weight:400}
+.crm-item-edit{display:flex;gap:7px;align-items:center;margin-bottom:7px;flex-wrap:wrap}
+.crm-item-edit input,.crm-item-edit select{padding:7px 9px;border:1px solid var(--filo);border-radius:7px;font-size:12px;font-family:inherit;background:var(--carta);min-width:0}
+.crm-item-del{background:var(--carta);border:1px solid var(--filo);color:var(--crm-rojo);border-radius:6px;cursor:pointer;padding:6px 9px;font-size:12px;flex:0 0 auto}
+.crm-item-del:hover{background:var(--crm-rojo-bg)}
+.crm-add-fila{background:var(--laurel);border:1px dashed var(--sello);color:var(--sello);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.crm-serv-label{font-size:11px;font-weight:600;color:var(--tinta-suave);margin:12px 0 8px}
+.crm-tabla{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--carta);border:1px solid var(--filo);border-radius:8px;overflow:hidden}
+.crm-tabla th{background:var(--bosque);color:#e8efe9;text-align:left;padding:7px 11px;font-size:10px;text-transform:uppercase}
+.crm-tabla td{padding:8px 11px;border-bottom:1px solid var(--filo-suave)}.crm-tabla tr:last-child td{border-bottom:none}
+.crm-tabla .r{text-align:right}.crm-pago-total{background:var(--laurel);font-weight:700}
+.crm-bita{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--filo-suave)}.crm-bita:last-child{border-bottom:none}
+.crm-bita-fecha{font-size:11px;color:var(--tinta-suave);font-weight:600;white-space:nowrap;flex:0 0 78px}
+.crm-bita-nota{font-size:12.5px;line-height:1.5}
+.crm-obs{background:#fbfaf6;border:1px solid var(--filo);border-radius:9px;padding:12px 14px;font-size:12.5px;line-height:1.5;color:var(--tinta-suave)}
+.crm-obs-edit{width:100%;min-height:90px;padding:11px 13px;border:1px solid var(--filo);border-radius:9px;font-size:12.5px;font-family:inherit;line-height:1.5;resize:vertical;background:var(--carta)}
+.crm-vacio{font-size:12px;color:var(--tinta-suave);font-style:italic;padding:6px 0}
+.crm-editor{background:var(--carta);border:1px dashed var(--sello);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.crm-editor-t{font-size:11px;font-weight:700;color:var(--sello);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.crm-editor-note{font-size:11.5px;color:var(--tinta-suave);margin-bottom:10px;font-style:italic}
+.crm-editor-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.crm-editor-row input{padding:8px 10px;border:1px solid var(--filo);border-radius:7px;font-size:12.5px;font-family:inherit}
+.crm-sec-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.crm-prox-box{background:var(--crm-azul-bg);border:1px solid #b8d0e6;border-radius:10px;padding:13px 15px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.crm-prox-box .fecha{font-size:15px;font-weight:800;color:var(--crm-azul)}
+.crm-prox-box.venc{background:var(--crm-rojo-bg);border-color:#e6b8b8}.crm-prox-box.venc .fecha{color:var(--crm-rojo)}
+.crm-prox-box .lbl{font-size:10px;color:var(--tinta-suave);text-transform:uppercase;letter-spacing:.05em}
+.crm-btn-cal{background:var(--carta);border:1px solid var(--crm-azul);color:var(--crm-azul);border-radius:8px;padding:8px 12px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.crm-ficha-foot{margin-top:8px;padding-top:16px;border-top:1px solid var(--filo);display:flex;justify-content:flex-end}
+.crm-btn-eliminar{background:var(--carta);border:1px solid #e6b8b8;color:var(--crm-rojo);border-radius:9px;padding:9px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.crm-btn-eliminar:hover{background:var(--crm-rojo-bg)}
+
 </style>
 </head>
 <body>
@@ -568,6 +744,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
   </div>
@@ -621,15 +798,6 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <input type="text" id="searchInput" placeholder='Buscar por texto, "juzgado 12", norma, argumento…' oninput="renderCasos()">
       </div>
       <div class="filter-row">
-        <select id="filtTema" onchange="renderCasos()">
-          <option value="">Todos los temas</option>
-          <option>INASE / RNCyFS</option><option>REPROCANN</option><option>ARICCAME</option>
-          <option>Tenencia</option><option>Laboral</option><option>Otro</option>
-        </select>
-        <select id="filtResult" onchange="renderCasos()">
-          <option value="">Todos los resultados</option>
-          <option>Favorable</option><option>Parcial</option><option>Desfavorable</option>
-        </select>
         <select id="filtInstancia" onchange="renderCasos()">
           <option value="">Todas las instancias</option>
           <option value="primera">1ª instancia</option>
@@ -674,6 +842,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
   </div>
@@ -682,8 +851,8 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="jur-btn active" id="btn-caba" onclick="setModuloExp('expedientes-caba')">CABA</button>
       <button class="jur-btn" id="btn-pba" onclick="setModuloExp('expedientes-pba')">PBA</button>
     </div>
-    <div style="flex:1"></div>
-    <div class="search-wrap" style="max-width:340px;flex:1">
+    <div style="flex:0 0 8px"></div>
+    <div class="search-wrap" style="max-width:640px;flex:2.5">
       <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="searchExpedientes" type="text" placeholder="Buscar por carátula o expediente…" oninput="renderExpedientes()">
     </div>
@@ -741,6 +910,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
     <div class="ribbon-right">
@@ -795,6 +965,10 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
             <div class="panel-h"><h3>Oficios sin contestar</h3><span class="mini" id="ofiMini"></span></div>
             <div id="inicioOficios"></div>
           </div>
+          <div class="panel">
+            <div class="panel-h"><h3>Clientes a contactar</h3><span class="mini" id="crmContactarMini"></span></div>
+            <div id="inicioContactar"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -815,6 +989,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
   </div>
@@ -891,6 +1066,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
   </div>
@@ -955,22 +1131,25 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               <div class="f-col"><label>Fecha de despido</label><input type="date" id="lqEgreso"></div>
               <div class="f-col"><label>Mejor remuneración mensual, normal y habitual ($)</label><input type="text" inputmode="decimal" id="lqRemu" oninput="fmtMiles(this)" placeholder="Ej: 1.200.000"></div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px 20px">
-              <label class="check-row"><input type="checkbox" id="lqDiasTrab" checked> Días trabajados del mes del despido (salario)</label>
-              <label class="check-row"><input type="checkbox" id="lqAdeudados" onchange="toggleAdeudados()"> Salarios adeudados de meses anteriores <span class="nota">Se calculan con la última remuneración (art. 208 LCT).</span></label>
-              <div id="lqAdeudadosBox" style="display:none;padding:6px 0 4px 22px">
-                <div class="f-col" style="flex:0 0 220px"><label>¿Cuántos meses adeuda?</label>
-                  <select id="lqAdeudadosMeses" onchange="renderAdeudadosMeses()">
-                    <option value="1">1 mes</option><option value="2">2 meses</option><option value="3">3 meses</option>
-                    <option value="4">4 meses</option><option value="5">5 meses</option><option value="6">6 meses</option>
-                  </select>
+            <div class="lq-rubros-t">Rubros a incluir en la liquidación</div>
+            <div class="lq-rubros">
+              <label class="lq-rubro"><input type="checkbox" id="lqDiasTrab" checked><span class="tx"><b>Días trabajados del mes del despido</b><small>Salario proporcional del último mes.</small></span></label>
+              <div class="lq-rubro-wrap">
+                <label class="lq-rubro"><input type="checkbox" id="lqAdeudados" onchange="toggleAdeudados()"><span class="tx"><b>Salarios adeudados de meses anteriores</b><small>Se calculan con la última remuneración (art. 208 LCT).</small></span></label>
+                <div id="lqAdeudadosBox" style="display:none;padding:2px 2px 2px 4px">
+                  <div class="f-col" style="flex:0 0 220px"><label>¿Cuántos meses adeuda?</label>
+                    <select id="lqAdeudadosMeses" onchange="renderAdeudadosMeses()">
+                      <option value="1">1 mes</option><option value="2">2 meses</option><option value="3">3 meses</option>
+                      <option value="4">4 meses</option><option value="5">5 meses</option><option value="6">6 meses</option>
+                    </select>
+                  </div>
+                  <div id="lqAdeudadosLista" style="margin-top:4px;font-size:12px;color:var(--tinta-suave)"></div>
                 </div>
-                <div id="lqAdeudadosLista" style="margin-top:4px;font-size:12px;color:var(--tinta-suave)"></div>
               </div>
-              <label class="check-row"><input type="checkbox" id="lqPreaviso" checked> Preaviso omitido (art. 232 LCT)</label>
-              <label class="check-row"><input type="checkbox" id="lqIntegracion" checked> Integración del mes de despido (art. 233 LCT)</label>
-              <label class="check-row"><input type="checkbox" id="lqSac" checked> SAC sobre preaviso, integración y vacaciones</label>
-              <label class="check-row"><input type="checkbox" id="lqArt2"> Art. 2 Ley 25.323 (+50 %) <span class="nota">Solo despidos anteriores al 09/07/2024 — derogado por Ley 27.742 (Bases).</span></label>
+              <label class="lq-rubro"><input type="checkbox" id="lqPreaviso" checked><span class="tx"><b>Preaviso omitido</b><small>Art. 232 LCT — según antigüedad.</small></span></label>
+              <label class="lq-rubro"><input type="checkbox" id="lqIntegracion" checked><span class="tx"><b>Integración del mes de despido</b><small>Art. 233 LCT — días restantes del mes.</small></span></label>
+              <label class="lq-rubro"><input type="checkbox" id="lqSac" checked><span class="tx"><b>SAC sobre rubros indemnizatorios</b><small>Sobre preaviso, integración y vacaciones.</small></span></label>
+              <label class="lq-rubro"><input type="checkbox" id="lqArt2"><span class="tx"><b>Art. 2 Ley 25.323 (+50 %)</b><small>Solo despidos anteriores al 09/07/2024 — derogado por Ley 27.742 (Bases).</small></span></label>
             </div>
             <button class="btn-primary" style="margin-top:8px" onclick="calcularLiquidacion()">Calcular liquidación</button>
             <button class="btn-ghost" style="margin-top:8px;margin-left:8px" onclick="resetLiquidacion()" title="Vuelve todos los campos a cero">↺ Reiniciar</button>
@@ -1061,6 +1240,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
       <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
   </div>
@@ -1085,7 +1265,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel-b">
           <div class="f-row" style="align-items:end">
             <div class="f-col" style="flex:0 0 145px"><label>Fecha</label><input type="date" id="cjFecha"></div>
-            <div class="f-col" style="flex:1;min-width:150px"><label>Cliente</label><input id="cjCliente" placeholder="Flores de Abril" list="clientesList"></div>
+            <div class="f-col" style="flex:1;min-width:150px;position:relative"><label>Cliente</label><input id="cjCliente" placeholder="Flores de Abril" autocomplete="off" oninput="cjSugRender()" onfocus="cjSugRender()" onkeydown="cjSugTecla(event)"><div id="cjSugBox" class="cj-sug" style="display:none"></div></div>
             <div class="f-col" style="flex:1.4;min-width:190px"><label>Concepto / servicio</label><input id="cjConcepto" placeholder="Segunda cuota amparo"></div>
             <div class="f-col" style="flex:0 0 140px"><label>Monto</label><input type="text" inputmode="decimal" id="cjMonto" oninput="fmtMiles(this)" placeholder="850.000"></div>
             <div class="f-col" style="flex:0 0 95px"><label>Moneda</label>
@@ -1166,6 +1346,89 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
     <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')intentarLogin()">
     <button class="btn-primary" style="width:100%;margin-top:16px;justify-content:center" onclick="intentarLogin()">INGRESAR</button>
     <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════ PÁGINA CRM ═══════════ -->
+<div id="paginaCRM" class="page-shell">
+  <div class="ribbon">
+    <div>
+      <div class="ribbon-brand" onclick="navTo('inicio')">Juris<em>Cannabis</em></div>
+      <div class="ribbon-sub">Estudio WE Legal</div>
+    </div>
+    <div class="ribbon-sep"></div>
+    <nav class="ribbon-nav" data-navbar>
+      <button class="pill-nav" data-nav="inicio" onclick="navTo('inicio')">🏠 Inicio</button>
+      <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
+      <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
+      <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
+      <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="page-head">
+        <div class="hero-eyebrow">Clientes del estudio</div>
+        <h1 class="hero-title">CRM · <em>historia de cada cliente</em></h1>
+        <div class="doble-filete"></div>
+        <div class="crm-mini-wrap"><span id="crmMini" class="crm-mini"></span></div>
+      </div>
+
+      <!-- Toolbar: búsqueda + filtros + orden + nuevo -->
+      <div class="crm-toolbar">
+        <div class="crm-search">
+          <input id="crmBuscar" placeholder="Buscar cliente por nombre…" oninput="crmSetFiltro('texto', this.value)">
+        </div>
+        <select id="crmFiltroTipo" onchange="crmSetFiltro('tipo', this.value)">
+          <option value="">Todos los tipos</option>
+          <option value="AC">Asociación Civil</option>
+          <option value="Sociedad">Sociedad</option>
+          <option value="Cooperativa">Cooperativa</option>
+          <option value="Persona fisica">Persona física</option>
+        </select>
+        <select id="crmFiltroEncargada" onchange="crmSetFiltro('encargada', this.value)">
+          <option value="">Toda encargada</option>
+        </select>
+        <select id="crmFiltroRepro" onchange="crmSetFiltro('repro', this.value)">
+          <option value="">REPROCANN: todos</option>
+          <option value="aprobado">Aprobado</option>
+          <option value="en_tramite">En trámite</option>
+          <option value="no_iniciado">Sin iniciar</option>
+          <option value="no_aplica">No aplica</option>
+          <option value="rechazado">Rechazado</option>
+        </select>
+        <select id="crmFiltroPack" onchange="crmSetFiltro('pack', this.value)">
+          <option value="">Pack: todos</option>
+          <option value="PS">PS</option>
+          <option value="PF">PF</option>
+          <option value="PFCS">PFCS</option>
+          <option value="AM">AM</option>
+        </select>
+        <select id="crmFiltroSituacion" onchange="crmSetFiltro('situacion', this.value)">
+          <option value="">Situación: todas</option>
+          <option value="vigente">Vigente</option>
+          <option value="finalizado">Finalizado</option>
+        </select>
+        <select id="crmFiltroDoc" onchange="crmSetFiltro('doc', this.value)">
+          <option value="">Doc. pendiente: todos</option>
+          <option value="si">Con pendiente</option>
+          <option value="no">Sin pendiente</option>
+        </select>
+        <select id="crmOrden" class="crm-orden" onchange="crmSetFiltro('orden', this.value)">
+          <option value="proximo">⇅ Próximos a contactar</option>
+          <option value="nombre">Nombre (A-Z)</option>
+          <option value="ultimo">Último contacto</option>
+        </select>
+        <button class="crm-btn-nuevo" onclick="abrirNuevoCliente()">+ Nuevo cliente</button>
+      </div>
+
+      <!-- Listado -->
+      <div id="crmLista" class="crm-lista"></div>
+
+    </div>
   </div>
 </div>
 
@@ -1262,10 +1525,10 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
     <h2 id="modalTitle">Agregar fallo</h2>
     <div class="form-grid">
       <!-- Botón carga desde PDF -->
-      <div class="full" style="grid-column:1/-1;background:#e6f3ec;border:1.5px dashed #1e6b45;border-radius:9px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="document.getElementById('pdfAutoInput').click()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1e6b45" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      <div class="full" style="grid-column:1/-1;background:#e6eef8;border:1.5px dashed #1b3a6b;border-radius:9px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="document.getElementById('pdfAutoInput').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1b3a6b" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
         <div>
-          <div style="font-size:13px;font-weight:600;color:#164f33">Completar automáticamente desde PDF</div>
+          <div style="font-size:13px;font-weight:600;color:#12294d">Completar automáticamente desde PDF</div>
           <div style="font-size:11px;color:#4a8563;margin-top:2px">Subí el PDF del fallo y Claude completa todos los campos solo</div>
         </div>
         <div id="pdfAutoStatus" style="margin-left:auto;font-size:12px;color:#4a8563"></div>
@@ -1612,18 +1875,21 @@ function setView(v) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const el = document.getElementById('nav-'+v);
   if (el) el.classList.add('active');
-  document.getElementById('filtTema').value = '';
-  document.getElementById('filtResult').value = '';
+  __temaActivo = '';
+  { const _r = document.getElementById('filtResult'); if (_r) _r.value = ''; }
   const t = {todos:'Todos los fallos',favorables:'Favorables',parciales:'Parciales',desfavorables:'Desfavorables'};
   document.getElementById('topbarTitle').textContent = t[v] || v;
   renderCasos();
 }
 
+var __temaActivo = '';
 function filterByTema(t) {
   vistaActual = 'todos';
+  // toggle: si vuelvo a tocar el mismo tema, lo deselecciono
+  __temaActivo = (__temaActivo === t) ? '' : t;
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.getElementById('filtTema').value = t;
-  document.getElementById('topbarTitle').textContent = t;
+  if (__temaActivo && event && event.currentTarget) event.currentTarget.classList.add('active');
+  document.getElementById('topbarTitle').textContent = __temaActivo || 'Todos los fallos';
   renderCasos();
 }
 
@@ -1640,8 +1906,8 @@ function resultadoEfectivo(c) {
 
 function getFiltered() {
   const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
-  const ft = document.getElementById('filtTema').value;
-  const fr = document.getElementById('filtResult').value;
+  const ft = __temaActivo || '';
+  const _fr = document.getElementById('filtResult'); const fr = _fr ? _fr.value : '';
   const fi = document.getElementById('filtInstancia').value;
   const fs = document.getElementById('filtSala').value;
   const fj = document.getElementById('filtJuzgado').value;
@@ -1752,9 +2018,9 @@ function renderCasos() {
 function renderPar(primera, camara) {
   // El color del acento izquierdo de AMBAS cards viene del resultado de Cámara
   const resultadoCamara = (camara.resultado||'').toLowerCase();
-  const colorAcento = resultadoCamara === 'favorable' ? '#1e6b45' : resultadoCamara === 'desfavorable' ? '#b3372a' : '#a86e17';
+  const colorAcento = resultadoCamara === 'favorable' ? '#1e7a48' : resultadoCamara === 'desfavorable' ? '#b3372a' : '#a86e17';
   const labelCamara = resultadoCamara === 'favorable' ? 'CONFIRMADO EN CÁMARA' : resultadoCamara === 'desfavorable' ? 'REVOCADO EN CÁMARA' : 'MODIFICADO EN CÁMARA';
-  const colorLabel = resultadoCamara === 'favorable' ? '#164f33' : resultadoCamara === 'desfavorable' ? '#7f2020' : '#8a5f00';
+  const colorLabel = resultadoCamara === 'favorable' ? '#12294d' : resultadoCamara === 'desfavorable' ? '#7f2020' : '#8a5f00';
   const bgLabel = resultadoCamara === 'favorable' ? '#d4edda' : resultadoCamara === 'desfavorable' ? '#fde8e6' : '#fef3cd';
 
   return `
@@ -1774,7 +2040,7 @@ function renderCard(c, enPar, colorAcentoOverride, extraStyle) {
   const trib = c.tribunal ? c.tribunal.split(' — ')[0] : '';
   const juez = c.tribunal && c.tribunal.includes(' — ') ? c.tribunal.split(' — ')[1] : '';
   const acento = (c.resultado||'').toLowerCase();
-  const colorAccent = colorAcentoOverride || (acento === 'favorable' ? '#1e6b45' : acento === 'desfavorable' ? '#b3372a' : '#a86e17');
+  const colorAccent = colorAcentoOverride || (acento === 'favorable' ? '#1e7a48' : acento === 'desfavorable' ? '#b3372a' : '#a86e17');
   const esSegunda = c.instancia === 'segunda';
   const esCSJN = c.instancia === 'csjn';
 
@@ -1817,7 +2083,7 @@ function renderCard(c, enPar, colorAcentoOverride, extraStyle) {
     <div class="caso-body">
       <div class="caso-card-top">
         <div style="flex:1;min-width:0">
-          <div class="caso-caratula">${c.caratula}${hasPdf?' <span style="font-size:11px;color:#1e6b45" title="PDF adjunto">📎</span>':''}</div>
+          <div class="caso-caratula">${c.caratula}${hasPdf?' <span style="font-size:11px;color:#1b3a6b" title="PDF adjunto">📎</span>':''}</div>
           ${c.objeto?`<div class="caso-objeto">${c.objeto}</div>`:''}
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;min-width:95px">
@@ -2061,7 +2327,7 @@ function mostrarModalVinculo(obj, primeros) {
   const cont = document.getElementById('vinculoOpciones');
   cont.innerHTML = primeros.map(c => `
     <div style="border:0.5px solid #e4e0d8;border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.15s"
-         onmouseover="this.style.borderColor='#1e6b45'" onmouseout="this.style.borderColor='#e4e0d8'"
+         onmouseover="this.style.borderColor='#1b3a6b'" onmouseout="this.style.borderColor='#e4e0d8'"
          onclick="confirmarVinculo(${c.id})">
       <div style="font-size:13px;font-weight:600;color:#1a1a14;margin-bottom:2px">${c.caratula}</div>
       <div style="font-size:11px;color:#6a6858">${c.expediente} · ${c.tribunal}</div>
@@ -2380,7 +2646,7 @@ async function procesarPdfAuto(input) {
     } else { detectarInstancia(); }
 
     window._pdfAutoData = { name: file.name, data: base64data, file: file };
-    status.innerHTML = '<span style="color:#164f33">✓ Completado — revisá y guardá</span>';
+    status.innerHTML = '<span style="color:#12294d">✓ Completado — revisá y guardá</span>';
 
   } catch(e) {
     console.error(e);
@@ -2416,9 +2682,9 @@ async function generarResumenPDF(id) {
   const htmlResumen = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Resumen — ${exp.caratula}</title>
 <style>
   body { font-family: Georgia, serif; max-width: 780px; margin: 40px auto; padding: 0 30px; color: #1a1a14; line-height: 1.9; }
-  h1 { font-size: 17px; font-weight: 700; color: #0c1f16; border-bottom: 2px solid #0c1f16; padding-bottom: 8px; margin-bottom: 4px; }
+  h1 { font-size: 17px; font-weight: 700; color: #0a1626; border-bottom: 2px solid #0a1626; padding-bottom: 8px; margin-bottom: 4px; }
   .meta { font-size: 12px; color: #6a6858; margin-bottom: 32px; }
-  .seccion-titulo { font-size: 11px; font-weight: 700; color: #1e6b45; margin-top: 32px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #e4e0d8; padding-bottom: 4px; }
+  .seccion-titulo { font-size: 11px; font-weight: 700; color: #1b3a6b; margin-top: 32px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #e4e0d8; padding-bottom: 4px; }
   p { font-size: 13px; margin: 0 0 14px; text-align: justify; }
   .footer { margin-top: 48px; font-size: 11px; color: #aaa; border-top: 1px solid #e4e0d8; padding-top: 10px; }
   @media print { body { margin: 20px; } }
@@ -3180,6 +3446,25 @@ function formatFechaCorta(str) {
   return `${d}/${m}/${y}`;
 }
 
+// Días entre hoy y una fecha ISO → {txt, cls}
+function diasRest(iso) {
+  if (!iso) return null;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const p = iso.split('-'); if (p.length !== 3) return null;
+  const f = new Date(Number(p[0]), Number(p[1])-1, Number(p[2])); f.setHours(0,0,0,0);
+  const dias = Math.round((f - hoy) / 86400000);
+  if (dias === 0) return { txt: 'hoy', cls: 'hoy' };
+  if (dias === 1) return { txt: 'mañana', cls: 'pronto' };
+  if (dias === -1) return { txt: 'ayer', cls: 'vencido' };
+  if (dias > 1) return { txt: 'en ' + dias + ' días', cls: dias <= 7 ? 'pronto' : 'lejos' };
+  return { txt: 'hace ' + Math.abs(dias) + ' días', cls: 'vencido' };
+}
+function pillDias(iso) {
+  const d = diasRest(iso);
+  if (!d) return '';
+  return `<span class="dias-pill ${d.cls}">${d.txt}</span>`;
+}
+
 // ── Render lista de expedientes ──
 function renderExpedientes() {
   const grid = document.getElementById('expedientesGrid');
@@ -3368,7 +3653,7 @@ function renderCausaDetalle(exp) {
 
   (exp.partes||[]).forEach((parte, pi) => {
     const esNosotros = parte.somos_nosotros;
-    const bgHeader = esNosotros ? '#0c1f16' : '#f5f3ee';
+    const bgHeader = esNosotros ? '#0a1626' : '#f5f3ee';
     const colHeader = esNosotros ? '#fff' : '#3a3a2e';
 
     html += `<div style="margin-bottom:20px;border:1px solid #e4e0d8;border-radius:10px;overflow:hidden">
@@ -3559,7 +3844,7 @@ function renderCausaDetalle(exp) {
   });
 
   html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-    <button data-resumen-id="${exp.id}" onclick="generarResumenPDF(${exp.id})" style="font-size:12px;background:#0c1f16;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px">
+    <button data-resumen-id="${exp.id}" onclick="generarResumenPDF(${exp.id})" style="font-size:12px;background:#0a1626;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Ver resumen del expediente
     </button>
@@ -3646,6 +3931,7 @@ function eliminarCausa(id) {
 // ── Init expedientes ──
 loadExpedientes();
 if (typeof loadExpAdj === 'function') loadExpAdj();
+if (typeof loadClientes === 'function') loadClientes();
 
 // ── Override: incluir expedientes en exportar/importar ──
 const _exportarOriginal = exportarDatos;
@@ -3788,11 +4074,11 @@ function filaAExpediente(f) {
 function pagoAFila(p) {
   return { id: p.id, fecha: p.fecha ?? null, cliente: p.cliente ?? null, concepto: p.concepto ?? null,
     monto: p.monto ?? 0, moneda: p.moneda ?? 'ARS', metodo: p.metodo ?? null, receptor: p.receptor ?? null,
-    comision_ori: !!p.comisionOri, revisado: !!p.revisado, adjunto_path: (CAJA_ADJ[p.id] && CAJA_ADJ[p.id].path) || null };
+    comision_ori: !!p.comisionOri, revisado: !!p.revisado, cliente_id: p.clienteId ?? null, adjunto_path: (CAJA_ADJ[p.id] && CAJA_ADJ[p.id].path) || null };
 }
 function filaAPago(f) {
   return { id: f.id, fecha: f.fecha, cliente: f.cliente, concepto: f.concepto, monto: Number(f.monto),
-    moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado };
+    moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado, clienteId: f.cliente_id || null };
 }
 
 
@@ -3807,26 +4093,75 @@ function filaATarea(f) {
     modalidad: f.modalidad || '', link: f.link || '', done: !!f.done };
 }
 
+
+// ── CRM: mapeo cliente ↔ fila Supabase ──
+function clienteAFila(c) {
+  return {
+    id: c.id, entidad: c.entidad || '', tipo: c.tipo || null, estado: c.estado || null,
+    cuit: c.cuit || null, registro: c.registro || null, encargada: c.encargada || null,
+    referente: c.referente || null, telefono: c.telefono || null, mail: c.mail || null,
+    drive_link: c.driveLink || null,
+    repro_tienen: c.reproTienen || null, repro_fecha_sol: c.reproFechaSol || null,
+    repro_3132_fecha: c.repro3132Fecha || null, repro_3132_exp: c.repro3132Exp || null,
+    repro_1780_fecha: c.repro1780Fecha || null, repro_1780_exp: c.repro1780Exp || null,
+    repro_compl_fecha: c.reproComplFecha || null, repro_amparo: !!c.reproAmparo,
+    repro_amparo_fecha: c.reproAmparoFecha || null, repro_aprob_fecha: c.reproAprobFecha || null,
+    pack_tipo: c.packTipo || null, pack_situacion: c.packSituacion || null,
+    pack_estado_txt: c.packEstadoTxt || null, pack_servicios: c.packServicios || [],
+    doc_pendiente: !!c.docPendiente, doc_pendiente_que: c.docPendienteQue || null,
+    reuniones: c.reuniones || [],
+    ultimo_contacto: c.ultimoContacto || null, proximo_contacto: c.proximoContacto || null,
+    proximo_nota: c.proximoNota || null, bitacora: c.bitacora || [],
+    servicios: c.servicios || [], observaciones: c.observaciones || null
+  };
+}
+function filaACliente(f) {
+  return {
+    id: f.id, entidad: f.entidad || '', tipo: f.tipo || 'AC', estado: f.estado || '',
+    cuit: f.cuit || '', registro: f.registro || '', encargada: f.encargada || '',
+    referente: f.referente || '', telefono: f.telefono || '', mail: f.mail || '', driveLink: f.drive_link || '',
+    reproTienen: f.repro_tienen || 'no_aplica', reproFechaSol: f.repro_fecha_sol || '',
+    repro3132Fecha: f.repro_3132_fecha || '', repro3132Exp: f.repro_3132_exp || '',
+    repro1780Fecha: f.repro_1780_fecha || '', repro1780Exp: f.repro_1780_exp || '',
+    reproComplFecha: f.repro_compl_fecha || '', reproAmparo: !!f.repro_amparo,
+    reproAmparoFecha: f.repro_amparo_fecha || '', reproAprobFecha: f.repro_aprob_fecha || '',
+    packTipo: f.pack_tipo || '', packSituacion: f.pack_situacion || 'vigente',
+    packEstadoTxt: f.pack_estado_txt || '', packServicios: f.pack_servicios || [],
+    docPendiente: !!f.doc_pendiente, docPendienteQue: f.doc_pendiente_que || '',
+    reuniones: f.reuniones || [],
+    ultimoContacto: f.ultimo_contacto || '', proximoContacto: f.proximo_contacto || '',
+    proximoNota: f.proximo_nota || '', bitacora: f.bitacora || [],
+    servicios: f.servicios || [], observaciones: f.observaciones || ''
+  };
+}
+function sbPushCliente(c) { if (SB_ON) sbUpsert('clientes', clienteAFila(c)).catch(sbAvisarError); }
+function sbDelCliente(id) { if (SB_ON) sbDelete('clientes', id).catch(sbAvisarError); }
+
 // ── Carga inicial: pisa los stores locales con lo que hay en Supabase ──
 async function sbCargarTodo() {
   if (!SB_ON) return;
   try {
-    const [rCasos, rExp, rCaja, rCfg, rTareas] = await Promise.all([
-      sbSelect('casos'), sbSelect('expedientes'), sbSelect('caja'), sbSelect('config'),
-      sbSelect('tareas').catch(() => null)
+    const [rCasos, rExp, rCaja, rCfg, rTareas, rClientes] = await Promise.all([
+      sbSelect('casos').catch(e => { sbAvisarError(e); return null; }),
+      sbSelect('expedientes').catch(e => { sbAvisarError(e); return null; }),
+      sbSelect('caja').catch(e => { sbAvisarError(e); return null; }),
+      sbSelect('config').catch(() => null),
+      sbSelect('tareas').catch(() => null),
+      sbSelect('clientes').catch(() => null)
     ]);
 
     // Jurisprudencia
-    casos = rCasos.map(f => ({ id: f.id, caratula: f.caratula, objeto: f.objeto, expediente: f.expediente,
+    if (rCasos) casos = rCasos.map(f => ({ id: f.id, caratula: f.caratula, objeto: f.objeto, expediente: f.expediente,
       tribunal: f.tribunal, fecha: f.fecha, tema: f.tema, resultado: f.resultado, holding: f.holding,
       analisis: f.analisis, normas: f.normas, link: f.link, notas: f.notas,
       umas1: f.umas1 || 0, umas2: f.umas2 || 0,
       instancia: f.instancia || null, sala: f.sala || null, vinculo: f.vinculo || null }));
-    pdfs = {};
+    if (rCasos) { pdfs = {};
     rCasos.forEach(f => { if (f.pdf_path) pdfs[f.id] = { name: f.pdf_path.split('/').pop(), path: f.pdf_path, url: sbPubUrl(f.pdf_path) }; });
-    if (typeof saveCasosLocal === 'function') saveCasosLocal();
+    if (typeof saveCasosLocal === 'function') saveCasosLocal(); }
 
     // Expedientes
+    if (rExp) {
     expedientes = rExp.map(filaAExpediente);
     expedientes.forEach(exp => { if (!exp.fuero && typeof detectarFuero === 'function') exp.fuero = detectarFuero(exp); });
     if (typeof saveExpedientesLocal === 'function') saveExpedientesLocal();
@@ -3834,13 +4169,14 @@ async function sbCargarTodo() {
     if (typeof EXP_ADJ !== 'undefined') {
       rExp.forEach(f => { if (f.docs) EXP_ADJ[f.id] = f.docs; });
       if (typeof saveExpAdjLocal === 'function') saveExpAdjLocal();
-    }
+    } }
 
     // Caja
+    if (rCaja) {
     CAJA = rCaja.map(filaAPago).sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
     CAJA_ADJ = {};
     rCaja.forEach(f => { if (f.adjunto_path) CAJA_ADJ[f.id] = { nombre: f.adjunto_path.split('/').slice(1).join('/'), path: f.adjunto_path, url: sbPubUrl(f.adjunto_path) }; });
-    if (typeof saveCajaLocal === 'function') saveCajaLocal();
+    if (typeof saveCajaLocal === 'function') saveCajaLocal(); }
 
     // Config compartida (dólar, uma)
     const cfg = {}; (rCfg || []).forEach(x => cfg[x.clave] = x.valor);
@@ -3851,6 +4187,12 @@ async function sbCargarTodo() {
     if (rTareas && typeof TAREAS !== 'undefined') {
       TAREAS = rTareas.map(filaATarea);
       if (typeof saveTareasLocal === 'function') saveTareasLocal();
+    }
+
+    // CRM (clientes)
+    if (rClientes && typeof CLIENTES !== 'undefined') {
+      CLIENTES = rClientes.map(filaACliente);
+      if (typeof saveClientesLocal === 'function') saveClientesLocal();
     }
 
     return true;
@@ -3914,6 +4256,7 @@ async function sbGuardarComprobante(id, file) {
     try { if (typeof renderInicio === 'function') renderInicio(); } catch (e) {}
     try { if (typeof renderTareas === 'function') renderTareas(); } catch (e) {}
     try { if (typeof renderAudiencias === 'function') renderAudiencias(); } catch (e) {}
+    try { if (typeof renderCRM === 'function') renderCRM(); } catch (e) {}
   }).catch(e => sbAvisarError(e));
   // Esperar a que el bundle terminó de definir todo (caja.js va después en el ensamblado)
   let intentos = 0;
@@ -4004,7 +4347,7 @@ function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;
 const PAGE_IDS = {
   inicio:'paginaInicio', jurisprudencia:'paginaJurisprudencia',
   expedientes:'paginaExpedientes', agenda:'paginaAgenda',
-  caja:'paginaCaja', herramientas:'paginaHerramientas'
+  caja:'paginaCaja', crm:'paginaCRM', herramientas:'paginaHerramientas'
 };
 // Abre la hoja de prueba de una causa puntual desde cualquier lugar del sitio
 function verCausa(id) {
@@ -4026,6 +4369,7 @@ function navTo(p) {
     if (p === 'inicio') renderInicio();
     if (p === 'agenda') { limpiarFormEvento(); renderTareas(); renderAudiencias(); }
     if (p === 'caja') { initCaja(); renderCaja(); }
+    if (p === 'crm') { renderCRM(); }
     if (p === 'herramientas') { limpiarHerramientas(); renderFeriados(); renderFerias(); }
   } catch(e) { console.error(e); }
 }
@@ -4156,7 +4500,7 @@ function renderInicio() {
     const tagCls = i.tag === 'aud' ? 'aud' : i.tag === 'ofi' ? 'ofi' : '';
     const tagTxt = i.tag === 'aud' ? 'Audiencia' : i.tag === 'ofi' ? 'Oficio' : 'Tarea';
     return `<div class="venc-item ${cls}" onclick="${i.expId ? `verCausa(${i.expId})` : `navTo('${i.go}')`}">
-      <span class="venc-date">${formatFechaCorta(i.fecha)}</span>
+      <span class="venc-date">${formatFechaCorta(i.fecha)}${pillDias(i.fecha)}</span>
       <div class="venc-txt"><div class="t">${esc(i.t)}</div><div class="s">${esc(i.s)}</div></div>
       <span class="venc-tag ${tagCls}">${tagTxt}</span>
     </div>`;
@@ -4168,10 +4512,30 @@ function renderInicio() {
   contOf.innerHTML = oficios.length ? oficios.slice(0, 6).map(o => {
     const vencido = o.vencimiento && o.vencimiento <= hoy;
     return `<div class="venc-item ${vencido ? 'overdue' : ''}" onclick="verCausa(${o.exp.id})">
-      <span class="venc-date">${o.vencimiento ? formatFechaCorta(o.vencimiento) : '—'}</span>
+      <span class="venc-date">${o.vencimiento ? formatFechaCorta(o.vencimiento) : '—'}${o.vencimiento ? pillDias(o.vencimiento) : ''}</span>
       <div class="venc-txt"><div class="t">${esc(o.oficio.entidad||'Oficio')}</div><div class="s">${esc(o.exp.caratula)}</div></div>
     </div>`;
   }).join('') : '<div class="panel-empty">No hay oficios librados sin respuesta.</div>';
+  renderContactarInicio();
+}
+
+// ── Panel «clientes a contactar» en el inicio ──
+function renderContactarInicio() {
+  const cont = document.getElementById('inicioContactar');
+  if (!cont || typeof CLIENTES === 'undefined') return;
+  const hoy = hoyISO();
+  const conFecha = CLIENTES.filter(c => c.proximoContacto).slice();
+  conFecha.sort((a, b) => (a.proximoContacto || '').localeCompare(b.proximoContacto || ''));
+  const mini = document.getElementById('crmContactarMini');
+  if (mini) mini.textContent = conFecha.length ? conFecha.length + ' pendiente' + (conFecha.length !== 1 ? 's' : '') : '';
+  cont.innerHTML = conFecha.length ? conFecha.slice(0, 8).map(c => {
+    const venc = c.proximoContacto < hoy;
+    const sub = [c.encargada, c.proximoNota].filter(Boolean).join(' · ');
+    return `<div class="venc-item ${venc ? 'overdue' : ''}" onclick="navTo('crm');setTimeout(()=>abrirClienteDetalle(${c.id}),80)">
+      <span class="venc-date">${formatFechaCorta(c.proximoContacto)}${pillDias(c.proximoContacto)}</span>
+      <div class="venc-txt"><div class="t">${esc(c.entidad)}</div>${sub ? `<div class="s">${esc(sub)}</div>` : ''}</div>
+    </div>`;
+  }).join('') : '<div class="panel-empty">Ningún cliente con próximo contacto programado.</div>';
 }
 
 // ── Agenda: eventos (tareas y audiencias) ──
@@ -4320,7 +4684,7 @@ function renderAudiencias() {
     const idx = offsetAuds + k;
     const pasada = i.fecha && i.fecha < hoy;
     return `<div class="venc-item ${pasada ? 'overdue' : ''}" ${i.manual ? '' : `onclick="verCausa(${i.expData.exp.id})"`}>
-      <span class="venc-date">${i.fecha ? formatFechaCorta(i.fecha) : '—'}${i.hora ? `<small>${i.hora} h</small>` : ''}</span>
+      <span class="venc-date">${i.fecha ? formatFechaCorta(i.fecha) : '—'}${i.hora ? `<small>${i.hora} h</small>` : ''}${i.fecha ? pillDias(i.fecha) : ''}</span>
       <div class="venc-txt"><div class="t">${esc(i.titulo)}</div><div class="s">${esc(i.sub)}</div></div>
       ${i.fecha ? `<button class="btn-sm" onclick="event.stopPropagation();gcalDesdeAud(${idx})" title="Agregar a Google Calendar">📆</button>` : ''}
       ${i.manual
@@ -4969,12 +5333,73 @@ function labelReceptor() {
   const l = document.getElementById('cjReceptorLabel');
   if (l) l.textContent = m === 'efectivo' ? 'Recibió el efectivo' : m === 'transferencia' ? 'Transferido a' : m === 'cripto' ? 'Cripto a' : 'Recibió';
 }
+let __cjSugSel = -1;
+function cjSugItems(q) {
+  q = (q || '').trim().toLowerCase();
+  const crm = (typeof CLIENTES !== 'undefined' ? CLIENTES : []).map(c => ({ n: c.entidad, tipo: c.tipo || '', enc: c.encargada || '', crm: true }));
+  const crmSet = new Set(crm.map(c => c.n.trim().toUpperCase()));
+  const hist = [...new Set(CAJA.map(x => (x.cliente || '').trim()).filter(Boolean))]
+    .filter(n => !crmSet.has(n.toUpperCase()))
+    .map(n => ({ n, tipo: '', enc: '', crm: false }));
+  let todos = [...crm, ...hist];
+  if (q) {
+    // primero los que empiezan con la búsqueda, después los que la contienen
+    const emp = todos.filter(c => c.n.toLowerCase().startsWith(q));
+    const cont = todos.filter(c => !c.n.toLowerCase().startsWith(q) && c.n.toLowerCase().includes(q));
+    todos = [...emp, ...cont];
+  } else {
+    todos.sort((a, b) => a.n.localeCompare(b.n));
+  }
+  return todos.slice(0, 8);
+}
+function cjSugRender() {
+  const inp = document.getElementById('cjCliente');
+  const box = document.getElementById('cjSugBox');
+  if (!inp || !box) return;
+  const items = cjSugItems(inp.value);
+  __cjSugSel = -1;
+  if (!items.length) { box.style.display = 'none'; return; }
+  box.innerHTML = items.map((c, i) => `<div class="cj-sug-it" data-i="${i}" onmousedown="event.preventDefault();cjSugElegir(${i})">
+    <span class="n">${esc(c.n)}</span>
+  </div>`).join('');
+  box.__items = items;
+  box.style.display = 'block';
+}
+function cjSugElegir(i) {
+  const box = document.getElementById('cjSugBox');
+  const inp = document.getElementById('cjCliente');
+  if (!box || !box.__items || !box.__items[i]) return;
+  inp.value = box.__items[i].n;
+  box.style.display = 'none';
+}
+function cjSugTecla(e) {
+  const box = document.getElementById('cjSugBox');
+  if (!box || box.style.display === 'none') return;
+  const its = box.querySelectorAll('.cj-sug-it');
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    __cjSugSel = e.key === 'ArrowDown' ? Math.min(__cjSugSel + 1, its.length - 1) : Math.max(__cjSugSel - 1, 0);
+    its.forEach((el, i) => el.classList.toggle('sel', i === __cjSugSel));
+    if (its[__cjSugSel]) its[__cjSugSel].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' && __cjSugSel >= 0) {
+    e.preventDefault(); cjSugElegir(__cjSugSel);
+  } else if (e.key === 'Escape') {
+    box.style.display = 'none';
+  }
+}
+document.addEventListener('click', function(e) {
+  const box = document.getElementById('cjSugBox');
+  if (box && !e.target.closest('#cjCliente') && !e.target.closest('#cjSugBox')) box.style.display = 'none';
+});
 function renderCajaDatalists() {
   const cl = [...new Set(CAJA.map(x => (x.cliente||'').trim()).filter(Boolean))].sort();
   const rc = [...new Set(CAJA.map(x => (x.receptor||'').trim()).filter(Boolean))].sort();
   const dl1 = document.getElementById('clientesList');
+  // Clientes del CRM primero (autocompletado + vínculo), luego los históricos de caja
+  const crmNombres = (typeof CLIENTES !== 'undefined') ? CLIENTES.map(c => c.entidad).filter(Boolean) : [];
+  const todos = [...new Set([...crmNombres, ...cl])].sort();
   const dl2 = document.getElementById('receptoresList');
-  if (dl1) dl1.innerHTML = cl.map(n => `<option value="${esc(n)}">`).join('');
+  if (dl1) dl1.innerHTML = todos.map(n => `<option value="${esc(n)}">`).join('');
   if (dl2) dl2.innerHTML = rc.map(n => `<option value="${esc(n)}">`).join('');
 }
 // Regla de comisiones: Kevin 10 % · si «comisión de Ori»: Kevin 5 % y Ori 5 %
@@ -5024,8 +5449,14 @@ function registrarPago() {
   if (!fecha) { document.getElementById('cjFecha').focus(); return; }
   if (!cliente) { document.getElementById('cjCliente').focus(); return; }
   if (!monto || monto <= 0) { document.getElementById('cjMonto').focus(); return; }
+  // Vincular con un cliente del CRM si el nombre coincide (exacto, sin distinguir mayúsculas)
+  let clienteId = null;
+  if (typeof CLIENTES !== 'undefined') {
+    const match = CLIENTES.find(c => (c.entidad || '').trim().toLowerCase() === cliente.toLowerCase());
+    if (match) clienteId = match.id;
+  }
   const pago = {
-    id: Date.now(), fecha, cliente, concepto, monto,
+    id: Date.now(), fecha, cliente, concepto, monto, clienteId,
     moneda: document.getElementById('cjMoneda').value,
     metodo: document.getElementById('cjMetodo').value,
     receptor: document.getElementById('cjReceptor').value.trim(),
@@ -5034,6 +5465,15 @@ function registrarPago() {
   };
   CAJA.unshift(pago); saveCaja();
   sbPushPago(pago);
+  // Si quedó vinculado a un cliente y hay concepto, ofrecer registrarlo como servicio contratado
+  if (clienteId && concepto && typeof agregarServicioContratado === 'function') {
+    setTimeout(() => {
+      const cli = clientePorId(clienteId);
+      if (cli && confirm('¿Registrar «' + concepto + '» como servicio contratado de ' + cli.entidad + '?')) {
+        agregarServicioContratado(clienteId, concepto, fecha);
+      }
+    }, 100);
+  }
   if (__adjStaged) {
     const st = __adjStaged; __adjStaged = null;
     sbGuardarComprobante(pago.id, st.file).then(info => {
@@ -5050,9 +5490,15 @@ function registrarPago() {
 function toggleRevisado(id) { const p = CAJA.find(x => x.id === id); if (p) { p.revisado = !p.revisado; saveCaja(); sbPushPago(p); renderCaja(); } }
 function eliminarPago(id) {
   if (!confirm('¿Eliminar este pago del registro de caja?')) return;
+  const pago = CAJA.find(x => x.id === id);
   CAJA = CAJA.filter(x => x.id !== id);
   if (CAJA_ADJ[id]) { delete CAJA_ADJ[id]; saveCajaAdj(); }
-  saveCaja(); sbDelPago(id); renderCaja();
+  saveCaja(); sbDelPago(id);
+  // Si el pago estaba vinculado a un cliente y se había registrado como servicio, quitarlo también
+  if (pago && pago.clienteId && pago.concepto && typeof quitarServicioContratado === 'function') {
+    quitarServicioContratado(pago.clienteId, pago.concepto);
+  }
+  renderCaja();
 }
 function pagosDelMes(mes) {
   return CAJA.filter(p => (p.fecha||'').slice(0, 7) === mes).sort((a, b) => (a.fecha||'').localeCompare(b.fecha||''));
@@ -5194,7 +5640,7 @@ function descargarReporteCaja() {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Balance de caja — ${mesLargo(mes)}</title>
 <style>
-:root{--tinta:#1a241d;--suave:#5c6157;--papel:#f6f5ef;--filo:#dcd9cc;--sello:#1e6b45;--laurel:#e7f0e9;--oro:#fff3bf;--oro-borde:#e8d26a;--usd:#1c5d8f}
+:root{--tinta:#1a241d;--suave:#5c6157;--papel:#f6f5ef;--filo:#dcd9cc;--sello:#1b3a6b;--laurel:#e7f0e9;--oro:#fff3bf;--oro-borde:#e8d26a;--usd:#1c5d8f}
 *{box-sizing:border-box}body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--tinta);background:var(--papel);margin:0;padding:34px 20px}
 .hoja{max-width:960px;margin:0 auto;background:#fff;border:1px solid var(--filo);border-radius:14px;padding:36px 42px;box-shadow:0 2px 14px rgba(26,36,29,.06)}
 .cab{border-bottom:3px double var(--tinta);padding-bottom:14px;margin-bottom:22px}
@@ -5207,9 +5653,12 @@ h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:30px 0 10
 .ficha span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave)}
 .ficha b{display:block;font-size:19px;margin-top:2px;font-variant-numeric:tabular-nums}
 .ficha i{display:block;font-style:normal;font-size:10.5px;color:var(--suave);margin-top:2px}
-.ficha.hi{background:var(--oro);border-color:var(--oro-borde)}
+.ficha.hi{background:#fdf6e0;border:1.5px solid #d9b83f;box-shadow:0 1px 6px rgba(169,133,60,.18)}
+.ficha.hi span{color:#7a5c00;font-weight:700}
+.ficha.hi b{color:#3d2f00}
+.ficha.hi i{color:#8a6d1f}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-th{background:#0c1f16;color:#e8efe9;text-align:left;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.07em}
+th{background:#0a1626;color:#e8efe9;text-align:left;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.07em}
 td{padding:8px 10px;border-bottom:1px solid #eceade;vertical-align:middle}
 tr:nth-child(even) td{background:#fbfaf6}
 .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.usd{color:var(--usd);font-weight:600}
@@ -5223,6 +5672,203 @@ tr:nth-child(even) td{background:#fbfaf6}
 .rev{width:16px;height:16px;accent-color:var(--sello);cursor:pointer}
 .pie{margin-top:30px;padding-top:12px;border-top:1px solid var(--filo);font-size:10.5px;color:var(--suave)}
 @media print{body{background:#fff;padding:0}.hoja{border:none;box-shadow:none;padding:10px}.noprint{display:none}}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REDISEÑO 2026 — "Despacho moderno": marfil cálido, esmeralda profundo,
+   acentos champán, serif editorial para títulos, sombras en capas.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  /* Superficies */
+  --papel:#faf9f4; --carta:#ffffff; --gris-bg:#faf9f4;
+  --filo:#e7e3d6; --filo-suave:#f1eee4; --gris-borde:#e7e3d6;
+  /* Tinta */
+  --tinta:#161f1a; --tinta-suave:#61695f; --negro:#161f1a; --gris-texto:#61695f;
+  /* Verde esmeralda refinado */
+  --bosque:#0a1626; --bosque-2:#12233f; --sello:#1b3a6b; --sello-osc:#12294d;
+  --brote:#5b9be6; --laurel:#e6eef8; --laurel-2:#cfe0f2;
+  --verde:#1b3a6b; --verde-light:#e6eef8; --verde-mid:#1b3a6b; --verde-dark:#0a1626;
+  /* Champán / dorado premium */
+  --oro:#a9853c; --oro-bg:#f8f1de; --champan:#c9a961;
+  /* Tipografía */
+  --f-display:'Fraunces',Georgia,serif;
+  --fuente:'Fraunces',Georgia,serif;
+  /* Sombras en capas (suaves, difusas) */
+  --sombra-1:0 1px 2px rgba(14,25,18,.04),0 6px 20px rgba(14,25,18,.06);
+  --sombra-2:0 2px 8px rgba(14,25,18,.06),0 20px 48px rgba(14,25,18,.12);
+  --sombra-3:0 4px 16px rgba(14,25,18,.10),0 32px 80px rgba(14,25,18,.18);
+  --radio:14px; --radio-s:10px;
+  --anillo:0 0 0 3px rgba(27,58,107,.22);
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ══ Base ══ */
+body{background:
+  radial-gradient(1200px 500px at 85% -10%, rgba(91,155,230,.06), transparent 60%),
+  radial-gradient(900px 420px at -10% 110%, rgba(201,169,97,.05), transparent 55%),
+  var(--papel);
+  letter-spacing:.005em;}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#cfccbd;border-radius:99px;border:3px solid var(--papel)}
+::-webkit-scrollbar-thumb:hover{background:#b4b1a1}
+::selection{background:rgba(91,155,230,.30)}
+
+/* ══ Cinta superior: gradiente profundo + hilo champán ══ */
+.ribbon{
+  background:linear-gradient(105deg,#0c1a2e36 0%,transparent 40%),linear-gradient(180deg,#12233f,#0a1626);
+  height:58px;
+  border-bottom:1px solid rgba(201,169,97,.28);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 30px rgba(10,25,18,.35);
+}
+.ribbon-brand{font-family:var(--f-display);font-size:18.5px;font-weight:600;letter-spacing:.01em}
+.ribbon-brand em{color:var(--brote);font-style:italic}
+.ribbon-sub{color:rgba(201,169,97,.85);letter-spacing:.2em;font-size:9px}
+.ribbon-sep{background:linear-gradient(180deg,transparent,rgba(201,169,97,.5),transparent);width:1px;height:26px}
+.pill-nav{font-size:12.5px;padding:7px 14px;border-radius:10px;transition:all .22s var(--ease);color:#fff}
+.pill-nav:hover{color:#fff;background:rgba(255,255,255,.07);transform:translateY(-1px)}
+.pill-nav.active{color:#08130d;background:linear-gradient(135deg,#68a6ee,#3f7fd0);border-color:transparent;box-shadow:0 3px 12px rgba(91,155,230,.38),0 1px 0 rgba(255,255,255,.35) inset;font-weight:700}
+
+/* ══ Encabezados de página: serif editorial ══ */
+.hero-title{font-family:var(--f-display);font-weight:600;letter-spacing:-.01em}
+.hero-title em{font-style:italic;color:var(--sello)}
+.hero-eyebrow{color:var(--oro);letter-spacing:.26em;font-size:10.5px}
+.doble-filete{border-top-color:rgba(20,106,69,.7);border-bottom-color:rgba(201,169,97,.8);max-width:120px;margin-top:2px}
+
+/* ══ Paneles y tarjetas: hover con vida ══ */
+.panel{border-radius:var(--radio);border:1px solid var(--filo);box-shadow:var(--sombra-1);transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease)}
+.panel:hover{box-shadow:var(--sombra-2);border-color:#dcd7c5}
+.panel-h h3{font-family:var(--f-display);font-weight:600;font-size:16px;letter-spacing:0}
+.venc-item{border-radius:11px;transition:all .18s var(--ease)}
+.venc-item:hover{background:var(--laurel);transform:translateX(3px)}
+.venc-item.overdue{border-left:3px solid var(--mal)}
+
+/* ══ Filas del CRM y tarjetas clicables ══ */
+.crm-row{border-radius:var(--radio);transition:all .22s var(--ease);box-shadow:0 1px 2px rgba(14,25,18,.03)}
+.crm-row:hover{transform:translateY(-2px);box-shadow:var(--sombra-2);border-color:rgba(27,58,107,.45)}
+.crm-nombre{font-family:var(--f-ui);letter-spacing:.03em}
+.crm-nota{border-left-color:var(--champan);background:#fbfaf3}
+.crm-nota b{color:var(--oro)}
+
+/* ══ Botones: presencia premium ══ */
+.crm-btn-nuevo,.crm-btn-guardar,.btn-primary,button.btn-ok{
+  background:linear-gradient(160deg,#235091,#12406e);
+  box-shadow:0 2px 8px rgba(27,58,107,.32),0 1px 0 rgba(255,255,255,.18) inset;
+  border-radius:11px;transition:all .2s var(--ease);
+}
+.crm-btn-nuevo:hover,.crm-btn-guardar:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(27,58,107,.40),0 1px 0 rgba(255,255,255,.2) inset;background:linear-gradient(160deg,#26619e,#154a7e)}
+.crm-btn-nuevo:active,.crm-btn-guardar:active{transform:translateY(0)}
+.crm-btn-cancelar{transition:all .18s var(--ease)}
+.crm-btn-cancelar:hover{border-color:var(--tinta-suave);color:var(--tinta)}
+
+/* ══ Inputs ══ */
+input,select,textarea{transition:border-color .18s var(--ease),box-shadow .18s var(--ease)}
+input:focus,select:focus,textarea:focus{border-color:var(--sello)!important;box-shadow:var(--anillo);outline:none}
+.crm-search input{border-radius:11px;height:42px}
+.crm-toolbar select{border-radius:11px;height:42px;cursor:pointer}
+.crm-toolbar select:hover{border-color:#cfccbd}
+
+/* ══ Modales y fichas: entrada suave + profundidad ══ */
+.crm-modal-ov{background:rgba(8,17,12,.55);backdrop-filter:blur(6px)}
+.crm-modal{border-radius:20px;box-shadow:var(--sombra-3);animation:modalIn .32s var(--ease)}
+@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.crm-modal-cab{background:linear-gradient(120deg,#16305a,#0a1626);border-bottom:1px solid rgba(201,169,97,.3);padding:24px 28px}
+.crm-modal-cab h2{font-family:var(--f-display);font-weight:600;letter-spacing:.01em}
+.crm-modal-x{border-radius:10px;transition:all .18s}
+.crm-modal-x:hover{background:rgba(255,255,255,.28);transform:rotate(90deg)}
+
+/* ══ Acordeones de la ficha ══ */
+.acc{border-radius:13px;transition:box-shadow .2s var(--ease),border-color .2s var(--ease)}
+.acc:hover{border-color:#dcd7c5}
+.acc.open{box-shadow:var(--sombra-1);border-color:rgba(27,58,107,.25)}
+.acc-head{padding:14px 17px}
+.acc-title{font-size:12px;letter-spacing:.06em}
+.acc-title .chev{color:var(--champan)}
+.acc-editbtn{border-radius:9px;transition:all .18s var(--ease)}
+.acc-editbtn:hover{background:var(--sello);color:#fff;border-color:var(--sello)}
+
+/* ══ Alertas de la ficha ══ */
+.crm-alerta{border-radius:13px;box-shadow:0 1px 3px rgba(14,25,18,.05)}
+.crm-alerta .a-lbl{letter-spacing:.08em}
+
+/* ══ Tablas ══ */
+.crm-tabla,table.caja-tabla{border-radius:12px;overflow:hidden}
+.crm-tabla th{background:linear-gradient(180deg,#16305a,#0a1626);letter-spacing:.08em;padding:9px 12px}
+.crm-tabla tbody tr{transition:background .15s}
+.crm-tabla tbody tr:hover{background:#f7f6ee}
+.crm-pago-total{background:linear-gradient(90deg,var(--laurel),#eef4fb)}
+
+/* ══ Paginador ══ */
+.pag-btn{border-radius:10px;transition:all .18s var(--ease);font-weight:600}
+.pag-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 10px rgba(27,58,107,.20)}
+.pag-btn.activo{background:linear-gradient(160deg,#235091,#12406e);box-shadow:0 2px 8px rgba(27,58,107,.32)}
+
+/* ══ Chips y tags ══ */
+.cchip,.tag,.venc-tag{border-radius:7px;letter-spacing:.05em}
+.cchip.pack{border:1px solid rgba(28,93,143,.22)}
+
+/* ══ Login: puerta de estudio premium ══ */
+.login-shell,.lock-shell,#lockScreen{backdrop-filter:blur(2px)}
+.login-card,.lock-card{border-radius:22px;box-shadow:var(--sombra-3);border:1px solid rgba(201,169,97,.25)}
+
+/* ══ Transición de páginas ══ */
+.page-shell{animation:pageIn .3s var(--ease)}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
+.page-inner>*{animation:riseIn .4s var(--ease) both}
+@keyframes riseIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ══ Estados vacíos con más aire ══ */
+.panel-empty,.crm-vacio{padding:18px 8px;text-align:center;font-size:12.5px;opacity:.75}
+
+/* ══ Sidebar de jurisprudencia (página vieja) armonizada ══ */
+.sidebar{background:linear-gradient(180deg,#12233f,#0a1626)!important}
+.sidebar-logo h1 em{color:var(--brote)!important}
+.stat-chip{border-radius:9px!important}
+
+/* ══ Editor punteado ══ */
+.crm-editor,.editor{border-radius:12px;border-color:rgba(27,58,107,.45)}
+.crm-add-fila{transition:all .18s var(--ease);border-radius:10px}
+.crm-add-fila:hover{background:var(--sello);color:#fff;border-style:solid}
+
+/* ══ Ficha: pie con eliminar discreto ══ */
+.crm-btn-eliminar{transition:all .18s var(--ease);border-radius:10px}
+.crm-btn-eliminar:hover{box-shadow:0 3px 10px rgba(179,55,42,.2)}
+
+/* ══ REDISEÑO 2026 · segunda pasada: login, jurisprudencia, caja ══ */
+#loginGate{background:
+  radial-gradient(900px 480px at 78% 12%, rgba(91,155,230,.12), transparent 55%),
+  radial-gradient(700px 420px at 12% 92%, rgba(201,169,97,.10), transparent 55%),
+  linear-gradient(160deg,#12233f,#070f1c 75%)}
+.login-caja{border-radius:22px;border:1px solid rgba(201,169,97,.35);box-shadow:0 40px 100px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.5) inset;padding:40px 42px;animation:modalIn .4s var(--ease)}
+.login-marca{font-family:var(--f-display);font-size:26px;font-weight:600;letter-spacing:0}
+.login-marca em{color:var(--sello);font-style:italic}
+.login-sub{color:var(--oro);text-transform:uppercase;letter-spacing:.18em;font-size:9.5px;font-weight:700;margin-top:4px}
+.login-caja .doble-filete{max-width:90px}
+.login-caja input{border-radius:10px;height:44px}
+.login-caja .btn-primary{height:46px;border-radius:11px;letter-spacing:.1em;font-weight:700}
+
+/* Jurisprudencia: tarjetas de casos */
+.caso-card{border-radius:13px!important;border:1px solid var(--filo)!important;box-shadow:0 1px 2px rgba(14,25,18,.03);transition:all .22s var(--ease)!important}
+.caso-card:hover{transform:translateY(-2px);box-shadow:var(--sombra-2)!important;border-color:rgba(20,106,69,.4)!important}
+.modal{border-radius:18px!important;box-shadow:var(--sombra-3)!important;animation:modalIn .3s var(--ease)}
+
+/* Botones genéricos de páginas viejas */
+.btn-primary{background:linear-gradient(160deg,#235091,#12406e);border:none;box-shadow:0 2px 8px rgba(27,58,107,.32),0 1px 0 rgba(255,255,255,.18) inset;transition:all .2s var(--ease)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(27,58,107,.40)}
+
+/* Tarjetas/tiles de caja */
+.tile{border-radius:13px;box-shadow:var(--sombra-1);transition:all .22s var(--ease);border:1px solid var(--filo)}
+.tile:hover{box-shadow:var(--sombra-2);transform:translateY(-2px)}
+.tile .num{font-family:var(--f-display);font-weight:600}
+
+/* Números protagonistas en paneles del inicio */
+.stat-num,.panel .num{font-family:var(--f-display)}
+
+/* Toolbar de expedientes armonizada */
+.exp-toolbar{border-bottom:1px solid var(--filo)}
+
+/* Modal cabeceras genéricas (agenda/caja/expedientes) */
+.modal-cab,.modal h2,.modal h3{font-family:var(--f-display);font-weight:600}
+
 </style></head><body><div class="hoja">
 <div class="cab">
   <div class="eyebrow">JurisCannabis · Estudio WE Legal</div>
@@ -5494,6 +6140,844 @@ function htmlAdjuntosExp(expId) {
 
     <div id="expAdjStatus" class="exp-adj-status"></div>
   </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  MÓDULO CRM — capa de datos (store local + sincronización Supabase)
+// ══════════════════════════════════════════════════════════════════
+var CLIENTES = [];
+const CLIENTES_KEY = 'jc-clientes-v1';
+
+function loadClientes() {
+  try { CLIENTES = JSON.parse(appStore.getItem(CLIENTES_KEY) || '[]'); }
+  catch (e) { CLIENTES = []; }
+}
+function saveClientesLocal() {
+  try { appStore.setItem(CLIENTES_KEY, JSON.stringify(CLIENTES)); } catch (e) {}
+}
+function saveClientes() {
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') (CLIENTES || []).forEach(sbPushCliente);
+}
+
+// Objeto cliente vacío (valores por defecto)
+function clienteVacio() {
+  return {
+    id: Date.now(),
+    entidad: '', tipo: 'AC', estado: '', cuit: '', registro: 'IGJ',
+    encargada: '', referente: '', telefono: '', mail: '', driveLink: '',
+    reproTienen: 'no_aplica', reproFechaSol: '', repro3132Fecha: '', repro3132Exp: '',
+    repro1780Fecha: '', repro1780Exp: '', reproComplFecha: '',
+    reproAmparo: false, reproAmparoFecha: '', reproAprobFecha: '',
+    packTipo: '', packSituacion: 'vigente', packEstadoTxt: '', packServicios: [],
+    docPendiente: false, docPendienteQue: '',
+    reuniones: [],
+    ultimoContacto: '', proximoContacto: '', proximoNota: '', bitacora: [],
+    servicios: [], observaciones: ''
+  };
+}
+
+// El último contacto se calcula de la entrada más reciente de la bitácora
+function calcularUltimoContacto(cli) {
+  if (!cli.bitacora || !cli.bitacora.length) return cli.ultimoContacto || '';
+  const fechas = cli.bitacora.map(b => b.fecha).filter(Boolean).sort();
+  return fechas.length ? fechas[fechas.length - 1] : (cli.ultimoContacto || '');
+}
+
+function clientePorId(id) { return (CLIENTES || []).find(c => c.id === id); }
+
+// Buscar clientes por nombre (para el autocompletado de caja)
+function buscarClientes(texto) {
+  const t = (texto || '').toLowerCase().trim();
+  if (!t) return [];
+  return (CLIENTES || []).filter(c => (c.entidad || '').toLowerCase().includes(t)).slice(0, 8);
+}
+
+// ── Alta / edición ──
+function agregarCliente(datos) {
+  const cli = Object.assign(clienteVacio(), datos || {});
+  if (!cli.id) cli.id = Date.now();
+  CLIENTES.unshift(cli);
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+  return cli;
+}
+function actualizarCliente(id, cambios) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  Object.assign(cli, cambios);
+  cli.ultimoContacto = calcularUltimoContacto(cli);
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+}
+function eliminarCliente(id) {
+  CLIENTES = CLIENTES.filter(c => c.id !== id);
+  saveClientesLocal();
+  if (typeof sbDelCliente === 'function') sbDelCliente(id);
+}
+
+// ── Bitácora ──
+function agregarNotaBitacora(id, fecha, nota) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  if (!cli.bitacora) cli.bitacora = [];
+  cli.bitacora.unshift({ fecha: fecha || hoyISO(), nota: nota || '' });
+  cli.ultimoContacto = calcularUltimoContacto(cli);
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+}
+
+// ── Servicios contratados (se suman desde caja) ──
+function agregarServicioContratado(id, concepto, fecha) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  if (!cli.servicios) cli.servicios = [];
+  cli.servicios.unshift({ concepto: concepto || '', fecha: fecha || hoyISO() });
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+}
+function quitarServicioContratado(id, concepto) {
+  const cli = clientePorId(id);
+  if (!cli || !cli.servicios) return;
+  // Quita la primera coincidencia por concepto (el que se había agregado desde ese pago)
+  const i = cli.servicios.findIndex(s => (s.concepto || '') === (concepto || ''));
+  if (i > -1) {
+    cli.servicios.splice(i, 1);
+    saveClientesLocal();
+    if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+    if (typeof refrescarFicha === 'function') {
+      const ov = document.getElementById('crmFichaOverlay');
+      if (ov && ov.classList.contains('on') && String(ov.dataset.cliId) === String(id)) refrescarFicha(id);
+    }
+  }
+}
+
+// ── Pagos del cliente (se leen de la caja, no se guardan acá) ──
+function pagosDeCliente(id) {
+  if (typeof CAJA === 'undefined') return [];
+  return (CAJA || []).filter(p => p.clienteId === id);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  MÓDULO CRM — vista (listado paginado + filtros)  · Etapa 1
+// ══════════════════════════════════════════════════════════════════
+var __crmFiltros = { texto: '', tipo: '', encargada: '', repro: '', pack: '', situacion: '', doc: '', orden: 'proximo' };
+
+const TIPO_LABEL = { 'AC': 'Asoc. Civil', 'Sociedad': 'Sociedad', 'Cooperativa': 'Cooperativa', 'Persona fisica': 'Persona física' };
+const TIPO_CLS = { 'AC': 'ac', 'Sociedad': 'sas', 'Cooperativa': 'coop', 'Persona fisica': 'pf' };
+
+function fmtFechaCortaCRM(iso) {
+  if (!iso) return '—';
+  const p = iso.split('-'); if (p.length !== 3) return iso;
+  return p[2] + '/' + p[1] + '/' + p[0];
+}
+
+// Semáforo REPROCANN
+function reproInfo(cli) {
+  const t = cli.reproTienen || 'no_aplica';
+  if (t === 'aprobado') return { cls: 'ok', txt: 'REPROCANN aprobado' };
+  if (t === 'en_tramite') return { cls: 'tram', txt: 'REPROCANN en trámite' };
+  if (t === 'rechazado') return { cls: 'no', txt: 'REPROCANN rechazado' };
+  if (t === 'no_iniciado') return { cls: 'ini', txt: 'REPROCANN sin iniciar' };
+  return { cls: 'no', txt: 'No aplica' };
+}
+
+// Aplica filtros + orden a la lista de clientes
+function clientesFiltrados() {
+  let arr = (CLIENTES || []).slice();
+  const f = __crmFiltros;
+  if (f.texto) { const t = f.texto.toLowerCase(); arr = arr.filter(c => (c.entidad || '').toLowerCase().includes(t)); }
+  if (f.tipo) arr = arr.filter(c => (c.tipo || '') === f.tipo);
+  if (f.encargada) arr = arr.filter(c => (c.encargada || '') === f.encargada);
+  if (f.repro) arr = arr.filter(c => (c.reproTienen || 'no_aplica') === f.repro);
+  if (f.pack) arr = arr.filter(c => (c.packTipo || '') === f.pack);
+  if (f.situacion) arr = arr.filter(c => (c.packSituacion || '') === f.situacion);
+  if (f.doc === 'si') arr = arr.filter(c => c.docPendiente);
+  if (f.doc === 'no') arr = arr.filter(c => !c.docPendiente);
+
+  if (f.orden === 'nombre') {
+    arr.sort((a, b) => (a.entidad || '').localeCompare(b.entidad || ''));
+  } else if (f.orden === 'ultimo') {
+    arr.sort((a, b) => (b.ultimoContacto || '').localeCompare(a.ultimoContacto || ''));
+  } else { // 'proximo': vencidos y más cercanos arriba; sin fecha al fondo
+    arr.sort((a, b) => {
+      const pa = a.proximoContacto || '', pb = b.proximoContacto || '';
+      if (!pa && !pb) return 0;
+      if (!pa) return 1;
+      if (!pb) return -1;
+      return pa.localeCompare(pb);
+    });
+  }
+  return arr;
+}
+
+// Extrae la última nota de bitácora para el preview
+function ultimaNota(cli) {
+  if (!cli.bitacora || !cli.bitacora.length) return null;
+  const ord = cli.bitacora.slice().sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+  return ord[0];
+}
+
+function renderCRM() {
+  const cont = document.getElementById('crmLista');
+  if (!cont) return;
+  poblarFiltrosCRM();
+  const arr = clientesFiltrados();
+  const hoy = (typeof hoyISO === 'function') ? hoyISO() : new Date().toISOString().slice(0, 10);
+
+  document.getElementById('crmMini').textContent = arr.length ? arr.length + ' cliente' + (arr.length !== 1 ? 's' : '') : '';
+
+  const { slice, controles } = paginar('crm', arr, 'renderCRM');
+
+  if (!arr.length) {
+    cont.innerHTML = '<div class="panel-empty">No hay clientes que coincidan. Probá con otro filtro o cargá uno nuevo con «+ Nuevo cliente».</div>';
+    return;
+  }
+
+  const html = slice.map(c => {
+    const tipoLbl = TIPO_LABEL[c.tipo] || c.tipo || '';
+    const tipoCls = TIPO_CLS[c.tipo] || 'ac';
+    const rp = reproInfo(c);
+    const ult = calcularUltimoContacto(c);
+    const nota = ultimaNota(c);
+    const noContactar = c.estado === 'no_contactar';
+    const exCliente = c.estado === 'ex_cliente';
+
+    // Chips: pack, situación, doc pendiente
+    let chips = '';
+    if (c.packTipo) chips += `<span class="cchip pack">Pack ${esc(c.packTipo)}</span>`;
+    if (c.packSituacion === 'vigente') chips += `<span class="cchip pack">● Vigente</span>`;
+    else if (c.packSituacion === 'finalizado') chips += `<span class="cchip pack-fin">● Finalizado</span>`;
+    if (c.docPendiente) chips += `<span class="cchip doc-si">⚠ Doc. pendiente${c.docPendienteQue ? ': ' + esc(c.docPendienteQue.slice(0, 24)) : ''}</span>`;
+
+    // Próximo contacto
+    let proxHtml = '';
+    if (c.proximoContacto) {
+      const venc = c.proximoContacto < hoy;
+      proxHtml = `<div class="crm-prox${venc ? ' vencido' : ''}">${venc ? '⚠ Venc: ' : 'Próx: '}${fmtFechaCortaCRM(c.proximoContacto)}</div>`;
+    }
+
+    return `<div class="crm-row" onclick="abrirClienteDetalle(${c.id})">
+      <div class="crm-main">
+        <div class="crm-nombre"><span class="crm-ent">${esc(c.entidad)}</span>
+          ${tipoLbl ? `<span class="tag ${tipoCls}">${esc(tipoLbl)}</span>` : ''}
+          ${c.encargada ? `<span class="tag-enc">👤 ${esc(c.encargada)}</span>` : '<span class="tag-enc vacia">Sin encargada</span>'}
+          ${noContactar ? '<span class="tag nocontactar">⚠ No contactar</span>' : ''}
+          ${exCliente ? '<span class="tag excliente">Ex cliente</span>' : ''}
+        </div>
+        <div class="crm-sub">
+          ${c.referente || c.telefono ? `<span>${esc([c.referente, c.telefono].filter(Boolean).join(' · '))}</span>` : ''}
+        </div>
+        ${nota ? `<div class="crm-nota">📝 <b>${fmtFechaCortaCRM(nota.fecha)}:</b> ${esc(nota.nota)}</div>` : ''}
+        ${chips ? `<div class="crm-chips">${chips}</div>` : ''}
+      </div>
+      <div class="crm-right">
+        <div class="repro ${rp.cls}"><span class="dot"></span>${rp.txt}</div>
+        <div class="ult">Últ.: <b>${fmtFechaCortaCRM(ult)}</b></div>
+        ${proxHtml}
+      </div>
+    </div>`;
+  }).join('');
+
+  cont.innerHTML = html + controles;
+}
+
+// Rellena los <select> de filtros con los valores presentes
+function poblarFiltrosCRM() {
+  const encSel = document.getElementById('crmFiltroEncargada');
+  if (encSel && encSel.dataset.pobladoCount != String((CLIENTES || []).length)) {
+    // Lista fija de encargadas + cualquier otra que traigan los datos (para no perder ninguna)
+    const enData = (CLIENTES || []).map(c => c.encargada).filter(Boolean);
+    const encs = [...new Set([...(typeof ENCARGADAS !== 'undefined' ? ENCARGADAS : []), ...enData])].sort();
+    encSel.innerHTML = '<option value="">Toda encargada</option>' + encs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('');
+    encSel.value = __crmFiltros.encargada;
+    encSel.dataset.pobladoCount = String((CLIENTES || []).length);
+  }
+}
+
+// Handlers de filtros
+function crmSetFiltro(campo, valor) {
+  __crmFiltros[campo] = valor;
+  __paginas['crm'] = 0; // volver a la primera página al filtrar
+  renderCRM();
+}
+
+// (la ficha del cliente vive en crm_ficha.js)
+
+// ══════════════ ALTA DE CLIENTE NUEVO ══════════════
+function abrirNuevoCliente(prefill) {
+  let ov = document.getElementById('crmNuevoOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'crmNuevoOverlay';
+    ov.className = 'crm-modal-ov';
+    ov.innerHTML = htmlFormNuevoCliente();
+    ov.addEventListener('click', function(e){ if(e.target===ov) cerrarNuevoCliente(); });
+    document.body.appendChild(ov);
+  }
+  // Prefill opcional (ej: desde caja con el nombre ya escrito)
+  ov.querySelector('#nc_entidad').value = (prefill && prefill.entidad) || '';
+  ['tipo','estado','cuit','registro','encargada','referente','telefono','mail','driveLink',
+   'reproTienen','reproFechaSol','reproAprobFecha','packTipo','packSituacion','packEstadoTxt',
+   'docPendiente_sel','docPendienteQue','proximoContacto','proximoNota','bitaNota','observaciones'].forEach(k => {
+    const el = ov.querySelector('#nc_' + k); if (el) el.value = '';
+  });
+  { const dc = ov.querySelector('#nc_docPendiente'); if (dc) dc.checked = false;
+    const dw = ov.querySelector('#nc_docQueWrap'); if (dw) dw.style.display = 'none';
+    const sr = ov.querySelector('#ncServRows'); if (sr) sr.innerHTML = ''; }
+  ov.classList.add('on');
+  setTimeout(() => ov.querySelector('#nc_entidad').focus(), 60);
+}
+function cerrarNuevoCliente() {
+  const ov = document.getElementById('crmNuevoOverlay');
+  if (ov) ov.classList.remove('on');
+}
+function guardarNuevoCliente() {
+  const ov = document.getElementById('crmNuevoOverlay');
+  if (!ov) return;
+  const g = id => { const el = ov.querySelector('#nc_' + id); return el ? el.value.trim() : ''; };
+  const entidad = g('entidad');
+  if (!entidad) { ov.querySelector('#nc_entidad').focus(); return; }
+
+  const gc = id => { const el = ov.querySelector('#nc_' + id); return el ? el.checked : false; };
+  const datos = {
+    entidad, tipo: g('tipo'), estado: g('estado'), cuit: g('cuit'), registro: g('registro'),
+    encargada: g('encargada'), referente: g('referente'), telefono: g('telefono'),
+    mail: g('mail'), driveLink: g('driveLink'),
+    reproTienen: g('reproTienen'), reproFechaSol: g('reproFechaSol'), reproAprobFecha: g('reproAprobFecha'),
+    packTipo: g('packTipo'), packSituacion: g('packSituacion') || 'vigente', packEstadoTxt: g('packEstadoTxt'),
+    docPendiente: gc('docPendiente'), docPendienteQue: g('docPendienteQue'),
+    proximoContacto: g('proximoContacto'), proximoNota: g('proximoNota'),
+    observaciones: g('observaciones'), bitacora: []
+  };
+  const notaIni = g('bitaNota');
+  if (notaIni) datos.bitacora = [{ fecha: (typeof hoyISO === 'function' ? hoyISO() : new Date().toISOString().slice(0,10)), nota: notaIni }];
+  datos.ultimoContacto = datos.bitacora.length ? datos.bitacora[0].fecha : '';
+  // Servicios del pack cargados en el alta
+  const servRows = [...ov.querySelectorAll('#ncServRows [data-serv-row]')];
+  datos.packServicios = servRows.map(f => ({
+    nombre: f.querySelector('[data-serv-nombre]').value.trim(),
+    estado: f.querySelector('[data-serv-estado]').value
+  })).filter(s => s.nombre);
+
+  const cli = agregarCliente(datos);
+  cerrarNuevoCliente();
+  renderCRM();
+  return cli;
+}
+function htmlFormNuevoCliente() {
+  return `<div class="crm-modal">
+    <div class="crm-modal-cab">
+      <button class="crm-modal-x" onclick="cerrarNuevoCliente()">✕</button>
+      <h2>Nuevo cliente</h2>
+      <div class="sub">Cargá los datos principales · el resto lo completás después desde la ficha</div>
+    </div>
+    <div class="crm-modal-body">
+      <div class="crm-fsec">
+        <div class="crm-fsec-h">Identidad</div>
+        <div class="crm-fgrid">
+          <div class="crm-fld full"><label>Entidad / Nombre</label><input id="nc_entidad" placeholder="Ej: Asociación Civil Cosecha Perfecta"></div>
+          <div class="crm-fld"><label>Tipo</label><select id="nc_tipo"><option value="AC">Asociación Civil</option><option value="Sociedad">Sociedad</option><option value="Cooperativa">Cooperativa</option><option value="Persona fisica">Persona física</option></select></div>
+          <div class="crm-fld"><label>Estado</label><select id="nc_estado"><option value="">Sin marca (normal)</option><option value="no_contactar">No contactar</option><option value="ex_cliente">Ex cliente</option></select></div>
+          <div class="crm-fld"><label>CUIT</label><input id="nc_cuit" placeholder="30-00000000-0"></div>
+          <div class="crm-fld"><label>Registro</label><select id="nc_registro"><option value="IGJ">IGJ</option><option value="DPPJ">DPPJ</option><option value="INAES">INAES</option><option value="Otro">Otro</option></select></div>
+          <div class="crm-fld"><label>Encargada</label><select id="nc_encargada">${opcionesEncargada('')}</select></div>
+          <div class="crm-fld"><label>Referente</label><input id="nc_referente" placeholder="Nombre del referente"></div>
+          <div class="crm-fld"><label>Teléfono</label><input id="nc_telefono" placeholder="+54 9 11 ..."></div>
+          <div class="crm-fld"><label>Mail</label><input id="nc_mail" placeholder="cliente@mail.com"></div>
+          <div class="crm-fld"><label>Link carpeta Drive</label><input id="nc_driveLink" placeholder="https://drive.google.com/..."></div>
+        </div>
+      </div>
+      <div class="crm-fsec">
+        <div class="crm-fsec-h">REPROCANN</div>
+        <div class="crm-fgrid">
+          <div class="crm-fld"><label>¿Tienen REPRO?</label><select id="nc_reproTienen"><option value="no_iniciado">Sin iniciar</option><option value="en_tramite">En trámite</option><option value="aprobado">Aprobado</option><option value="rechazado">Rechazado</option><option value="no_aplica">No aplica</option></select></div>
+          <div class="crm-fld"><label>Fecha de solicitud</label><input id="nc_reproFechaSol" type="date"></div>
+          <div class="crm-fld"><label>Fecha de aprobación</label><input id="nc_reproAprobFecha" type="date"></div>
+        </div>
+      </div>
+      <div class="crm-fsec">
+        <div class="crm-fsec-h">Pack contratado</div>
+        <div class="crm-fgrid">
+          <div class="crm-fld"><label>Tipo de pack</label><select id="nc_packTipo"><option value="">—</option><option>PS</option><option>PF</option><option>PFCS</option><option>AM</option></select></div>
+          <div class="crm-fld"><label>Situación</label><select id="nc_packSituacion"><option value="vigente">Vigente</option><option value="finalizado">Finalizado</option></select></div>
+          <div class="crm-fld full"><label>Estado del pack (detalle)</label><input id="nc_packEstadoTxt" placeholder="Ej: Grupo cerrado 12/02/2025"></div>
+        </div>
+        <div class="crm-serv-label" style="margin-top:10px">Servicios del pack — marcá el estado de cada uno</div>
+        <div id="ncServRows"></div>
+        <button type="button" class="crm-add-fila" onclick="ncAddServRow()">+ Agregar servicio</button>
+      </div>
+      <div class="crm-fsec">
+        <div class="crm-fsec-h">Documentación y seguimiento (opcional)</div>
+        <div class="crm-fgrid">
+          <div class="crm-fld"><label>Próximo contacto — fecha</label><input id="nc_proximoContacto" type="date"></div>
+          <div class="crm-fld"><label>Motivo del próximo contacto</label><input id="nc_proximoNota" placeholder="Ej: enviar presupuesto"></div>
+          <div class="crm-fld"><label>¿Doc. pendiente de retiro?</label><select id="nc_docPendiente_sel" onchange="document.getElementById('nc_docQueWrap').style.display=this.value==='si'?'block':'none';document.getElementById('nc_docPendiente').checked=this.value==='si'"><option value="no">No</option><option value="si">Sí</option></select><input type="checkbox" id="nc_docPendiente" style="display:none"></div>
+          <div class="crm-fld" id="nc_docQueWrap" style="display:none"><label>¿Qué documentación?</label><input id="nc_docPendienteQue" placeholder="Ej: estatuto inscripto"></div>
+          <div class="crm-fld full"><label>Nota inicial de bitácora</label><input id="nc_bitaNota" placeholder="Ej: Primera reunión, interesados en constituir la AC"></div>
+          <div class="crm-fld full"><label>Observaciones</label><textarea id="nc_observaciones" placeholder="Todo lo que no entre en los campos de arriba…"></textarea></div>
+        </div>
+      </div>
+      <div class="crm-modal-foot">
+        <button class="crm-btn-cancelar" onclick="cerrarNuevoCliente()">Cancelar</button>
+        <button class="crm-btn-guardar" onclick="guardarNuevoCliente()">Crear cliente</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  MÓDULO CRM — ficha del cliente (detalle + edición por sección)  · Etapa 2
+// ══════════════════════════════════════════════════════════════════
+var __crmEditando = {}; // { clienteId: { seccion: true } }
+var __crmSecAbierta = {}; // { clienteId: { seccion: true } } — recuerda qué solapas quedaron abiertas
+
+const REPRO_LABEL = { 'no_iniciado': 'Sin iniciar', 'en_tramite': 'En trámite', 'aprobado': 'Aprobado', 'rechazado': 'Rechazado', 'no_aplica': 'No aplica' };
+const REGISTRO_OP = ['IGJ', 'DPPJ', 'INAES', 'Otro'];
+const ENCARGADAS = ['SOFI G', 'SOFI T', 'ORI', 'NAZA'];
+// Genera <option>s para un select de encargada, incluyendo la actual aunque no esté en la lista
+function opcionesEncargada(actual) {
+  const set = ENCARGADAS.slice();
+  if (actual && !set.includes(actual)) set.unshift(actual);
+  return '<option value="">— Sin asignar —</option>' + set.map(e => `<option value="${esc(e)}"${actual === e ? ' selected' : ''}>${esc(e)}</option>`).join('');
+}
+const TIPO_OP = { 'AC': 'Asociación Civil', 'Sociedad': 'Sociedad', 'Cooperativa': 'Cooperativa', 'Persona fisica': 'Persona física' };
+
+function abrirClienteDetalle(id) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  __crmEditando[id] = {};
+  let ov = document.getElementById('crmFichaOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'crmFichaOverlay';
+    ov.className = 'crm-modal-ov';
+    ov.addEventListener('click', function(e){ if(e.target===ov) cerrarClienteDetalle(); });
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = htmlFichaCliente(cli);
+  ov.classList.add('on');
+  ov.dataset.cliId = id;
+}
+function cerrarClienteDetalle() {
+  const ov = document.getElementById('crmFichaOverlay');
+  if (ov) ov.classList.remove('on');
+}
+function refrescarFicha(id) {
+  const cli = clientePorId(id);
+  const ov = document.getElementById('crmFichaOverlay');
+  if (cli && ov) ov.innerHTML = htmlFichaCliente(cli);
+}
+
+// ¿Sección en modo edición?
+function secEnEdicion(id, sec) { return __crmEditando[id] && __crmEditando[id][sec]; }
+function toggleEditSeccion(id, sec) {
+  if (!__crmEditando[id]) __crmEditando[id] = {};
+  __crmEditando[id][sec] = !__crmEditando[id][sec];
+  // Si entra en edición, forzar que la sección quede abierta
+  if (!__crmSecAbierta[id]) __crmSecAbierta[id] = {};
+  if (__crmEditando[id][sec]) __crmSecAbierta[id][sec] = true;
+  refrescarFicha(id);
+}
+
+
+// Normaliza un link para que sea abrible (agrega https:// si falta esquema)
+function normalizarLink(u) {
+  u = (u || '').trim();
+  if (!u) return '';
+  if (/^https?:\/\//i.test(u)) return u;        // ya tiene http(s)
+  if (/^file:\/\//i.test(u)) return u;           // ruta local (se respeta pero avisamos)
+  return 'https://' + u.replace(/^\/+/, '');      // le anteponemos https://
+}
+
+function fD(iso) { return iso ? fmtFechaCortaCRM(iso) : '—'; }
+function val(v) { return v ? esc(v) : '—'; }
+
+// ── Guardado por sección: lee inputs y actualiza ──
+function guardarSeccion(id, sec) {
+  const ov = document.getElementById('crmFichaOverlay');
+  const g = campo => { const el = ov.querySelector('#f_' + campo); return el ? el.value : undefined; };
+  const gc = campo => { const el = ov.querySelector('#f_' + campo); return el ? el.checked : undefined; };
+  const cambios = {};
+
+  if (sec === 'identidad') {
+    ['entidad', 'tipo', 'estado', 'cuit', 'registro', 'encargada', 'referente', 'telefono', 'mail', 'driveLink'].forEach(k => { const v = g(k); if (v !== undefined) cambios[k] = v.trim(); });
+  } else if (sec === 'repro') {
+    ['reproTienen', 'reproFechaSol', 'repro3132Fecha', 'repro3132Exp', 'repro1780Fecha', 'repro1780Exp', 'reproComplFecha', 'reproAmparoFecha', 'reproAprobFecha'].forEach(k => { const v = g(k); if (v !== undefined) cambios[k] = v.trim(); });
+    const amp = gc('reproAmparo'); if (amp !== undefined) cambios.reproAmparo = amp;
+  } else if (sec === 'pack') {
+    ['packTipo', 'packSituacion', 'packEstadoTxt'].forEach(k => { const v = g(k); if (v !== undefined) cambios[k] = v.trim(); });
+    // servicios: leer filas
+    const filas = [...ov.querySelectorAll('[data-serv-row]')];
+    cambios.packServicios = filas.map(f => ({
+      nombre: f.querySelector('[data-serv-nombre]').value.trim(),
+      estado: f.querySelector('[data-serv-estado]').value
+    })).filter(s => s.nombre);
+  } else if (sec === 'doc') {
+    const dp = g('docPendiente');
+    cambios.docPendiente = dp === 'si';
+    cambios.docPendienteQue = cambios.docPendiente ? (g('docPendienteQue') || '').trim() : '';
+  } else if (sec === 'reuniones') {
+    const filas = [...ov.querySelectorAll('[data-reu-row]')];
+    cambios.reuniones = filas.map(f => ({
+      tipo: f.querySelector('[data-reu-tipo]').value.trim(),
+      con: f.querySelector('[data-reu-con]').value.trim(),
+      fecha: f.querySelector('[data-reu-fecha]').value,
+      estado: f.querySelector('[data-reu-estado]').value
+    })).filter(r => r.tipo);
+  } else if (sec === 'prox') {
+    cambios.proximoContacto = (g('proximoContacto') || '').trim();
+    cambios.proximoNota = (g('proximoNota') || '').trim();
+  } else if (sec === 'obs') {
+    cambios.observaciones = (g('observaciones') || '').trim();
+  }
+
+  actualizarCliente(id, cambios);
+  __crmEditando[id][sec] = false;
+  refrescarFicha(id);
+  renderCRM();
+}
+
+// ── Agregar fila de servicio / reunión en el editor (sin guardar aún) ──
+function addServRow() {
+  const cont = document.getElementById('servRows');
+  if (!cont) return;
+  const div = document.createElement('div');
+  div.className = 'crm-item-edit'; div.setAttribute('data-serv-row', '');
+  div.innerHTML = servRowHTML({ nombre: '', estado: 'pendiente' });
+  cont.appendChild(div);
+}
+function ncAddServRow() {
+  const cont = document.getElementById('ncServRows');
+  if (!cont) return;
+  const div = document.createElement('div');
+  div.className = 'crm-item-edit'; div.setAttribute('data-serv-row', '');
+  div.innerHTML = servRowHTML({ nombre: '', estado: 'pendiente' });
+  cont.appendChild(div);
+}
+function addReuRow() {
+  const cont = document.getElementById('reuRows');
+  if (!cont) return;
+  const div = document.createElement('div');
+  div.className = 'crm-item-edit'; div.setAttribute('data-reu-row', '');
+  div.innerHTML = reuRowHTML({ tipo: '', con: '', fecha: '', estado: 'pendiente' });
+  cont.appendChild(div);
+}
+function quitarFila(btn) { const row = btn.closest('[data-serv-row],[data-reu-row]'); if (row) row.remove(); }
+
+function servRowHTML(s) {
+  return `<input data-serv-nombre value="${esc(s.nombre || '')}" placeholder="Servicio" style="flex:1">
+    <select data-serv-estado><option value="enviado"${s.estado === 'enviado' ? ' selected' : ''}>✅ Enviado</option><option value="pendiente"${s.estado !== 'enviado' ? ' selected' : ''}>⏳ Pendiente</option></select>
+    <button class="crm-item-del" onclick="quitarFila(this)">✕</button>`;
+}
+function reuRowHTML(r) {
+  return `<input data-reu-tipo value="${esc(r.tipo || '')}" placeholder="Tipo" style="flex:0 0 110px">
+    <input data-reu-con value="${esc(r.con || '')}" placeholder="Con quién" style="flex:0 0 100px">
+    <input data-reu-fecha type="date" value="${r.fecha || ''}" style="flex:0 0 150px">
+    <select data-reu-estado><option value="realizada"${r.estado === 'realizada' ? ' selected' : ''}>Realizada</option><option value="pendiente"${r.estado !== 'realizada' ? ' selected' : ''}>Pendiente</option></select>
+    <button class="crm-item-del" onclick="quitarFila(this)">✕</button>`;
+}
+
+// ── Bitácora: agregar nota ──
+function crmAgregarNota(id) {
+  const ov = document.getElementById('crmFichaOverlay');
+  const fecha = ov.querySelector('#f_bitaFecha').value || hoyISO();
+  const nota = ov.querySelector('#f_bitaNota').value.trim();
+  if (!nota) { ov.querySelector('#f_bitaNota').focus(); return; }
+  agregarNotaBitacora(id, fecha, nota);
+  refrescarFicha(id);
+  renderCRM();
+}
+
+// ── Próximo contacto: marcar contactado / agendar en Calendar ──
+function crmMarcarContactado(id) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  actualizarCliente(id, { proximoContacto: '', proximoNota: '' });
+  refrescarFicha(id);
+  renderCRM();
+}
+function crmAgendarCalendar(id) {
+  const cli = clientePorId(id);
+  if (!cli || !cli.proximoContacto) return;
+  const t = encodeURIComponent('Contactar: ' + cli.entidad);
+  const det = encodeURIComponent(cli.proximoNota || '');
+  const f = cli.proximoContacto.replace(/-/g, '');
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${det}&dates=${f}/${f}`;
+  window.open(url, '_blank');
+}
+
+// ── Eliminar cliente ──
+function crmEliminarCliente(id) {
+  const cli = clientePorId(id);
+  if (!cli) return;
+  if (!confirm('¿Eliminar definitivamente el cliente «' + cli.entidad + '»?\n\nEsta acción no se puede deshacer.')) return;
+  eliminarCliente(id);
+  cerrarClienteDetalle();
+  renderCRM();
+}
+
+// ══════════════ HTML de la ficha ══════════════
+function htmlFichaCliente(c) {
+  const id = c.id;
+  const ed = s => secEnEdicion(id, s);
+  const hoy = (typeof hoyISO === 'function') ? hoyISO() : new Date().toISOString().slice(0, 10);
+  const ult = calcularUltimoContacto(c);
+
+  // Alertas arriba
+  const proxVenc = c.proximoContacto && c.proximoContacto < hoy;
+  const alertas = `<div class="crm-alertas">
+    <div class="crm-alerta ambar"><div class="a-lbl">Último contacto</div><b>${fD(ult)}</b></div>
+    <div class="crm-alerta ${c.docPendiente ? 'rojo' : 'verde'}"><div class="a-lbl">Doc. pendiente</div><b>${c.docPendiente ? 'Sí' : 'No'}</b>${c.docPendiente && c.docPendienteQue ? `<div style="font-size:11px;margin-top:2px">${esc(c.docPendienteQue)}</div>` : ''}</div>
+    <div class="crm-alerta ${c.reproTienen === 'aprobado' ? 'verde' : (c.reproTienen === 'en_tramite' ? 'ambar' : (c.reproTienen === 'no_iniciado' ? 'ini' : 'rojo'))}"><div class="a-lbl">REPROCANN</div><b>${REPRO_LABEL[c.reproTienen] || '—'}</b></div>
+  </div>`;
+
+  return `<div class="crm-modal crm-ficha">
+    <div class="crm-modal-cab">
+      <button class="crm-modal-x" onclick="cerrarClienteDetalle()">✕</button>
+      <h2>${esc(c.entidad)}</h2>
+      <div class="sub">${esc(TIPO_OP[c.tipo] || c.tipo || '')}${c.registro ? ' · ' + esc(c.registro) : ''}${c.cuit ? ' · CUIT ' + esc(c.cuit) : ''}${c.encargada ? ' · ' + esc(c.encargada) : ''}${c.estado === 'no_contactar' ? ' · ⚠ NO CONTACTAR' : (c.estado === 'ex_cliente' ? ' · Ex cliente' : '')}</div>
+    </div>
+    <div class="crm-modal-body">
+      ${alertas}
+
+      ${accProximo(c, ed('prox'))}
+      ${accIdentidad(c, ed('identidad'))}
+      ${accRepro(c, ed('repro'))}
+      ${accPack(c, ed('pack'))}
+      ${accDoc(c, ed('doc'))}
+      ${accReuniones(c, ed('reuniones'))}
+      ${accPagos(c)}
+      ${accBitacora(c)}
+      ${accObs(c, ed('obs'))}
+
+      <div class="crm-ficha-foot">
+        <button class="crm-btn-eliminar" onclick="crmEliminarCliente(${id})">🗑 Eliminar cliente</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+
+// Clase de la sección: abierta si es default-open, si el usuario la abrió, o si está en edición
+function crmRecordarSolapa(id, sec, abierta) {
+  if (!__crmSecAbierta[id]) __crmSecAbierta[id] = {};
+  __crmSecAbierta[id][sec] = abierta;
+}
+function accCls(id, sec, defaultOpen) {
+  const abierta = (__crmSecAbierta[id] && __crmSecAbierta[id][sec]) || secEnEdicion(id, sec) || (defaultOpen && (!__crmSecAbierta[id] || __crmSecAbierta[id][sec] === undefined));
+  return abierta ? 'acc open' : 'acc';
+}
+
+// Encabezado de sección colapsable
+function accHead(id, sec, titulo, resumen, editable) {
+  return `<div class="acc-head" onclick="if(!event.target.closest('.acc-editbtn')){this.parentElement.classList.toggle('open');crmRecordarSolapa(${id},'${sec}',this.parentElement.classList.contains('open'));}">
+    <div class="acc-title"><span class="chev">▶</span>${titulo}</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="acc-resumen">${resumen || ''}</span>
+      ${editable ? `<button class="acc-editbtn" onclick="toggleEditSeccion(${id},'${sec}')">✎</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function accProximo(c, editar) {
+  const id = c.id, hoy = (typeof hoyISO === 'function') ? hoyISO() : '';
+  const venc = c.proximoContacto && c.proximoContacto < hoy;
+  const resumen = c.proximoContacto ? (venc ? '⚠ vencido ' : '') + fmtFechaCortaCRM(c.proximoContacto) : 'sin programar';
+  let body;
+  if (editar) {
+    body = `<div class="crm-editor">
+      <div class="crm-fgrid">
+        <div class="crm-fld"><label>Próxima fecha</label><input id="f_proximoContacto" type="date" value="${c.proximoContacto || ''}"></div>
+        <div class="crm-fld"><label>Motivo</label><input id="f_proximoNota" value="${esc(c.proximoNota || '')}" placeholder="Ej: enviar requisitos"></div>
+      </div>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'prox')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'prox')">Guardar</button></div>
+    </div>`;
+  } else {
+    body = c.proximoContacto ? `<div class="crm-prox-box${venc ? ' venc' : ''}">
+      <div><div class="lbl">Programado para</div><div class="fecha">${fmtFechaCortaCRM(c.proximoContacto)}</div>${c.proximoNota ? `<div style="font-size:12px;margin-top:2px">${esc(c.proximoNota)}</div>` : ''}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="crm-btn-cal" onclick="crmAgendarCalendar(${id})">📅 Calendar</button><button class="crm-btn-guardar" onclick="crmMarcarContactado(${id})">✓ Contactado</button></div>
+    </div>` : '<div class="crm-vacio">Sin próximo contacto programado. Tocá ✎ para agendar uno.</div>';
+  }
+  return `<div class="${accCls(id,'prox',true)}">${accHead(id, 'prox', 'PRÓXIMO CONTACTO', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accIdentidad(c, editar) {
+  const id = c.id;
+  const resumen = [c.referente, c.encargada].filter(Boolean).join(' · ');
+  let body;
+  if (editar) {
+    body = `<div class="crm-fgrid">
+      <div class="crm-fld full"><label>Entidad</label><input id="f_entidad" value="${esc(c.entidad || '')}"></div>
+      <div class="crm-fld"><label>Tipo</label><select id="f_tipo">${Object.entries(TIPO_OP).map(([k, v]) => `<option value="${k}"${c.tipo === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+      <div class="crm-fld"><label>Estado</label><select id="f_estado"><option value=""${!c.estado ? ' selected' : ''}>Sin marca (normal)</option><option value="no_contactar"${c.estado === 'no_contactar' ? ' selected' : ''}>No contactar</option><option value="ex_cliente"${c.estado === 'ex_cliente' ? ' selected' : ''}>Ex cliente</option></select></div>
+      <div class="crm-fld"><label>CUIT</label><input id="f_cuit" value="${esc(c.cuit || '')}"></div>
+      <div class="crm-fld"><label>Registro</label><select id="f_registro">${REGISTRO_OP.map(r => `<option${c.registro === r ? ' selected' : ''}>${r}</option>`).join('')}</select></div>
+      <div class="crm-fld"><label>Encargada</label><select id="f_encargada">${opcionesEncargada(c.encargada || '')}</select></div>
+      <div class="crm-fld"><label>Referente</label><input id="f_referente" value="${esc(c.referente || '')}"></div>
+      <div class="crm-fld"><label>Teléfono</label><input id="f_telefono" value="${esc(c.telefono || '')}"></div>
+      <div class="crm-fld"><label>Mail</label><input id="f_mail" value="${esc(c.mail || '')}"></div>
+      <div class="crm-fld"><label>Link Drive</label><input id="f_driveLink" value="${esc(c.driveLink || '')}"></div>
+      </div>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'identidad')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'identidad')">Guardar sección</button></div>`;
+  } else {
+    body = `<div class="crm-datos">
+      <div class="crm-dato"><span>Encargada</span><b>${c.encargada ? esc(c.encargada) : '<span style=\'color:var(--crm-rojo)\'>Sin asignar</span>'}</b></div>
+      <div class="crm-dato"><span>Referente</span><b>${val(c.referente)}</b></div>
+      <div class="crm-dato"><span>Teléfono</span><b>${val(c.telefono)}</b></div>
+      <div class="crm-dato"><span>Mail</span><b>${val(c.mail)}</b></div>
+      <div class="crm-dato"><span>Carpeta Drive</span><b>${c.driveLink ? `<a href="${esc(normalizarLink(c.driveLink))}" target="_blank" rel="noopener">📁 Abrir carpeta</a>` : '—'}</b></div>
+      <div class="crm-dato"><span>CUIT</span><b>${val(c.cuit)}</b></div>
+      <div class="crm-dato"><span>Registro</span><b>${val(c.registro)}</b></div>
+    </div>`;
+  }
+  return `<div class="${accCls(id,'identidad',true)}">${accHead(id, 'identidad', 'IDENTIDAD Y CONTACTO', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accRepro(c, editar) {
+  const id = c.id;
+  const resumen = (REPRO_LABEL[c.reproTienen] || '—') + (c.reproAprobFecha ? ' · ' + fmtFechaCortaCRM(c.reproAprobFecha) : '');
+  let body;
+  if (editar) {
+    body = `<div class="crm-editor-note">Todos los campos son opcionales. Completá lo que aplique.</div>
+      <div class="crm-fgrid">
+        <div class="crm-fld"><label>¿Tienen REPRO?</label><select id="f_reproTienen">${Object.entries(REPRO_LABEL).map(([k, v]) => `<option value="${k}"${c.reproTienen === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+        <div class="crm-fld"><label>Fecha de solicitud</label><input id="f_reproFechaSol" type="date" value="${c.reproFechaSol || ''}"></div>
+        <div class="crm-fld"><label>Informe Res. 3132 — fecha</label><input id="f_repro3132Fecha" type="date" value="${c.repro3132Fecha || ''}"></div>
+        <div class="crm-fld"><label>Res. 3132 — N° expediente</label><input id="f_repro3132Exp" value="${esc(c.repro3132Exp || '')}" placeholder="Exp. …"></div>
+        <div class="crm-fld"><label>Informe Res. 1780 — fecha</label><input id="f_repro1780Fecha" type="date" value="${c.repro1780Fecha || ''}"></div>
+        <div class="crm-fld"><label>Res. 1780 — N° expediente</label><input id="f_repro1780Exp" value="${esc(c.repro1780Exp || '')}" placeholder="Exp. …"></div>
+        <div class="crm-fld full"><label>Informe complementario — fecha</label><input id="f_reproComplFecha" type="date" value="${c.reproComplFecha || ''}"></div>
+        <div class="crm-fld"><label>¿Inició amparo?</label><select id="f_reproAmparo"><option value="false"${!c.reproAmparo ? ' selected' : ''}>No</option><option value="true"${c.reproAmparo ? ' selected' : ''}>Sí</option></select></div>
+        <div class="crm-fld"><label>Fecha inicio amparo</label><input id="f_reproAmparoFecha" type="date" value="${c.reproAmparoFecha || ''}"></div>
+        <div class="crm-fld full"><label>Fecha de aprobación</label><input id="f_reproAprobFecha" type="date" value="${c.reproAprobFecha || ''}"></div>
+      </div>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'repro')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'repro')">Guardar sección</button></div>`;
+  } else {
+    body = `<div class="crm-datos">
+      <div class="crm-dato"><span>¿Tienen REPRO?</span><b>${REPRO_LABEL[c.reproTienen] || '—'}</b></div>
+      <div class="crm-dato"><span>Fecha de solicitud</span><b>${fD(c.reproFechaSol)}</b></div>
+      <div class="crm-dato"><span>Informe Res. 3132</span><b>${fD(c.repro3132Fecha)}${c.repro3132Exp ? ' · ' + esc(c.repro3132Exp) : ''}</b></div>
+      <div class="crm-dato"><span>Informe Res. 1780</span><b>${fD(c.repro1780Fecha)}${c.repro1780Exp ? ' · ' + esc(c.repro1780Exp) : ''}</b></div>
+      <div class="crm-dato"><span>Informe complementario</span><b>${fD(c.reproComplFecha)}</b></div>
+      <div class="crm-dato"><span>Amparo</span><b>${c.reproAmparo ? 'Sí' + (c.reproAmparoFecha ? ' · ' + fmtFechaCortaCRM(c.reproAmparoFecha) : '') : 'No'}</b></div>
+      <div class="crm-dato"><span>Fecha de aprobación</span><b>${fD(c.reproAprobFecha)}</b></div>
+    </div>`;
+  }
+  return `<div class="${accCls(id,'repro',false)}">${accHead(id, 'repro', 'REPROCANN', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accPack(c, editar) {
+  const id = c.id;
+  const servs = c.packServicios || [];
+  const pend = servs.filter(s => s.estado !== 'enviado').length;
+  const resumen = (c.packTipo || 's/pack') + (c.packSituacion ? ' · ' + (c.packSituacion === 'vigente' ? 'Vigente' : 'Finalizado') : '') + (pend ? ' · ' + pend + ' pend.' : '');
+  let body;
+  if (editar) {
+    body = `<div class="crm-fgrid">
+        <div class="crm-fld"><label>Tipo de pack</label><select id="f_packTipo"><option value=""></option>${['PS', 'PF', 'PFCS', 'AM'].map(p => `<option${c.packTipo === p ? ' selected' : ''}>${p}</option>`).join('')}</select></div>
+        <div class="crm-fld"><label>Situación</label><select id="f_packSituacion"><option value="vigente"${c.packSituacion === 'vigente' ? ' selected' : ''}>Vigente</option><option value="finalizado"${c.packSituacion === 'finalizado' ? ' selected' : ''}>Finalizado</option></select></div>
+        <div class="crm-fld full"><label>Estado del pack (detalle)</label><input id="f_packEstadoTxt" value="${esc(c.packEstadoTxt || '')}" placeholder="Ej: Grupo cerrado 12/02/2025"></div>
+      </div>
+      <div class="crm-serv-label">Servicios — marcá el estado de cada uno</div>
+      <div id="servRows">${servs.map(s => `<div class="crm-item-edit" data-serv-row>${servRowHTML(s)}</div>`).join('')}</div>
+      <button class="crm-add-fila" onclick="addServRow()">+ Agregar servicio</button>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'pack')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'pack')">Guardar sección</button></div>`;
+  } else {
+    body = `<div class="crm-datos" style="margin-bottom:10px">
+        <div class="crm-dato"><span>Tipo de pack</span><b>${val(c.packTipo)}</b></div>
+        <div class="crm-dato"><span>Situación</span><b>${c.packSituacion === 'vigente' ? '<span style="color:var(--crm-verde)">● Vigente</span>' : (c.packSituacion === 'finalizado' ? '<span style="color:var(--tinta-suave)">● Finalizado</span>' : '—')}</b></div>
+        ${c.packEstadoTxt ? `<div class="crm-dato full" style="grid-column:1/-1"><span>Estado (detalle)</span><b>${esc(c.packEstadoTxt)}</b></div>` : ''}
+      </div>
+      ${servs.length ? `<div class="crm-lista-items">${servs.map(s => `<div class="crm-item-linea ${s.estado === 'enviado' ? 'ok' : 'pend'}"><span>${s.estado === 'enviado' ? '✅' : '⏳'}</span>${esc(s.nombre)}</div>`).join('')}</div>` : '<div class="crm-vacio">Sin servicios cargados.</div>'}`;
+  }
+  return `<div class="${accCls(id,'pack',false)}">${accHead(id, 'pack', 'PACK CONTRATADO', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accDoc(c, editar) {
+  const id = c.id;
+  const resumen = c.docPendiente ? '<span style="color:var(--crm-rojo)">Sí</span>' : 'No';
+  let body;
+  if (editar) {
+    body = `<div class="crm-fgrid">
+        <div class="crm-fld"><label>¿Tienen pendiente de retiro?</label><select id="f_docPendiente" onchange="document.getElementById('docQueWrap').style.display=this.value==='si'?'block':'none'"><option value="no"${!c.docPendiente ? ' selected' : ''}>No</option><option value="si"${c.docPendiente ? ' selected' : ''}>Sí</option></select></div>
+        <div class="crm-fld" id="docQueWrap" style="display:${c.docPendiente ? 'block' : 'none'}"><label>¿Qué?</label><input id="f_docPendienteQue" value="${esc(c.docPendienteQue || '')}"></div>
+      </div>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'doc')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'doc')">Guardar sección</button></div>`;
+  } else {
+    body = `<div class="crm-datos"><div class="crm-dato" style="grid-column:1/-1"><span>¿Tienen pendiente?</span><b>${c.docPendiente ? 'Sí — ' + val(c.docPendienteQue) : 'No'}</b></div></div>`;
+  }
+  return `<div class="${accCls(id,'doc',false)}">${accHead(id, 'doc', 'DOCUMENTACIÓN PENDIENTE DE RETIRO', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accReuniones(c, editar) {
+  const id = c.id;
+  const reus = c.reuniones || [];
+  const real = reus.filter(r => r.estado === 'realizada').length;
+  const resumen = reus.length ? `${real} realizada${real !== 1 ? 's' : ''} · ${reus.length - real} pend.` : 'sin reuniones';
+  let body;
+  if (editar) {
+    body = `<div class="crm-editor-note">Editá las cargadas (fecha/estado) o sumá una nueva.</div>
+      <div id="reuRows">${reus.map(r => `<div class="crm-item-edit" data-reu-row>${reuRowHTML(r)}</div>`).join('')}</div>
+      <button class="crm-add-fila" onclick="addReuRow()">+ Agregar reunión</button>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'reuniones')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'reuniones')">Guardar sección</button></div>`;
+  } else {
+    body = reus.length ? `<div class="crm-lista-items">${reus.map(r => `<div class="crm-item-linea ${r.estado === 'realizada' ? 'ok' : 'pend'}"><span>${r.estado === 'realizada' ? '✅' : '⏳'}</span>${esc(r.tipo)}${r.con ? ' — con ' + esc(r.con) : ''}<span class="crm-item-fecha">${r.fecha ? fmtFechaCortaCRM(r.fecha) : 'pendiente'}</span></div>`).join('')}</div>` : '<div class="crm-vacio">Sin reuniones cargadas.</div>';
+  }
+  return `<div class="${accCls(id,'reuniones',false)}">${accHead(id, 'reuniones', 'REUNIONES', resumen, true)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accPagos(c) {
+  const id = c.id;
+  const pagos = (typeof pagosDeCliente === 'function') ? pagosDeCliente(id) : [];
+  // Formatea respetando la moneda del pago (u$s para USD, $ para pesos)
+  const fmtMonto = p => (p.moneda === 'USD' ? 'u$s ' : '$ ') + (typeof fmtNumStr === 'function' ? fmtNumStr(Number(p.monto) || 0) : (Number(p.monto) || 0));
+  // Totales separados por moneda
+  const totArs = pagos.filter(p => p.moneda !== 'USD').reduce((a, p) => a + (Number(p.monto) || 0), 0);
+  const totUsd = pagos.filter(p => p.moneda === 'USD').reduce((a, p) => a + (Number(p.monto) || 0), 0);
+  const fmtN = n => (typeof fmtNumStr === 'function' ? fmtNumStr(n) : n);
+  const resumen = pagos.length ? `${pagos.length} pago${pagos.length !== 1 ? 's' : ''}` : 'sin pagos';
+
+  // Servicios contratados del cliente (misma solapa)
+  const servs = c.servicios || [];
+
+  let body = '';
+  body += pagos.length ? `<table class="crm-tabla"><thead><tr><th>Fecha</th><th>Concepto</th><th class="r">Monto</th></tr></thead><tbody>
+      ${pagos.map(p => `<tr><td>${fD(p.fecha)}</td><td>${esc(p.concepto || p.detalle || '\u2014')}</td><td class="r">${fmtMonto(p)}</td></tr>`).join('')}
+      <tr class="crm-pago-total"><td colspan="2">Total</td><td class="r">${totArs ? '$ ' + fmtN(totArs) : ''}${totArs && totUsd ? ' · ' : ''}${totUsd ? 'u$s ' + fmtN(totUsd) : ''}${!totArs && !totUsd ? '$ 0' : ''}</td></tr></tbody></table>`
+    : '<div class="crm-vacio">Todavía no hay pagos atribuidos a este cliente. Se suman solos desde Caja.</div>';
+
+  // Bloque de servicios contratados
+  body += `<div class="crm-serv-label">Servicios contratados</div>`;
+  body += servs.length ? `<div class="crm-lista-items">${servs.map(s => `<div class="crm-item-linea ok"><span>\u2713</span>${esc(s.concepto || s.nombre || '')}<span class="crm-item-fecha">${s.fecha ? fmtFechaCortaCRM(s.fecha) : ''}</span></div>`).join('')}</div>`
+    : '<div class="crm-vacio">Sin servicios registrados. Al cargar un pago en Caja podés sumarlo acá.</div>';
+
+  return `<div class="${accCls(id,'pagos',false)}">${accHead(id, 'pagos', 'HISTORIAL DE PAGOS \u00b7 SERVICIOS CONTRATADOS', resumen, false)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accBitacora(c) {
+  const id = c.id;
+  const bita = (c.bitacora || []).slice().sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+  const resumen = bita.length ? `${bita.length} · última ${fmtFechaCortaCRM(bita[0].fecha)}` : 'sin registros';
+  const hoy = (typeof hoyISO === 'function') ? hoyISO() : '';
+  const body = `<div class="crm-editor">
+      <div class="crm-editor-t">Anotar un nuevo contacto</div>
+      <div class="crm-editor-row"><input id="f_bitaFecha" type="date" value="${hoy}"><input id="f_bitaNota" placeholder="¿Qué hablaron?…" style="flex:1"><button class="crm-btn-guardar" onclick="crmAgregarNota(${id})">+ Agregar</button></div>
+    </div>
+    ${bita.length ? bita.map(b => `<div class="crm-bita"><div class="crm-bita-fecha">${fmtFechaCortaCRM(b.fecha)}</div><div class="crm-bita-nota">${esc(b.nota)}</div></div>`).join('') : '<div class="crm-vacio">Sin registros de contacto.</div>'}`;
+  return `<div class="${accCls(id,'bitacora',false)}">${accHead(id, 'bitacora', 'BITÁCORA DE CONTACTOS', resumen, false)}<div class="acc-body">${body}</div></div>`;
+}
+
+function accObs(c, editar) {
+  const id = c.id;
+  let body;
+  if (editar) {
+    body = `<textarea id="f_observaciones" class="crm-obs-edit">${esc(c.observaciones || '')}</textarea>
+      <div class="crm-sec-btns"><button class="crm-btn-cancelar" onclick="toggleEditSeccion(${id},'obs')">Cancelar</button><button class="crm-btn-guardar" onclick="guardarSeccion(${id},'obs')">Guardar</button></div>`;
+  } else {
+    body = c.observaciones ? `<div class="crm-obs">${esc(c.observaciones)}</div>` : '<div class="crm-vacio">Sin observaciones.</div>';
+  }
+  return `<div class="${accCls(id,'obs',false)}">${accHead(id, 'obs', 'OBSERVACIONES', '', true)}<div class="acc-body">${body}</div></div>`;
 }
 
 </script>
