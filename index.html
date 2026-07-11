@@ -89,7 +89,29 @@ button{font-family:var(--f-ui);}
 .grid-2-eq>.panel>div:last-child{flex:1;}
 .grid-2-eq .panel-h{min-height:56px;align-items:center;}
 /* Secciones de caja con marco y halo azul */
-#paginaCaja .panel{border:1px solid #c5d5ea;box-shadow:0 0 0 3px rgba(43,108,176,.05),0 8px 28px rgba(27,58,107,.12);position:relative;overflow:visible}
+#paginaCaja .panel,#paginaCajaSoc .panel{border:1px solid #c5d5ea;box-shadow:0 0 0 3px rgba(43,108,176,.05),0 8px 28px rgba(27,58,107,.12);position:relative;overflow:visible}
+/* Perfiles sin sector judicial: inicio redistribuido y agenda solo-tareas */
+body.sin-jud #panelInicioVenc,body.sin-jud #panelInicioOficios{display:none !important}
+body.sin-jud #inicioGrid2>div:not(.panel){display:contents}
+body.sin-jud #inicioGrid2>div:not(.panel)>.panel{margin:0}
+body.sin-jud #panelAgendaAud{display:none !important}
+body.sin-jud #quickNuevaCausa{display:none !important}
+body.sin-jud #quickNuevoCliente{display:flex !important}
+body.sin-jud #quickAgregarFallo{display:none !important}
+body.sin-jud #quickBuscarCliente{display:flex !important}
+body.sin-jud #inicioGrid2{grid-template-columns:minmax(240px,0.7fr) 1.3fr}
+body.sin-jud #panelInicioQuick{grid-column:1;grid-row:1 / span 2}
+body.sin-jud #panelInicioQuick .quick-grid{grid-template-columns:1fr}
+body.sin-jud #panelInicioContactar{grid-column:2;grid-row:1}
+body.sin-jud #panelInicioPacks{grid-column:2;grid-row:2}
+
+/* Modo Ori en caja judicial: solo cargar pagos + sus comisiones */
+body.caja-ori #paginaCaja .page-head button{display:none}
+body.caja-ori #paginaCaja .f-col:has(#cajaDolar){display:none}
+body.caja-ori #paginaCaja .check-row:has(#cajaPesificar){display:none}
+body.caja-ori #paginaCaja .grid-caja-4 .panel:not(:has(#cajaComisionesO)){display:none}
+body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child(6){display:none}
+
 /* Rubros de la liquidación laboral: tarjetas prolijas */
 .lq-rubros-t{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a6d1f;margin:14px 0 8px}
 .lq-rubros{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:8px;margin-bottom:10px}
@@ -108,10 +130,10 @@ button{font-family:var(--f-ui);}
 .crm-row:hover{border-color:transparent !important;box-shadow:0 6px 20px rgba(27,58,107,.14);background:linear-gradient(var(--carta),var(--carta)) padding-box,linear-gradient(135deg,#3b6db3,#9db9dd 45%,#3b6db3) border-box !important}
 
 /* Títulos de sección (caja, inicio, agenda, herramientas): banda azul marino, oscura a la izquierda */
-#paginaCaja .panel-h,#paginaInicio .panel-h,#paginaAgenda .panel-h,#paginaHerramientas .panel-h{background:#14294a;border-bottom:2px solid #c9a961;border-radius:calc(var(--radio) - 1px) calc(var(--radio) - 1px) 0 0;padding:8px 16px 7px;min-height:0}
-#paginaCaja .panel-h h3,#paginaInicio .panel-h h3,#paginaAgenda .panel-h h3,#paginaHerramientas .panel-h h3{color:#fff;font-size:14px}
-#paginaCaja .panel-h .mini,#paginaCaja .panel-h span,#paginaInicio .panel-h .mini,#paginaInicio .panel-h span,#paginaAgenda .panel-h .mini,#paginaAgenda .panel-h span,#paginaHerramientas .panel-h .mini,#paginaHerramientas .panel-h span{color:#a9c3e8}
-#paginaCaja .stat-tiles .tile{border:1px solid #cdd9ea;box-shadow:0 4px 16px rgba(27,58,107,.09)}
+#paginaCaja .panel-h,#paginaCajaSoc .panel-h,#paginaInicio .panel-h,#paginaAgenda .panel-h,#paginaHerramientas .panel-h{background:#14294a;border-bottom:2px solid #c9a961;border-radius:calc(var(--radio) - 1px) calc(var(--radio) - 1px) 0 0;padding:8px 16px 7px;min-height:0}
+#paginaCaja .panel-h h3,#paginaCajaSoc .panel-h h3,#paginaInicio .panel-h h3,#paginaAgenda .panel-h h3,#paginaHerramientas .panel-h h3{color:#fff;font-size:14px}
+#paginaCaja .panel-h .mini,#paginaCaja .panel-h span,#paginaCajaSoc .panel-h .mini,#paginaCajaSoc .panel-h span,#paginaInicio .panel-h .mini,#paginaInicio .panel-h span,#paginaAgenda .panel-h .mini,#paginaAgenda .panel-h span,#paginaHerramientas .panel-h .mini,#paginaHerramientas .panel-h span{color:#a9c3e8}
+#paginaCaja .stat-tiles .tile,#paginaCajaSoc .stat-tiles .tile{border:1px solid #cdd9ea;box-shadow:0 4px 16px rgba(27,58,107,.09)}
 
 /* Sugerencias de cliente en caja */
 .cj-sug{position:absolute;top:100%;left:0;right:0;z-index:60;background:#fff;border:1px solid #c9d8ec;border-radius:10px;margin-top:4px;box-shadow:0 10px 30px rgba(10,22,38,.18);max-height:280px;overflow-y:auto}
@@ -235,6 +257,9 @@ button{font-family:var(--f-ui);}
 .btn-add:hover{background:#74dba3;transform:translateY(-1px);}
 .io-row{display:flex;gap:6px;}
 .btn-io{flex:1;padding:7px;background:transparent;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.22);border-radius:7px;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-logout{flex:0 0 auto;margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.24);color:#fff !important;font-size:11px;font-weight:700;letter-spacing:.05em;padding:7px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit}
+.btn-logout:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.45)}
+.btn-logout .ic{flex-shrink:0;display:block}
 .btn-io:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.45);color:#fff;}
 .side-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;}
 .btn-side{padding:7px 6px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -743,7 +768,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -841,7 +866,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -909,20 +934,11 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
-    <div class="ribbon-right">
-      <button class="btn-io" onclick="exportarDatos()" title="Exportar todos los datos a JSON">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Respaldo
-      </button>
-      <button class="btn-io" onclick="document.getElementById('importInput').click()" title="Importar respaldo JSON">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Importar
-      </button>
-    </div>
+
   </div>
   <div class="page-body">
     <div class="page-inner">
@@ -935,8 +951,8 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 
       <div class="stat-tiles" id="inicioTiles"></div>
 
-      <div class="grid-2">
-        <div class="panel">
+      <div class="grid-2" id="inicioGrid2">
+        <div class="panel" id="panelInicioVenc">
           <div class="panel-h">
             <h3>Vencimientos y audiencias</h3>
             <span class="mini" id="vencMini"></span>
@@ -944,14 +960,20 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
           <div id="inicioVencimientos"></div>
         </div>
         <div>
-          <div class="panel">
+          <div class="panel" id="panelInicioQuick">
             <div class="panel-h"><h3>Accesos rápidos</h3></div>
             <div class="quick-grid">
-              <button class="quick-btn" onclick="navTo('jurisprudencia');setTimeout(openNew,80)">
+              <button class="quick-btn" id="quickAgregarFallo" onclick="navTo('jurisprudencia');setTimeout(openNew,80)">
                 <span class="qi">⚖</span><span class="qt">Agregar fallo</span><span class="qs">Cargar desde PDF o a mano</span>
               </button>
-              <button class="quick-btn" onclick="navTo('expedientes');setTimeout(openNuevaCausa,80)">
+              <button class="quick-btn" id="quickBuscarCliente" style="display:none" onclick="navTo('crm');setTimeout(()=>{const b=document.getElementById('crmBuscar');if(b)b.focus()},120)">
+                <span class="qi">🔍</span><span class="qt">Buscar cliente</span><span class="qs">Ir directo al CRM</span>
+              </button>
+              <button class="quick-btn" id="quickNuevaCausa" onclick="navTo('expedientes');setTimeout(openNuevaCausa,80)">
                 <span class="qi">📂</span><span class="qt">Nueva causa</span><span class="qs">Con auto de apertura</span>
+              </button>
+              <button class="quick-btn" id="quickNuevoCliente" style="display:none" onclick="navTo('crm');setTimeout(abrirNuevoCliente,80)">
+                <span class="qi">👤</span><span class="qt">Nuevo cliente</span><span class="qs">Cargar en el CRM</span>
               </button>
               <button class="quick-btn" onclick="navTo('agenda');setTimeout(()=>document.getElementById('tTitulo').focus(),80)">
                 <span class="qi">📅</span><span class="qt">Nuevo evento</span><span class="qs">Tarea o audiencia</span>
@@ -961,13 +983,17 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               </button>
             </div>
           </div>
-          <div class="panel">
+          <div class="panel" id="panelInicioOficios">
             <div class="panel-h"><h3>Oficios sin contestar</h3><span class="mini" id="ofiMini"></span></div>
             <div id="inicioOficios"></div>
           </div>
-          <div class="panel">
+          <div class="panel" id="panelInicioContactar">
             <div class="panel-h"><h3>Clientes a contactar</h3><span class="mini" id="crmContactarMini"></span></div>
             <div id="inicioContactar"></div>
+          </div>
+          <div class="panel" id="panelInicioPacks">
+            <div class="panel-h"><h3>Packs por finalizar</h3><span class="mini" id="packsVencerMini"></span></div>
+            <div id="inicioPacksVencer"></div>
           </div>
         </div>
       </div>
@@ -988,7 +1014,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -1044,7 +1070,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         </div>
         <div id="tareasLista"></div>
       </div>
-      <div class="panel lista-amplia" style="margin-top:16px">
+      <div class="panel lista-amplia" id="panelAgendaAud" style="margin-top:16px">
         <div class="panel-h"><h3>Próximas audiencias</h3><span class="mini">de tus expedientes y las cargadas a mano</span></div>
         <div id="agendaAudiencias"></div>
       </div>
@@ -1065,7 +1091,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -1239,7 +1265,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -1323,6 +1349,103 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 </div>
 <input type="file" id="cajaAdjInput" accept="image/*,.pdf" style="display:none" onchange="cajaAdjuntoElegido(this)">
 
+<!-- ═══════════ PÁGINA CAJA SOCIETARIA ═══════════ -->
+<div id="paginaCajaSoc" class="page-shell" style="display:none">
+  <div class="ribbon">
+    <div>
+      <div class="ribbon-brand" onclick="navTo('inicio')">Juris<em>Cannabis</em></div>
+      <div class="ribbon-sub">Estudio WE Legal</div>
+    </div>
+    <div class="ribbon-sep"></div>
+    <nav class="ribbon-nav" data-navbar>
+      <button class="pill-nav" data-nav="inicio" onclick="navTo('inicio')">🏠 Inicio</button>
+      <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
+      <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
+      <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
+      <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
+      <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
+    </nav>
+  </div>
+  <div class="page-body">
+    <div class="page-inner">
+      <div class="page-head">
+        <div class="hero-eyebrow">Ingresos y gastos del sector societario</div>
+        <h1 class="hero-title">Caja <em>societaria</em></h1>
+        <div class="doble-filete"></div>
+        <div class="f-row" style="margin-top:14px;align-items:end">
+          <div class="f-col" style="flex:0 0 165px"><label>Mes</label><input type="month" id="csMes" onchange="renderCajaSoc()"></div>
+          <div class="f-col" style="flex:0 0 175px"><label>Valor actual del dólar ($)</label><input type="text" inputmode="decimal" id="csDolar" oninput="fmtMiles(this);guardarDolarSoc();renderCajaSoc()" placeholder="Ej: 1.480"></div>
+          <label class="check-row" style="margin:0 0 8px"><input type="checkbox" id="csPesificar" onchange="renderCajaSoc()"> Ver todo pesificado <span class="nota">multiplica los USD por el valor del dólar</span></label>
+          <button class="btn-primary" style="margin-left:auto;margin-bottom:2px" onclick="descargarReporteCajaSoc()">⬇ Descargar balance del mes</button>
+        </div>
+      </div>
+
+      <div class="stat-tiles" id="csTiles"></div>
+
+      <div class="panel">
+        <div class="panel-h"><h3>Registrar movimiento</h3><span class="mini">ingreso o gasto — queda en el mes de la fecha</span></div>
+        <div class="panel-b">
+          <div class="f-row" style="align-items:end">
+            <div class="f-col" style="flex:0 0 145px"><label>Fecha</label><input type="date" id="csFecha"></div>
+            <div class="f-col" style="flex:0 0 130px"><label>Tipo</label>
+              <select id="csTipo"><option value="ingreso">▲ Ingreso</option><option value="gasto">▼ Gasto ordinario</option><option value="gasto_esc">▼ Gasto escribanía</option></select>
+            </div>
+            <div class="f-col" style="flex:1;min-width:160px;position:relative"><label>Cliente / proveedor</label><input id="csContra" placeholder="Branca e Hijos SAS" autocomplete="off" oninput="csSugRender()" onfocus="csSugRender()" onkeydown="csSugTecla(event)"><div id="csSugBox" class="cj-sug" style="display:none"></div></div>
+            <div class="f-col" style="flex:1.3;min-width:180px"><label>Concepto</label><input id="csConcepto" placeholder="Constitución SAS / Tasa IGJ"></div>
+            <div class="f-col" style="flex:0 0 140px"><label>Monto</label><input type="text" inputmode="decimal" id="csMonto" oninput="fmtMiles(this)" placeholder="450.000"></div>
+            <div class="f-col" style="flex:0 0 95px"><label>Moneda</label>
+              <select id="csMoneda"><option value="ARS">$ ARS</option><option value="USD">u$s USD</option></select>
+            </div>
+            <div class="f-col" style="flex:0 0 140px"><label>Método</label>
+              <select id="csMetodo" onchange="labelReceptorSoc()">
+                <option value="efectivo">Efectivo</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="cripto">Cripto</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="f-col" style="flex:0 0 150px"><label id="csReceptorLabel">Recibió el efectivo</label><input id="csReceptor" placeholder="Kevin / Ivana" list="csReceptoresList"></div>
+            <button class="btn-ghost" style="margin-bottom:2px" id="csAdjBtn" onclick="document.getElementById('csAdjInput').click()">📎 Adjuntar foto / PDF</button>
+            <button class="btn-primary" style="margin-bottom:2px" onclick="registrarMovSoc()">+ Registrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel lista-amplia" style="margin-top:16px">
+        <div class="panel-h"><h3>▲ Ingresos del mes</h3><span class="mini" id="csMiniIn"></span></div>
+        <div style="overflow-x:auto"><table class="tabla-caja" id="csTablaIn"></table></div>
+        <div class="panel-empty" id="csVaciaIn" style="display:none">Sin ingresos registrados este mes.</div>
+      </div>
+
+      <div class="panel lista-amplia" style="margin-top:16px">
+        <div class="panel-h"><h3>▼ Gastos ordinarios</h3><span class="mini" id="csMiniGa"></span></div>
+        <div style="overflow-x:auto"><table class="tabla-caja" id="csTablaGa"></table></div>
+        <div class="panel-empty" id="csVaciaGa" style="display:none">Sin gastos ordinarios este mes.</div>
+      </div>
+
+      <div class="panel lista-amplia" style="margin-top:16px">
+        <div class="panel-h"><h3>▼ Gastos escribanía</h3><span class="mini" id="csMiniEsc"></span></div>
+        <div style="overflow-x:auto"><table class="tabla-caja" id="csTablaEsc"></table></div>
+        <div class="panel-empty" id="csVaciaEsc" style="display:none">Sin gastos de escribanía este mes.</div>
+      </div>
+
+      <div class="grid-caja-4" style="margin-top:16px">
+        <div class="panel">
+          <div class="panel-h"><h3>Servicios más vendidos</h3><span class="mini">ranking por concepto — solo ingresos</span></div>
+          <div id="csRankingServ"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h3>Clientes que más pagaron</h3><span class="mini">ranking por cliente — solo ingresos</span></div>
+          <div id="csRankingCli"></div>
+        </div>
+      </div>
+      <datalist id="csReceptoresList"></datalist>
+    </div>
+  </div>
+</div>
+<input type="file" id="csAdjInput" accept="image/*,.pdf" style="display:none" onchange="cajaSocAdjElegido(this)">
+
 <!-- ═══════════ LISTADO DE OFICIOS A REITERAR ═══════════ -->
 <div class="ofi-overlay" id="oficiosOverlay" onclick="if(event.target===this)cerrarListadoOficios()">
   <div class="ofi-modal">
@@ -1363,7 +1486,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
       <button class="pill-nav" data-nav="jurisprudencia" onclick="navTo('jurisprudencia')">⚖ Jurisprudencia</button>
       <button class="pill-nav" data-nav="expedientes" onclick="navTo('expedientes')">📁 Expedientes</button>
       <button class="pill-nav" data-nav="agenda" onclick="navTo('agenda')">📅 Agenda</button>
-      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja</button>
+      <button class="pill-nav" data-nav="caja" onclick="navTo('caja')">💰 Caja judicial</button>
       <button class="pill-nav" data-nav="crm" onclick="navTo('crm')">👤 CRM</button>
       <button class="pill-nav" data-nav="herramientas" onclick="navTo('herramientas')">🧮 Herramientas</button>
     </nav>
@@ -4141,14 +4264,26 @@ function sbDelCliente(id) { if (SB_ON) sbDelete('clientes', id).catch(sbAvisarEr
 async function sbCargarTodo() {
   if (!SB_ON) return;
   try {
-    const [rCasos, rExp, rCaja, rCfg, rTareas, rClientes] = await Promise.all([
+    const [rCasos, rExp, rCaja, rCfg, rTareas, rClientes, rCajaSoc] = await Promise.all([
       sbSelect('casos').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('expedientes').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('caja').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('config').catch(() => null),
       sbSelect('tareas').catch(() => null),
-      sbSelect('clientes').catch(() => null)
+      sbSelect('clientes').catch(() => null),
+      sbSelect('caja_soc').catch(() => null)
     ]);
+
+    // Caja societaria
+    if (rCajaSoc) {
+      CAJASOC = rCajaSoc.map(filaAMov); saveCajaSoc();
+      rCajaSoc.forEach(f => {
+        if (f.adjunto_path && !CAJASOC_ADJ[f.id]) {
+          CAJASOC_ADJ[f.id] = { nombre: String(f.adjunto_path).split('/').pop().replace(/^soc-\d+-/, ''), path: f.adjunto_path, url: sbPubUrl(f.adjunto_path) };
+        }
+      });
+      saveCajaSocAdj();
+    }
 
     // Jurisprudencia
     if (rCasos) casos = rCasos.map(f => ({ id: f.id, caratula: f.caratula, objeto: f.objeto, expediente: f.expediente,
@@ -4346,7 +4481,7 @@ function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;
 // ── Navegación general ──
 const PAGE_IDS = {
   inicio:'paginaInicio', jurisprudencia:'paginaJurisprudencia',
-  expedientes:'paginaExpedientes', agenda:'paginaAgenda',
+  expedientes:'paginaExpedientes', agenda:'paginaAgenda', cajasoc:'paginaCajaSoc',
   caja:'paginaCaja', crm:'paginaCRM', herramientas:'paginaHerramientas'
 };
 // Abre la hoja de prueba de una causa puntual desde cualquier lugar del sitio
@@ -4360,6 +4495,7 @@ function verCausa(id) {
 }
 function navTo(p) {
   if (!PAGE_IDS[p]) p = 'inicio';
+  if (typeof permisoPagina === 'function' && !permisoPagina(p)) p = 'inicio';
   Object.values(PAGE_IDS).forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
   document.getElementById(PAGE_IDS[p]).style.display = p === 'jurisprudencia' ? 'grid' : 'flex';
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === p));
@@ -4369,6 +4505,7 @@ function navTo(p) {
     if (p === 'inicio') renderInicio();
     if (p === 'agenda') { limpiarFormEvento(); renderTareas(); renderAudiencias(); }
     if (p === 'caja') { initCaja(); renderCaja(); }
+    if (p === 'cajasoc') { initCajaSoc(); renderCajaSoc(); }
     if (p === 'crm') { renderCRM(); }
     if (p === 'herramientas') { limpiarHerramientas(); renderFeriados(); renderFerias(); }
   } catch(e) { console.error(e); }
@@ -4441,7 +4578,10 @@ function renderInicio() {
   document.getElementById('inicioFecha').textContent = 'Buenos Aires · ' + fechaLarga(ahora);
   const h = ahora.getHours();
   const saludo = h < 13 ? 'Buenos días' : h < 20 ? 'Buenas tardes' : 'Buenas noches';
-  document.getElementById('inicioSaludo').innerHTML = `${saludo}. <em>El estudio, al día.</em>`;
+  const __nomU = (typeof usuarioActual === 'function' && usuarioActual() && USUARIOS[usuarioActual()]) ? USUARIOS[usuarioActual()].nombre : '';
+  document.getElementById('inicioSaludo').innerHTML = __nomU
+    ? `Hola, ${esc(__nomU)}. <em>${saludo} — el estudio, al día.</em>`
+    : `${saludo}. <em>El estudio, al día.</em>`;
 
   const feriaHoy = (FERIAS || []).find(f => f.desde && f.hasta && hoy >= f.desde && hoy <= f.hasta);
   document.getElementById('inicioFeria').innerHTML = feriaHoy
@@ -4456,27 +4596,35 @@ function renderInicio() {
   const cajaArs = pagosMesAct.filter(x => x.moneda !== 'USD').reduce((a,x) => a + x.monto, 0);
   const cajaUsd = pagosMesAct.filter(x => x.moneda === 'USD').reduce((a,x) => a + x.monto, 0);
 
+  const __pf = typeof perfilActual === 'function' ? perfilActual() : { inicioJud: true, cajaJud: 'full', cajaSoc: true };
+  const movsSocMes = (typeof CAJASOC !== 'undefined' ? CAJASOC : []).filter(m => (m.fecha||'').slice(0,7) === hoy.slice(0,7));
+  const socInArs = movsSocMes.filter(m => m.tipo !== 'gasto' && m.moneda !== 'USD').reduce((a,m) => a + m.monto, 0);
+  const socGaArs = movsSocMes.filter(m => m.tipo === 'gasto' && m.moneda !== 'USD').reduce((a,m) => a + m.monto, 0);
   document.getElementById('inicioTiles').innerHTML = `
     <div class="tile" onclick="navTo('jurisprudencia')">
       <div class="num">${casos.length}</div><div class="lbl">Fallos en la base</div>
       <div class="sub">${casos.filter(c=>c.resultado==='Favorable').length} favorables · ${Object.keys(pdfs).length} con PDF</div>
     </div>
-    <div class="tile" onclick="navTo('expedientes')">
+    ${__pf.inicioJud ? `<div class="tile" onclick="navTo('expedientes')">
       <div class="num">${expedientes.length}</div><div class="lbl">Causas en prueba</div>
       <div class="sub">${expedientes.filter(e=>(e.jurisdiccion||'CABA')==='CABA').length} CABA · ${expedientes.filter(e=>e.jurisdiccion==='PBA').length} PBA</div>
     </div>
     <div class="tile" onclick="abrirListadoOficios()">
       <div class="num">${oficios.length}</div><div class="lbl">Oficios sin contestar</div>
       <div class="sub ${ofVencidos ? 'alerta' : ''}">${ofVencidos ? ofVencidos + ' con plazo de control vencido' : 'Ninguno vencido'}</div>
-    </div>
+    </div>` : ''}
     <div class="tile" onclick="navTo('agenda')">
       <div class="num">${tareasPend.length}</div><div class="lbl">Tareas pendientes</div>
       <div class="sub ${tVencidas ? 'alerta' : ''}">${tVencidas ? tVencidas + ' vencida' + (tVencidas>1?'s':'') : 'Al día'}</div>
     </div>
-    <div class="tile" onclick="navTo('caja')">
-      <div class="num">${pagosMesAct.length}</div><div class="lbl">Pagos este mes</div>
+    ${__pf.cajaJud === 'full' ? `<div class="tile" onclick="navTo('caja')">
+      <div class="num">${pagosMesAct.length}</div><div class="lbl">Caja judicial — pagos este mes</div>
       <div class="sub">$ ${fmtNumStr(cajaArs)} · u$s ${fmtNumStr(cajaUsd)}</div>
-    </div>`;
+    </div>` : ''}
+    ${__pf.cajaSoc ? `<div class="tile" onclick="navTo('cajasoc')">
+      <div class="num">${movsSocMes.length}</div><div class="lbl">Caja societaria — movimientos</div>
+      <div class="sub">▲ $ ${fmtNumStr(socInArs)} · ▼ $ ${fmtNumStr(socGaArs)}</div>
+    </div>` : ''}`;
 
   // Vencimientos combinados
   const items = [];
@@ -4517,6 +4665,7 @@ function renderInicio() {
     </div>`;
   }).join('') : '<div class="panel-empty">No hay oficios librados sin respuesta.</div>';
   renderContactarInicio();
+  renderPacksVencerInicio();
 }
 
 // ── Panel «clientes a contactar» en el inicio ──
@@ -4536,6 +4685,39 @@ function renderContactarInicio() {
       <div class="venc-txt"><div class="t">${esc(c.entidad)}</div>${sub ? `<div class="s">${esc(sub)}</div>` : ''}</div>
     </div>`;
   }).join('') : '<div class="panel-empty">Ningún cliente con próximo contacto programado.</div>';
+}
+
+// ── Packs por finalizar (vencimiento a 30 días o menos) ──
+function packVencimiento(c) {
+  if (!c || c.packSituacion !== 'vigente' || !c.packEstadoTxt) return '';
+  const txt = String(c.packEstadoTxt);
+  // preferir la fecha que sigue a "finaliza/vence"; si no, la primera fecha del texto
+  let m = txt.match(/(?:finaliza|vence)[^\d]{0,15}(\d{1,2})\/(\d{1,2})\/(\d{2,4})/i);
+  if (!m) m = txt.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if (!m) return '';
+  let [, d, mo, y] = m;
+  if (y.length === 2) y = '20' + y;
+  const dd = parseInt(d), mm = parseInt(mo), yy = parseInt(y);
+  if (!dd || !mm || !yy || mm > 12 || dd > 31) return '';
+  return `${yy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+}
+function renderPacksVencerInicio() {
+  const cont = document.getElementById('inicioPacksVencer');
+  if (!cont || typeof CLIENTES === 'undefined') return;
+  const hoy = hoyISO();
+  const dias = v => Math.round((new Date(v + 'T00:00:00') - new Date(hoy + 'T00:00:00')) / 86400000);
+  const items = CLIENTES.map(c => ({ c, venc: packVencimiento(c) }))
+    .filter(x => x.venc && dias(x.venc) <= 30)
+    .sort((a, b) => a.venc.localeCompare(b.venc));
+  const mini = document.getElementById('packsVencerMini');
+  if (mini) mini.textContent = items.length ? items.length + ' pack' + (items.length !== 1 ? 's' : '') + ' en 30 días' : '';
+  cont.innerHTML = items.length ? items.slice(0, 8).map(x => {
+    const venc = x.venc < hoy;
+    return `<div class="venc-item ${venc ? 'overdue' : ''}" onclick="navTo('crm');setTimeout(()=>abrirClienteDetalle(${x.c.id}),80)">
+      <span class="venc-date">${formatFechaCorta(x.venc)}${pillDias(x.venc)}</span>
+      <div class="venc-txt"><div class="t">${esc(x.c.entidad)}</div><div class="s">Pack ${esc(x.c.packTipo || '—')}${x.c.encargada ? ' · ' + esc(x.c.encargada) : ''}</div></div>
+    </div>`;
+  }).join('') : '<div class="panel-empty">Ningún pack vence en los próximos 30 días.</div>';
 }
 
 // ── Agenda: eventos (tareas y audiencias) ──
@@ -5308,6 +5490,305 @@ function saveCajaLocalAdj() {
   try { appStore.setItem(CAJA_ADJ_KEY, JSON.stringify(CAJA_ADJ)); } catch(e) { /* en modo nube los comprobantes viven en el Storage */ }
 }
 function saveCajaAdj() { saveCajaLocalAdj(); }
+
+// ═══════════ CAJA SOCIETARIA (ingresos y gastos — paridad con judicial, sin comisiones) ═══════════
+const CAJASOC_KEY = 'jc-cajasoc-v1';
+const CAJASOC_ADJ_KEY = 'jc-cajasoc-adj-v1';
+let CAJASOC = [];
+let CAJASOC_ADJ = {};
+var __adjStagedSoc = null;
+var __adjTargetSoc = null;
+function loadCajaSoc() {
+  try { CAJASOC = JSON.parse(appStore.getItem(CAJASOC_KEY) || '[]'); } catch(e) { CAJASOC = []; }
+  try { CAJASOC_ADJ = JSON.parse(appStore.getItem(CAJASOC_ADJ_KEY) || '{}'); } catch(e) { CAJASOC_ADJ = {}; }
+}
+function saveCajaSoc() { appStore.setItem(CAJASOC_KEY, JSON.stringify(CAJASOC)); }
+function saveCajaSocAdj() { appStore.setItem(CAJASOC_ADJ_KEY, JSON.stringify(CAJASOC_ADJ)); }
+function movAFila(m) {
+  return { id: m.id, fecha: m.fecha, tipo: m.tipo, contraparte: m.contraparte || '',
+    concepto: m.concepto || '', monto: m.monto, moneda: m.moneda, metodo: m.metodo || '',
+    receptor: m.receptor || '', adjunto_path: (CAJASOC_ADJ[m.id] || {}).path || null };
+}
+function filaAMov(f) {
+  return { id: f.id, fecha: f.fecha, tipo: f.tipo, contraparte: f.contraparte || '',
+    concepto: f.concepto || '', monto: Number(f.monto) || 0, moneda: f.moneda || 'ARS',
+    metodo: f.metodo || '', receptor: f.receptor || '' };
+}
+function sbPushMovSoc(m) { if (SB_ON) sbUpsert('caja_soc', movAFila(m)).catch(sbAvisarError); }
+function sbDelMovSoc(id) { if (SB_ON) sbDelete('caja_soc', id).catch(sbAvisarError); }
+async function sbGuardarComprobanteSoc(id, file) {
+  const nombre = (file.name || ('comp-' + id)).replace(/[^\w.\-]/g, '_');
+  const path = await sbUploadFile('comprobantes-caja', `soc-${id}-${nombre}`, file);
+  return { path, url: sbPubUrl(path) };
+}
+function labelReceptorSoc() {
+  const m = document.getElementById('csMetodo')?.value;
+  const l = document.getElementById('csReceptorLabel');
+  if (l) l.textContent = m === 'efectivo' ? 'Recibió el efectivo' : m === 'transferencia' ? 'Transferido a' : m === 'cripto' ? 'Cripto a' : 'Recibió';
+}
+function renderCajaSocDatalists() {
+  const dl = document.getElementById('csReceptoresList');
+  if (!dl) return;
+  const recs = [...new Set([
+    ...CAJASOC.map(m => (m.receptor || '').trim()),
+    ...(typeof CAJA !== 'undefined' ? CAJA.map(p => (p.receptor || '').trim()) : [])
+  ].filter(Boolean))].sort();
+  dl.innerHTML = recs.map(r => `<option value="${esc(r)}">`).join('');
+}
+function cajaSocAdjElegido(input) {
+  const file = input.files && input.files[0];
+  input.value = '';
+  if (!file) { __adjTargetSoc = null; return; }
+  if (file.size > 3 * 1024 * 1024) {
+    alert('El archivo supera los 3 MB. Comprimí la imagen antes de adjuntarla.');
+    __adjTargetSoc = null; return;
+  }
+  if (__adjTargetSoc != null) {
+    const idMov = __adjTargetSoc; __adjTargetSoc = null;
+    sbGuardarComprobanteSoc(idMov, file).then(info => {
+      CAJASOC_ADJ[idMov] = { nombre: file.name, tipo: file.type, path: info.path, url: info.url };
+      saveCajaSocAdj();
+      const m = CAJASOC.find(x => x.id === idMov); if (m) sbPushMovSoc(m);
+      renderCajaSoc();
+    }).catch(e => { sbAvisarError(e); alert('No se pudo subir el comprobante a la nube.'); });
+  } else {
+    __adjStagedSoc = { nombre: file.name, tipo: file.type, file };
+    const b = document.getElementById('csAdjBtn');
+    if (b) b.textContent = '📎 ' + (file.name.length > 24 ? file.name.slice(0, 24) + '…' : file.name);
+  }
+}
+function adjuntarASoc(id) { __adjTargetSoc = id; document.getElementById('csAdjInput').click(); }
+function verComprobanteSoc(id) {
+  const adj = CAJASOC_ADJ[id];
+  if (!adj) return;
+  if (adj.url) { window.open(adj.url, '_blank'); return; }
+  if (adj.data) { const a = document.createElement('a'); a.href = adj.data; a.download = adj.nombre || 'comprobante'; a.click(); }
+}
+function guardarDolarSoc() {
+  const v = numDe(document.getElementById('csDolar').value);
+  if (v > 0) { appStore.setItem(DOLAR_KEY, String(v)); sbPushConfig('dolar', v); }
+}
+function valorDolarSoc() {
+  const el = document.getElementById('csDolar');
+  const v = el ? numDe(el.value) : NaN;
+  return v > 0 ? v : 0;
+}
+function initCajaSoc() {
+  const f = document.getElementById('csFecha');
+  if (f && !f.value) f.value = hoyISO();
+  const m = document.getElementById('csMes');
+  if (m && !m.value) m.value = hoyISO().slice(0, 7);
+  const dEl = document.getElementById('csDolar');
+  const dv = parseFloat(appStore.getItem(DOLAR_KEY));
+  if (dEl && !dEl.value && dv > 0) dEl.value = fmtNumStr(dv);
+  labelReceptorSoc();
+  renderCajaSocDatalists();
+}
+function registrarMovSoc() {
+  const fecha = document.getElementById('csFecha').value;
+  const tipo = document.getElementById('csTipo').value;
+  const contraparte = document.getElementById('csContra').value.trim();
+  const concepto = document.getElementById('csConcepto').value.trim();
+  const monto = numDe(document.getElementById('csMonto').value);
+  if (!fecha || !monto || (!contraparte && !concepto)) { alert('Completá fecha, monto y cliente/proveedor o concepto.'); return; }
+  const m = { id: Date.now(), fecha, tipo, contraparte, concepto, monto,
+    moneda: document.getElementById('csMoneda').value, metodo: document.getElementById('csMetodo').value,
+    receptor: document.getElementById('csReceptor').value.trim() };
+  CAJASOC.push(m); saveCajaSoc(); sbPushMovSoc(m);
+  if (__adjStagedSoc) {
+    const st = __adjStagedSoc; __adjStagedSoc = null;
+    sbGuardarComprobanteSoc(m.id, st.file).then(info => {
+      CAJASOC_ADJ[m.id] = { nombre: st.nombre, tipo: st.tipo, path: info.path, url: info.url };
+      saveCajaSocAdj(); sbPushMovSoc(m); renderCajaSoc();
+    }).catch(e => sbAvisarError(e));
+  }
+  ['csContra','csConcepto','csMonto','csReceptor'].forEach(id => document.getElementById(id).value = '');
+  const b = document.getElementById('csAdjBtn'); if (b) b.textContent = '📎 Adjuntar foto / PDF';
+  document.getElementById('csMes').value = fecha.slice(0, 7);
+  renderCajaSocDatalists(); renderCajaSoc();
+}
+function eliminarMovSoc(id) {
+  if (!confirm('¿Eliminar este movimiento?')) return;
+  CAJASOC = CAJASOC.filter(m => m.id !== id);
+  delete CAJASOC_ADJ[id];
+  saveCajaSoc(); saveCajaSocAdj(); sbDelMovSoc(id); renderCajaSoc();
+}
+function __socDatosMes(mes) {
+  const movs = CAJASOC.filter(m => (m.fecha || '').startsWith(mes)).sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
+  const ingresos = movs.filter(m => m.tipo === 'ingreso' || !m.tipo);
+  const gastosOrd = movs.filter(m => m.tipo === 'gasto');
+  const gastosEsc = movs.filter(m => m.tipo === 'gasto_esc');
+  const t = { inArs: 0, inUsd: 0, goArs: 0, goUsd: 0, geArs: 0, geUsd: 0 };
+  ingresos.forEach(m => { if (m.moneda === 'USD') t.inUsd += m.monto; else t.inArs += m.monto; });
+  gastosOrd.forEach(m => { if (m.moneda === 'USD') t.goUsd += m.monto; else t.goArs += m.monto; });
+  gastosEsc.forEach(m => { if (m.moneda === 'USD') t.geUsd += m.monto; else t.geArs += m.monto; });
+  return { movs, ingresos, gastosOrd, gastosEsc, t };
+}
+function __socRank(lista, campo, fallback, dolar) {
+  const g = {};
+  lista.forEach(m => {
+    const k = ((m[campo] || '').trim()) || fallback;
+    g[k] = g[k] || { ars: 0, usd: 0 };
+    g[k][m.moneda === 'USD' ? 'usd' : 'ars'] += m.monto;
+  });
+  return Object.entries(g).map(([nombre, v]) => ({ nombre, ...v, clave: v.ars + v.usd * (dolar || 1) })).sort((a, b) => b.clave - a.clave);
+}
+function renderCajaSoc() {
+  const mesEl = document.getElementById('csMes');
+  if (!mesEl) return;
+  if (!mesEl.value) mesEl.value = hoyISO().slice(0, 7);
+  const mes = mesEl.value;
+  const dolar = valorDolarSoc();
+  const pesif = document.getElementById('csPesificar')?.checked && dolar > 0;
+  const { movs, ingresos, gastosOrd, gastosEsc, t } = __socDatosMes(mes);
+  const inPes = t.inArs + t.inUsd * dolar, goPes = t.goArs + t.goUsd * dolar, gePes = t.geArs + t.geUsd * dolar;
+  document.getElementById('csTiles').innerHTML = pesif ? `
+    <div class="tile tile-destacada"><div class="num" style="color:#1e7a48">$ ${fmtNumStr(inPes)}</div><div class="lbl">Ingresos pesificados</div><div class="sub">$ ${fmtNumStr(t.inArs)} + u$s ${fmtNumStr(t.inUsd)} × ${fmtNumStr(dolar)}</div></div>
+    <div class="tile"><div class="num" style="color:#b3372a">$ ${fmtNumStr(goPes)}</div><div class="lbl">G. ordinarios pesificados</div><div class="sub">$ ${fmtNumStr(t.goArs)} + u$s ${fmtNumStr(t.goUsd)} × ${fmtNumStr(dolar)}</div></div>
+    <div class="tile"><div class="num" style="color:#b3372a">$ ${fmtNumStr(gePes)}</div><div class="lbl">G. escribanía pesificados</div><div class="sub">$ ${fmtNumStr(t.geArs)} + u$s ${fmtNumStr(t.geUsd)} × ${fmtNumStr(dolar)}</div></div>
+    <div class="tile"><div class="num">${movs.length}</div><div class="lbl">Movimientos</div><div class="sub">${movs.filter(m => CAJASOC_ADJ[m.id]).length} con comprobante</div></div>` : `
+    <div class="tile"><div class="num" style="color:#1e7a48">$ ${fmtNumStr(t.inArs)}</div><div class="lbl">Ingresos</div><div class="sub">u$s ${fmtNumStr(t.inUsd)} en dólares · ${ingresos.length} mov.</div></div>
+    <div class="tile"><div class="num" style="color:#b3372a">$ ${fmtNumStr(t.goArs)}</div><div class="lbl">Gastos ordinarios</div><div class="sub">u$s ${fmtNumStr(t.goUsd)} en dólares · ${gastosOrd.length} mov.</div></div>
+    <div class="tile"><div class="num" style="color:#b3372a">$ ${fmtNumStr(t.geArs)}</div><div class="lbl">Gastos escribanía</div><div class="sub">u$s ${fmtNumStr(t.geUsd)} en dólares · ${gastosEsc.length} mov.</div></div>
+    <div class="tile"><div class="num">${movs.length}</div><div class="lbl">Movimientos</div><div class="sub">${movs.filter(m => CAJASOC_ADJ[m.id]).length} con comprobante</div></div>`;
+  const filaMov = m => {
+    const sim = m.moneda === 'USD' ? 'u$s ' : '$ ';
+    const met = m.metodo === 'efectivo' ? 'Efectivo' : m.metodo === 'transferencia' ? 'Transf.' : m.metodo === 'cripto' ? 'Cripto' : 'Otro';
+    const gasto = m.tipo !== 'ingreso' && m.tipo;
+    return `<tr>
+      <td style="white-space:nowrap">${formatFechaCorta(m.fecha)}</td>
+      <td style="font-weight:600">${esc(m.contraparte || '—')}</td>
+      <td>${esc(m.concepto || '—')}</td>
+      <td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:${gasto ? '#b3372a' : '#1e7a48'}">${sim}${fmtNumStr(m.monto)}${pesif && m.moneda === 'USD' ? `<br><span style="font-weight:400;font-size:10.5px;color:var(--tinta-suave)">≈ $ ${fmtNumStr(m.monto * dolar)}</span>` : ''}</td>
+      <td style="font-size:11.5px">${met}${m.receptor ? ' → ' + esc(m.receptor) : ''}</td>
+      <td>${CAJASOC_ADJ[m.id]
+        ? `<button class="mini-btn" onclick="verComprobanteSoc(${m.id})" title="${esc(CAJASOC_ADJ[m.id].nombre)}">📄 Ver</button>`
+        : `<button class="mini-btn" onclick="adjuntarASoc(${m.id})">＋ Adjuntar</button>`}</td>
+      <td><button class="tarea-del" onclick="eliminarMovSoc(${m.id})" title="Eliminar">✕</button></td>
+    </tr>`;
+  };
+  const cab = '<thead><tr><th>Fecha</th><th>Cliente / proveedor</th><th>Concepto</th><th style="text-align:right">Monto</th><th>Método</th><th>Comprob.</th><th></th></tr></thead>';
+  const pinta = (lista, tablaId, vaciaId, miniId, etiqueta) => {
+    const tabla = document.getElementById(tablaId), vacia = document.getElementById(vaciaId), mini = document.getElementById(miniId);
+    if (mini) mini.textContent = lista.length + ' ' + etiqueta + (lista.length !== 1 ? 's' : '') + ' · ' + mesLargo(mes);
+    if (!lista.length) { tabla.innerHTML = ''; vacia.style.display = 'block'; return; }
+    vacia.style.display = 'none';
+    tabla.innerHTML = cab + '<tbody>' + lista.map(filaMov).join('') + '</tbody>';
+  };
+  pinta(ingresos, 'csTablaIn', 'csVaciaIn', 'csMiniIn', 'ingreso');
+  pinta(gastosOrd, 'csTablaGa', 'csVaciaGa', 'csMiniGa', 'gasto ordinario');
+  pinta(gastosEsc, 'csTablaEsc', 'csVaciaEsc', 'csMiniEsc', 'gasto de escribanía');
+  // Rankings (solo ingresos)
+  const filaRankS = (r, i, max) => `
+    <div class="rank-item">
+      <span class="rank-pos">${i + 1}</span>
+      <div style="flex:1;min-width:0">
+        <div class="rank-nombre">${esc(r.nombre)}</div>
+        <div class="rank-barra"><i style="width:${Math.max(4, Math.round(r.clave / max * 100))}%"></i></div>
+      </div>
+      <span class="rank-monto">${r.ars ? '$ ' + fmtNumStr(r.ars) : ''}${r.ars && r.usd ? ' · ' : ''}${r.usd ? 'u$s ' + fmtNumStr(r.usd) : ''}</span>
+    </div>`;
+  const rServ = __socRank(ingresos, 'concepto', '(sin concepto)', dolar);
+  const rCli = __socRank(ingresos, 'contraparte', '(sin cliente)', dolar);
+  const maxS = rServ.length ? rServ[0].clave : 1, maxC = rCli.length ? rCli[0].clave : 1;
+  const eServ = document.getElementById('csRankingServ');
+  if (eServ) eServ.innerHTML = rServ.length ? rServ.slice(0, 8).map((r, i) => filaRankS(r, i, maxS)).join('') : '<div class="panel-empty">Sin ingresos este mes.</div>';
+  const eCli = document.getElementById('csRankingCli');
+  if (eCli) eCli.innerHTML = rCli.length ? rCli.slice(0, 8).map((r, i) => filaRankS(r, i, maxC)).join('') : '<div class="panel-empty">Sin ingresos este mes.</div>';
+}
+
+function descargarReporteCajaSoc() {
+  const mes = document.getElementById('csMes').value || hoyISO().slice(0, 7);
+  const { movs, ingresos, gastosOrd, gastosEsc, t } = __socDatosMes(mes);
+  if (!movs.length) { alert('No hay movimientos registrados en ' + mesLargo(mes) + '.'); return; }
+  const dolar = valorDolarSoc();
+  const balArs = t.inArs - t.goArs - t.geArs;
+  const balUsd = t.inUsd - t.goUsd - t.geUsd;
+  const balPes = (t.inArs + t.inUsd * dolar) - (t.goArs + t.goUsd * dolar) - (t.geArs + t.geUsd * dolar);
+  const fmtBal = (v, sim) => (v < 0 ? '−' : '') + sim + fmtNumStr(Math.abs(v));
+  const filaR = m => {
+    const sim = m.moneda === 'USD' ? 'u$s ' : '$ ';
+    const met = m.metodo === 'efectivo' ? 'Efectivo' : m.metodo === 'transferencia' ? 'Transferencia' : m.metodo === 'cripto' ? 'Cripto' : 'Otro';
+    return `<tr><td>${formatFechaCorta(m.fecha)}</td><td>${esc(m.contraparte || '—')}</td><td>${esc(m.concepto || '—')}</td><td class="der">${sim}${fmtNumStr(m.monto)}</td><td>${met}${m.receptor ? ' → ' + esc(m.receptor) : ''}</td></tr>`;
+  };
+  const rServ = __socRank(ingresos, 'concepto', '(sin concepto)', dolar).slice(0, 8);
+  const rCli = __socRank(ingresos, 'contraparte', '(sin cliente)', dolar).slice(0, 8);
+  const filaRk = (r, i) => `<tr><td style="width:26px;text-align:center;font-weight:700;color:#1b3a6b">${i + 1}</td><td>${esc(r.nombre)}</td><td class="der">${r.ars ? '$ ' + fmtNumStr(r.ars) : ''}${r.ars && r.usd ? ' · ' : ''}${r.usd ? 'u$s ' + fmtNumStr(r.usd) : ''}</td></tr>`;
+  const comps = movs.filter(m => CAJASOC_ADJ[m.id] && CAJASOC_ADJ[m.id].url);
+  const anexo = comps.length ? `<h2>Comprobantes adjuntos</h2><div class="comps">` + comps.map(m => {
+    const adj = CAJASOC_ADJ[m.id];
+    const esImg = (adj.tipo || '').startsWith('image');
+    const tipoLbl = m.tipo === 'gasto' ? 'Gasto ordinario' : m.tipo === 'gasto_esc' ? 'Gasto escribanía' : 'Ingreso';
+    return `<figure>${esImg ? `<img src="${adj.url}" alt="">` : ''}<figcaption><b>${esc(m.contraparte || m.concepto)}</b> · ${formatFechaCorta(m.fecha)}<br>${tipoLbl} — ${m.moneda === 'USD' ? 'u$s ' : '$ '}${fmtNumStr(m.monto)}<br><a href="${adj.url}" target="_blank">⬇ ${esc(adj.nombre || 'Ver comprobante')}</a></figcaption></figure>`;
+  }).join('') + '</div>' : '';
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Balance societario — ${mesLargo(mes)}</title>
+<style>
+:root{--tinta:#1a241d;--suave:#5c6157;--papel:#f6f5ef;--filo:#dcd9cc;--sello:#1b3a6b}
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--tinta);background:var(--papel);margin:0;padding:34px 20px}
+.hoja{max-width:960px;margin:0 auto;background:#fff;border:1px solid var(--filo);border-radius:14px;padding:36px 42px;box-shadow:0 2px 14px rgba(26,36,29,.06)}
+.cab{border-bottom:3px double var(--tinta);padding-bottom:14px;margin-bottom:22px}
+.cab .eyebrow{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--sello);font-weight:700}
+h1{font-size:26px;margin:4px 0 2px}h1 em{color:var(--sello);font-style:normal}
+.sub{color:var(--suave);font-size:12px}
+h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:30px 0 10px;color:var(--tinta);border-bottom:2px solid var(--sello);display:inline-block;padding-bottom:3px}
+.fichas{display:flex;flex-wrap:wrap;gap:10px}
+.ficha{border:1px solid var(--filo);border-radius:10px;padding:11px 16px;min-width:150px;background:#fdfdfb}
+.ficha span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave)}
+.ficha b{display:block;font-size:19px;margin-top:2px;font-variant-numeric:tabular-nums}
+.ficha i{display:block;font-style:normal;font-size:10.5px;color:var(--suave);margin-top:2px}
+.ficha.hi{background:#fdf6e0;border:1.5px solid #d9b83f;box-shadow:0 1px 6px rgba(169,133,60,.18)}
+.ficha.hi span{color:#7a5c00;font-weight:700}.ficha.hi b{color:#3d2f00}.ficha.hi i{color:#8a6d1f}
+.ficha.verde b{color:#1e7a48}.ficha.roja b{color:#b3372a}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--suave);text-align:left;border-bottom:1.5px solid var(--tinta);padding:6px 8px}
+td{padding:7px 8px;border-bottom:1px solid #eceada}
+td.der{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.comps{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+.comps figure{margin:0;width:210px;border:1px solid var(--filo);border-radius:10px;overflow:hidden;background:#fdfdfb}
+.comps img{width:100%;height:150px;object-fit:cover;display:block}
+.comps figcaption{padding:8px 10px;font-size:10.5px;color:var(--suave);line-height:1.5}
+.comps a{color:var(--sello)}
+@media print{body{background:#fff;padding:0}.hoja{border:none;box-shadow:none;padding:20px}}
+</style></head><body><div class="hoja">
+<div class="cab"><div class="eyebrow">WE Legal — Sector societario</div>
+<h1>Balance societario · <em>${mesLargo(mes)}</em></h1>
+<div class="sub">Generado el ${fechaLarga(new Date())} · ${movs.length} movimientos${dolar > 0 ? ' · dólar de referencia $ ' + fmtNumStr(dolar) : ''}</div></div>
+<h2>Resumen del mes</h2>
+<div class="fichas">
+  <div class="ficha verde"><span>Ingresos en pesos</span><b>$ ${fmtNumStr(t.inArs)}</b><i>${ingresos.filter(m => m.moneda !== 'USD').length} movimientos</i></div>
+  <div class="ficha verde"><span>Ingresos en dólares</span><b>u$s ${fmtNumStr(t.inUsd)}</b><i>${ingresos.filter(m => m.moneda === 'USD').length} movimientos</i></div>
+  <div class="ficha roja"><span>G. ordinarios en pesos</span><b>$ ${fmtNumStr(t.goArs)}</b><i>${gastosOrd.filter(m => m.moneda !== 'USD').length} movimientos</i></div>
+  <div class="ficha roja"><span>G. ordinarios en dólares</span><b>u$s ${fmtNumStr(t.goUsd)}</b><i>${gastosOrd.filter(m => m.moneda === 'USD').length} movimientos</i></div>
+  <div class="ficha roja"><span>G. escribanía en pesos</span><b>$ ${fmtNumStr(t.geArs)}</b><i>${gastosEsc.filter(m => m.moneda !== 'USD').length} movimientos</i></div>
+  <div class="ficha roja"><span>G. escribanía en dólares</span><b>u$s ${fmtNumStr(t.geUsd)}</b><i>${gastosEsc.filter(m => m.moneda === 'USD').length} movimientos</i></div>
+</div>
+<div class="fichas" style="margin-top:10px">
+  <div class="ficha hi"><span>Balance neto en pesos</span><b>${fmtBal(balArs, '$ ')}</b><i>ingresos − g. ordinarios − g. escribanía</i></div>
+  <div class="ficha hi"><span>Balance neto en dólares</span><b>${fmtBal(balUsd, 'u$s ')}</b><i>ingresos − g. ordinarios − g. escribanía</i></div>
+  ${dolar > 0 ? `<div class="ficha hi"><span>Balance neto pesificado</span><b>${fmtBal(balPes, '$ ')}</b><i>dólar a $ ${fmtNumStr(dolar)}</i></div>` : ''}
+</div>
+<h2>Servicios más vendidos</h2>
+<table><thead><tr><th style="width:26px">#</th><th>Concepto / servicio</th><th style="text-align:right">Total</th></tr></thead><tbody>${rServ.map(filaRk).join('') || '<tr><td colspan="3">Sin ingresos.</td></tr>'}</tbody></table>
+<h2>Clientes que más pagaron</h2>
+<table><thead><tr><th style="width:26px">#</th><th>Cliente</th><th style="text-align:right">Total</th></tr></thead><tbody>${rCli.map(filaRk).join('') || '<tr><td colspan="3">Sin ingresos.</td></tr>'}</tbody></table>
+<h2>▲ Ingresos</h2>
+<table><thead><tr><th>Fecha</th><th>Cliente / proveedor</th><th>Concepto</th><th style="text-align:right">Monto</th><th>Método</th></tr></thead><tbody>${ingresos.map(filaR).join('') || '<tr><td colspan="5">Sin ingresos.</td></tr>'}</tbody></table>
+<h2>▼ Gastos ordinarios</h2>
+<table><thead><tr><th>Fecha</th><th>Cliente / proveedor</th><th>Concepto</th><th style="text-align:right">Monto</th><th>Método</th></tr></thead><tbody>${gastosOrd.map(filaR).join('') || '<tr><td colspan="5">Sin gastos ordinarios.</td></tr>'}</tbody></table>
+<h2>▼ Gastos escribanía</h2>
+<table><thead><tr><th>Fecha</th><th>Cliente / proveedor</th><th>Concepto</th><th style="text-align:right">Monto</th><th>Método</th></tr></thead><tbody>${gastosEsc.map(filaR).join('') || '<tr><td colspan="5">Sin gastos de escribanía.</td></tr>'}</tbody></table>
+${anexo}
+</div></body></html>`;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'balance-societario-' + mes + '.html';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
 function guardarDolar() {
   const v = numDe(document.getElementById('cajaDolar').value);
   if (v > 0) { appStore.setItem(DOLAR_KEY, String(v)); sbPushConfig('dolar', v); }
@@ -5390,6 +5871,56 @@ function cjSugTecla(e) {
 document.addEventListener('click', function(e) {
   const box = document.getElementById('cjSugBox');
   if (box && !e.target.closest('#cjCliente') && !e.target.closest('#cjSugBox')) box.style.display = 'none';
+});
+// Autocompletado de cliente/proveedor en caja societaria (mismos clientes del CRM + históricos propios)
+let __csSugSel = -1;
+function csSugItems(q) {
+  q = (q || '').trim().toLowerCase();
+  const crm = (typeof CLIENTES !== 'undefined' ? CLIENTES : []).map(c => ({ n: c.entidad }));
+  const crmSet = new Set(crm.map(c => c.n.trim().toUpperCase()));
+  const hist = [...new Set((CAJASOC || []).map(x => (x.contraparte || '').trim()).filter(Boolean))]
+    .filter(n => !crmSet.has(n.toUpperCase())).map(n => ({ n }));
+  let todos = [...crm, ...hist];
+  if (q) {
+    const emp = todos.filter(c => c.n.toLowerCase().startsWith(q));
+    const cont = todos.filter(c => !c.n.toLowerCase().startsWith(q) && c.n.toLowerCase().includes(q));
+    todos = [...emp, ...cont];
+  } else todos.sort((a, b) => a.n.localeCompare(b.n));
+  return todos.slice(0, 8);
+}
+function csSugRender() {
+  const inp = document.getElementById('csContra');
+  const box = document.getElementById('csSugBox');
+  if (!inp || !box) return;
+  const items = csSugItems(inp.value);
+  __csSugSel = -1;
+  if (!items.length) { box.style.display = 'none'; return; }
+  box.innerHTML = items.map((c, i) => `<div class="cj-sug-it" data-i="${i}" onmousedown="event.preventDefault();csSugElegir(${i})"><span class="n">${esc(c.n)}</span></div>`).join('');
+  box.__items = items;
+  box.style.display = 'block';
+}
+function csSugElegir(i) {
+  const box = document.getElementById('csSugBox');
+  const inp = document.getElementById('csContra');
+  if (!box || !box.__items || !box.__items[i]) return;
+  inp.value = box.__items[i].n;
+  box.style.display = 'none';
+}
+function csSugTecla(e) {
+  const box = document.getElementById('csSugBox');
+  if (!box || box.style.display === 'none') return;
+  const its = box.querySelectorAll('.cj-sug-it');
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    __csSugSel = e.key === 'ArrowDown' ? Math.min(__csSugSel + 1, its.length - 1) : Math.max(__csSugSel - 1, 0);
+    its.forEach((el, i) => el.classList.toggle('sel', i === __csSugSel));
+    if (its[__csSugSel]) its[__csSugSel].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' && __csSugSel >= 0) { e.preventDefault(); csSugElegir(__csSugSel); }
+  else if (e.key === 'Escape') box.style.display = 'none';
+}
+document.addEventListener('click', function(e) {
+  const box = document.getElementById('csSugBox');
+  if (box && !e.target.closest('#csContra') && !e.target.closest('#csSugBox')) box.style.display = 'none';
 });
 function renderCajaDatalists() {
   const cl = [...new Set(CAJA.map(x => (x.cliente||'').trim()).filter(Boolean))].sort();
@@ -5524,7 +6055,8 @@ function renderCaja() {
   if (!mesEl) return;
   if (!mesEl.value) mesEl.value = hoyISO().slice(0, 7);
   const mes = mesEl.value;
-  const pagos = pagosDelMes(mes);
+  const modoOri = typeof perfilActual === 'function' && perfilActual().cajaJud === 'ori';
+  const pagos = modoOri ? pagosDelMes(mes).filter(p => p.comisionOri) : pagosDelMes(mes);
   const dolar = valorDolar();
   const pesif = document.getElementById('cajaPesificar').checked && dolar > 0;
   const t = totalesCaja(pagos);
@@ -5534,6 +6066,11 @@ function renderCaja() {
 
   document.getElementById('cajaMesLabel').textContent = pagos.length + ' pago' + (pagos.length !== 1 ? 's' : '') + ' · ' + mesLargo(mes);
 
+  if (modoOri) {
+    document.getElementById('cajaTiles').innerHTML = `
+      <div class="tile tile-destacada"><div class="num">$ ${fmtNumStr(t.oArs)}</div><div class="lbl">Mi comisión del mes (ARS)</div><div class="sub">${pagos.length} pago${pagos.length !== 1 ? 's' : ''} con comisión</div></div>
+      <div class="tile"><div class="num">u$s ${fmtNumStr(t.oUsd)}</div><div class="lbl">Mi comisión del mes (USD)</div><div class="sub">5 % de cada pago marcado</div></div>`;
+  } else
   document.getElementById('cajaTiles').innerHTML = pesif ? `
     <div class="tile tile-destacada"><div class="num">$ ${fmtNumStr(totalPes)}</div><div class="lbl">Total del mes pesificado</div><div class="sub">$ ${fmtNumStr(t.ars)} + u$s ${fmtNumStr(t.usd)} × ${fmtNumStr(dolar)}</div></div>
     <div class="tile"><div class="num">$ ${fmtNumStr(kPes)}</div><div class="lbl">Comisión Kevin (pesificada)</div><div class="sub">$ ${fmtNumStr(t.kArs)} · u$s ${fmtNumStr(t.kUsd)}</div></div>
@@ -5979,22 +6516,87 @@ function copiarReferencia(id, btn) {
 // Aviso honesto: en un HTML estático esto es una tranquera, no una caja fuerte. Cualquiera que
 // lea el código fuente puede saltearla. Sirve para que un visitante casual no entre, nada más.
 const AUTH_KEY = 'jc-auth-v1';
-const AUTH_HASH = 'mfwagv';
+// ── Usuarios y perfiles de acceso ──
+// cajaJud: 'full' (todo) | 'ori' (solo cargar pagos + ver sus comisiones) | false (sin acceso)
+const PERFILES = {
+  total:  { expedientes: true,  cajaJud: 'full', cajaSoc: true,  inicioJud: true  },
+  brenda: { expedientes: false, cajaJud: false,  cajaSoc: true,  inicioJud: false },
+  ori:    { expedientes: true,  cajaJud: 'ori',  cajaSoc: false, inicioJud: true  },
+  sofig:  { expedientes: true,  cajaJud: false,  cajaSoc: false, inicioJud: true  },
+  basico: { expedientes: false, cajaJud: false,  cajaSoc: false, inicioJud: false }
+};
+const USUARIOS = {
+  kevindaich: { h: 'mfwagv', nombre: 'Kevin',  perfil: 'total'  },
+  ivana:      { h: 'lw6yrr', nombre: 'Ivana',  perfil: 'total'  },
+  brenda:     { h: 't0ysox', nombre: 'Brenda', perfil: 'brenda' },
+  ori:        { h: 'kvfg3h', nombre: 'Oriana', perfil: 'ori'    },
+  sofig:      { h: 'nuazbt', nombre: 'Sofi G', perfil: 'sofig'  },
+  sofit:      { h: '7x7woj', nombre: 'Sofi T', perfil: 'basico' },
+  naza:       { h: 'qxjarh', nombre: 'Naza',   perfil: 'basico' }
+};
 function __hashCred(txt) {
   let h = 5381;
   for (let i = 0; i < txt.length; i++) h = ((h << 5) + h + txt.charCodeAt(i)) >>> 0;
   return h.toString(36);
 }
-function sesionActiva() {
-  try { return appStore.getItem(AUTH_KEY) === AUTH_HASH; } catch (e) { return false; }
+function usuarioActual() {
+  try {
+    const v = appStore.getItem(AUTH_KEY) || '';
+    if (v === 'mfwagv') return 'kevindaich'; // sesión previa al sistema de usuarios
+    if (v.startsWith('u:') && USUARIOS[v.slice(2)]) return v.slice(2);
+  } catch (e) {}
+  return null;
 }
+function perfilActual() {
+  const u = usuarioActual();
+  return PERFILES[(u && USUARIOS[u] && USUARIOS[u].perfil) || 'total'] || PERFILES.total;
+}
+function sesionActiva() { return !!usuarioActual(); }
 function loginCon(u, p) {
-  if (__hashCred((u || '').trim().toLowerCase() + ':' + (p || '')) === AUTH_HASH) {
-    try { appStore.setItem(AUTH_KEY, AUTH_HASH); } catch (e) {}
+  u = (u || '').trim().toLowerCase();
+  const reg = USUARIOS[u];
+  if (reg && __hashCred(u + ':' + (p || '')) === reg.h) {
+    try { appStore.setItem(AUTH_KEY, 'u:' + u); } catch (e) {}
     document.body.classList.remove('locked');
+    aplicarPermisos();
+    try { navTo('inicio'); } catch (e) {}
     return true;
   }
   return false;
+}
+function cerrarSesion() {
+  try { appStore.removeItem(AUTH_KEY); } catch (e) {}
+  document.body.classList.add('locked');
+  document.body.classList.remove('caja-ori');
+  document.body.classList.remove('sin-jud');
+  const u = document.getElementById('loginUser'), p = document.getElementById('loginPass');
+  if (u) u.value = ''; if (p) p.value = '';
+  const err = document.getElementById('loginError'); if (err) err.textContent = '';
+  try { navTo('inicio'); } catch (e) {}
+}
+function permisoPagina(p) {
+  const pf = perfilActual();
+  if (p === 'expedientes') return !!pf.expedientes;
+  if (p === 'caja') return pf.cajaJud !== false;
+  if (p === 'cajasoc') return !!pf.cajaSoc;
+  return true;
+}
+function aplicarPermisos() {
+  const pf = perfilActual();
+  document.querySelectorAll('[data-nav="expedientes"]').forEach(b => b.style.display = pf.expedientes ? '' : 'none');
+  document.querySelectorAll('[data-nav="caja"]').forEach(b => b.style.display = pf.cajaJud !== false ? '' : 'none');
+  document.querySelectorAll('[data-nav="cajasoc"]').forEach(b => b.style.display = pf.cajaSoc ? '' : 'none');
+  const po = document.getElementById('panelInicioOficios');
+  if (po) po.style.display = pf.inicioJud ? '' : 'none';
+  const pv = document.getElementById('panelInicioVenc');
+  if (pv) pv.style.display = pf.inicioJud ? '' : 'none';
+  document.body.classList.toggle('caja-ori', pf.cajaJud === 'ori');
+  document.body.classList.toggle('sin-jud', !pf.inicioJud);
+  // Agenda solo-tareas para perfiles sin sector judicial
+  const optAud = document.querySelector('#tTipo option[value="audiencia"]');
+  if (optAud) { optAud.hidden = !pf.inicioJud; optAud.disabled = !pf.inicioJud; }
+  const tSel = document.getElementById('tTipo');
+  if (tSel && !pf.inicioJud && tSel.value === 'audiencia') { tSel.value = 'tarea'; try { toggleTipoEvento(); } catch (e) {} }
 }
 function intentarLogin() {
   const ok = loginCon(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
@@ -6009,6 +6611,28 @@ function intentarLogin() {
 // ── Arranque ──
 loadConfig();
 loadCaja();
+loadCajaSoc();
+// Botón de caja societaria en todas las barras de navegación
+document.querySelectorAll('[data-navbar]').forEach(nav => {
+  if (nav.querySelector('[data-nav="cajasoc"]')) return;
+  const ref = nav.querySelector('[data-nav="caja"]');
+  const b = document.createElement('button');
+  b.className = 'pill-nav'; b.dataset.nav = 'cajasoc';
+  b.setAttribute('onclick', "navTo('cajasoc')");
+  b.textContent = '💼 Caja societaria';
+  if (ref) ref.after(b); else nav.appendChild(b);
+});
+// Botón de cerrar sesión en todos los ribbons (tamaño uniforme)
+document.querySelectorAll('.ribbon').forEach(r => {
+  if (r.querySelector('[data-logout]')) return;
+  const b = document.createElement('button');
+  b.className = 'btn-logout'; b.setAttribute('data-logout', '');
+  b.setAttribute('onclick', 'cerrarSesion()');
+  b.title = 'Cerrar sesión y cambiar de usuario';
+  b.innerHTML = '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff5b49" stroke-width="2.6" stroke-linecap="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="11"/></svg> CERRAR SESIÓN';
+  r.appendChild(b);
+});
+if (sesionActiva()) aplicarPermisos();
 navTo('inicio');
 if (!sesionActiva()) {
   document.body.classList.add('locked');
