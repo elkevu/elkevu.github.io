@@ -1502,8 +1502,9 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
             <div class="f-col" style="flex:1.3;min-width:180px"><label>Concepto</label><input id="csConcepto" placeholder="Constitución SAS / Tasa IGJ"></div>
             <div class="f-col" style="flex:0 0 140px"><label>Monto</label><input type="text" inputmode="decimal" id="csMonto" oninput="fmtMiles(this)" placeholder="450.000"></div>
             <div class="f-col" style="flex:0 0 95px"><label>Moneda</label>
-              <select id="csMoneda"><option value="ARS">$ ARS</option><option value="USD">u$s USD</option></select>
+              <select id="csMoneda" onchange="csToggleDolarDia()"><option value="ARS">$ ARS</option><option value="USD">u$s USD</option></select>
             </div>
+            <div class="f-col" style="flex:0 0 165px" id="csDolarDiaWrap"><label>Valor del dólar hoy ($)</label><input type="text" inputmode="decimal" id="csDolarDia" oninput="fmtMiles(this)" placeholder="Ej: 1.480"></div>
             <div class="f-col" style="flex:0 0 140px"><label>Método</label>
               <select id="csMetodo" onchange="labelReceptorSoc()">
                 <option value="efectivo">Efectivo</option>
@@ -4419,13 +4420,17 @@ function sbDataURLtoBlob(dataURL) {
 let __sbAvisado = false;
 function sbAvisarError(e) {
   console.error('[Supabase]', e);
+  window.__ultimoErrorSB = (e && e.message) ? e.message : String(e);
   if (__sbAvisado) return; __sbAvisado = true;
   const b = document.createElement('div');
-  b.style.cssText = 'position:fixed;bottom:16px;left:16px;z-index:9998;background:#b3372a;color:#fff;padding:10px 14px;border-radius:9px;font-size:12.5px;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.25)';
-  b.textContent = 'No se pudo sincronizar con la base en la nube. Revisá tu conexión; tus cambios quedaron guardados en este dispositivo.';
+  b.style.cssText = 'position:fixed;bottom:16px;left:16px;z-index:9998;background:#b3372a;color:#fff;padding:10px 14px;border-radius:9px;font-size:12px;max-width:360px;box-shadow:0 8px 24px rgba(0,0,0,.25);cursor:pointer';
+  const det = window.__ultimoErrorSB || '';
+  b.innerHTML = 'No se pudo sincronizar con la base en la nube. Tus cambios quedaron guardados en este dispositivo.'
+    + (det ? '<div style="margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.3);font-size:10.5px;opacity:.9;word-break:break-word"><b>Detalle técnico:</b><br>' + det.replace(/[<>]/g, '') + '</div>' : '')
+    + '<div style="margin-top:6px;font-size:10px;opacity:.7">(tocá para cerrar)</div>';
   b.onclick = () => { b.remove(); __sbAvisado = false; };
   document.body.appendChild(b);
-  setTimeout(() => { if (b.parentNode) { b.remove(); __sbAvisado = false; } }, 6000);
+  setTimeout(() => { if (b.parentNode) { b.remove(); __sbAvisado = false; } }, 12000);
 }
 
 // ── Mapeo entre el objeto de la app (camelCase) y la fila de Supabase (snake_case) ──
@@ -5937,12 +5942,12 @@ function saveCajaSocAdj() { appStore.setItem(CAJASOC_ADJ_KEY, JSON.stringify(CAJ
 function movAFila(m) {  /* incluye plan de cuotas */
   return { id: m.id, fecha: m.fecha, tipo: m.tipo, contraparte: m.contraparte || '',
     concepto: m.concepto || '', monto: m.monto, moneda: m.moneda, metodo: m.metodo || '',
-    receptor: m.receptor || '', cliente_id: m.clienteId ?? null, plan_id: m.planId ?? null, nro_cuota: m.nroCuota ?? null, adjunto_path: (CAJASOC_ADJ[m.id] || {}).path || null };
+    receptor: m.receptor || '', cliente_id: m.clienteId ?? null, plan_id: m.planId ?? null, nro_cuota: m.nroCuota ?? null, dolar_dia: m.dolarDia ?? null, adjunto_path: (CAJASOC_ADJ[m.id] || {}).path || null };
 }
 function filaAMov(f) {
   return { id: f.id, fecha: f.fecha, tipo: f.tipo, contraparte: f.contraparte || '',
     concepto: f.concepto || '', monto: Number(f.monto) || 0, moneda: f.moneda || 'ARS',
-    metodo: f.metodo || '', receptor: f.receptor || '', clienteId: f.cliente_id || null, planId: f.plan_id || null, nroCuota: f.nro_cuota || null };
+    metodo: f.metodo || '', receptor: f.receptor || '', clienteId: f.cliente_id || null, planId: f.plan_id || null, nroCuota: f.nro_cuota || null, dolarDia: f.dolar_dia != null ? Number(f.dolar_dia) : null };
 }
 function sbPushMovSoc(m) { if (SB_ON) sbUpsert('caja_soc', movAFila(m)).catch(sbAvisarError); }
 function sbDelMovSoc(id) { if (SB_ON) sbDelete('caja_soc', id).catch(sbAvisarError); }
@@ -6014,6 +6019,18 @@ function initCajaSoc() {
   labelReceptorSoc();
   renderCajaSocDatalists();
 }
+function csToggleDolarDia() {
+  const mon = document.getElementById('csMoneda').value;
+  const wrap = document.getElementById('csDolarDiaWrap');
+  if (!wrap) return;
+  const esArs = mon === 'ARS';
+  wrap.style.display = esArs ? '' : 'none';
+  // Precargar el valor de referencia del dólar si el campo está vacío
+  if (esArs) {
+    const campo = document.getElementById('csDolarDia');
+    if (campo && !campo.value) { const ref = appStore.getItem(DOLAR_KEY); if (ref) campo.value = fmtNumStr(parseFloat(ref)); }
+  }
+}
 function csToggleCuotaVisibilidad() {
   const tipo = document.getElementById('csTipo').value;
   const wrap = document.getElementById('csCuotaChkWrap');
@@ -6031,6 +6048,11 @@ function registrarMovSoc() {
   const m = { id: Date.now(), fecha, tipo, contraparte, concepto, monto,
     moneda: document.getElementById('csMoneda').value, metodo: document.getElementById('csMetodo').value,
     receptor: document.getElementById('csReceptor').value.trim() };
+  // Valor del dólar del día (solo para pagos en pesos, para la dolarización del balance)
+  if (m.moneda === 'ARS') {
+    const dd = numDe((document.getElementById('csDolarDia') || {}).value);
+    if (dd > 0) m.dolarDia = dd;
+  }
   // Cuotas (solo ingresos): crear/actualizar plan y linkear
   let cliIdSoc = null, esCuotaSoc = false;
   if (tipo === 'ingreso') {
@@ -6063,7 +6085,7 @@ function registrarMovSoc() {
       saveCajaSocAdj(); sbPushMovSoc(m); renderCajaSoc();
     }).catch(e => sbAvisarError(e));
   }
-  ['csContra','csConcepto','csMonto','csReceptor'].forEach(id => document.getElementById(id).value = '');
+  ['csContra','csConcepto','csMonto','csReceptor','csDolarDia'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   cjResetCuota('soc');
   const b = document.getElementById('csAdjBtn'); if (b) b.textContent = '📎 Adjuntar foto / PDF';
   document.getElementById('csMes').value = fecha.slice(0, 7);
@@ -6187,6 +6209,13 @@ function descargarReporteCajaSoc() {
   const balArs = t.inArs - t.goArs - t.geArs;
   const balUsd = t.inUsd - t.goUsd - t.geUsd;
   const balPes = (t.inArs + t.inUsd * dolar) - (t.goArs + t.goUsd * dolar) - (t.geArs + t.geUsd * dolar);
+  // Dolarización: todos los ingresos en USD del mes + cada ingreso en pesos / su dólar del día
+  let dolarizacion = 0, ingresosPesosSinDolar = 0;
+  ingresos.forEach(m => {
+    if (m.moneda === 'USD') { dolarizacion += m.monto; return; }
+    if (m.dolarDia && m.dolarDia > 0) dolarizacion += m.monto / m.dolarDia;
+    else ingresosPesosSinDolar++;
+  });
   const fmtBal = (v, sim) => (v < 0 ? '−' : '') + sim + fmtNumStr(Math.abs(v));
   const filaR = m => {
     const sim = m.moneda === 'USD' ? 'u$s ' : '$ ';
@@ -6250,6 +6279,7 @@ td.der{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
   <div class="ficha hi"><span>Balance neto en pesos</span><b>${fmtBal(balArs, '$ ')}</b><i>ingresos − g. ordinarios − g. escribanía</i></div>
   <div class="ficha hi"><span>Balance neto en dólares</span><b>${fmtBal(balUsd, 'u$s ')}</b><i>ingresos − g. ordinarios − g. escribanía</i></div>
   ${dolar > 0 ? `<div class="ficha hi"><span>Balance neto pesificado</span><b>${fmtBal(balPes, '$ ')}</b><i>dólar a $ ${fmtNumStr(dolar)}</i></div>` : ''}
+  <div class="ficha hi" style="border-color:#c9a961;background:#fdf9ee"><span>Dolarización de ingresos</span><b>u$s ${fmtNumStr(Math.round(dolarizacion))}</b><i>USD del mes + pesos ÷ dólar del día de cada pago${ingresosPesosSinDolar ? ` · ${ingresosPesosSinDolar} sin dólar cargado` : ''}</i></div>
 </div>
 <h2>Servicios más vendidos</h2>
 <table><thead><tr><th style="width:26px">#</th><th>Concepto / servicio</th><th style="text-align:right">Total</th></tr></thead><tbody>${rServ.map(filaRk).join('') || '<tr><td colspan="3">Sin ingresos.</td></tr>'}</tbody></table>
