@@ -44,15 +44,24 @@ button{font-family:var(--f-ui);}
 .app{display:grid;grid-template-columns:236px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);height:100vh;overflow:hidden;}
 
 /* ══════════ Cinta de navegación superior (páginas nuevas + expedientes) ══════════ */
-.ribbon{background:var(--bosque);display:flex;align-items:center;gap:14px;padding:0 18px;height:54px;flex-shrink:0;border-bottom:1px solid rgba(94,205,146,0.18);}
-.ribbon-brand{font-family:var(--f-display);font-size:17px;font-weight:600;color:#fff;letter-spacing:-0.01em;cursor:pointer;white-space:nowrap;}
+.ribbon{background:var(--bosque);display:flex;align-items:center;gap:clamp(6px,1.2vw,14px);padding:0 clamp(10px,1.5vw,18px);height:54px;flex-shrink:0;border-bottom:1px solid rgba(94,205,146,0.18);}
+.ribbon-brand{font-family:var(--f-display);font-size:clamp(14px,1.4vw,17px);font-weight:600;color:#fff;letter-spacing:-0.01em;cursor:pointer;white-space:nowrap;}
 .ribbon-brand em{font-style:italic;color:#c9a961;}
 .ribbon>div:first-child{border-left:3px solid #c9a961;padding-left:11px;}
 .ribbon-sub{color:rgba(201,169,97,.78) !important;}
 .ribbon-sub{font-size:9.5px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.14em;margin-top:1px;}
 .ribbon-sep{width:1px;height:22px;background:rgba(255,255,255,0.14);flex-shrink:0;}
+.nav-cajas{position:relative;flex-shrink:0;}
+.nav-cajas-btn{gap:5px}
+.nav-cajas .nav-caret{font-size:9px;opacity:.8;transition:transform .15s}
+.nav-cajas:hover .nav-caret{transform:rotate(180deg)}
+.nav-cajas-menu{position:absolute;top:100%;left:0;padding-top:6px;background:transparent;min-width:190px;display:none;flex-direction:column;gap:2px;z-index:80}
+.nav-cajas-menu>.nav-cajas-inner{background:#14294a;border:1px solid rgba(255,255,255,.16);border-top:2px solid #c9a961;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.4);padding:5px;display:flex;flex-direction:column;gap:2px}
+.nav-cajas:hover .nav-cajas-menu,.nav-cajas:focus-within .nav-cajas-menu{display:flex}
+.nav-cajas-item{display:flex;align-items:center;gap:8px;background:transparent;border:none;color:#fff;font-family:inherit;font-size:12.5px;font-weight:600;text-align:left;padding:9px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:background .13s}
+.nav-cajas-item:hover{background:rgba(255,255,255,.12)}
 .ribbon-nav{display:flex;gap:4px;align-items:center;flex-wrap:nowrap;}
-.pill-nav{font-size:12.5px;font-weight:600;color:#fff;background:transparent;border:1px solid transparent;border-radius:99px;padding:6px 13px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.pill-nav{font-size:12.5px;font-weight:600;color:#fff;background:transparent;border:1px solid transparent;border-radius:99px;padding:6px 13px;cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .pill-nav:hover{color:#fff;background:rgba(255,255,255,0.08);}
 .pill-nav.active{color:var(--bosque);background:var(--brote);border-color:var(--brote);}
 .ribbon-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
@@ -72,6 +81,8 @@ button{font-family:var(--f-ui);}
 
 /* Fichas de estadística */
 .stat-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:22px 0 26px;}
+#inicioTiles{grid-template-columns:repeat(3,1fr);}
+@media (max-width:820px){#inicioTiles{grid-template-columns:1fr 1fr;}}
 .tile{background:var(--carta);border:1px solid var(--filo);border-radius:var(--radio);padding:16px 18px 14px;cursor:pointer;transition:transform .16s,box-shadow .16s,border-color .16s;position:relative;overflow:hidden;}
 .tile::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sello);opacity:0;transition:opacity .16s;}
 .tile:hover{transform:translateY(-2px);box-shadow:var(--sombra-2);border-color:#cfd8cd;}
@@ -91,6 +102,16 @@ button{font-family:var(--f-ui);}
 /* Secciones de caja con marco y halo azul */
 #paginaCaja .panel,#paginaCajaSoc .panel{border:1px solid #c5d5ea;box-shadow:0 0 0 3px rgba(43,108,176,.05),0 8px 28px rgba(27,58,107,.12);position:relative;overflow:visible}
 /* Perfiles sin sector judicial: inicio redistribuido y agenda solo-tareas */
+/* Ivana: inicio simplificado — dos tablas arriba (packs / contactar), accesos rápidos ampliados debajo */
+body.inicio-crm-first #inicioGrid2{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:16px}
+body.inicio-crm-first #inicioColDer{display:contents}
+body.inicio-crm-first #panelInicioPacks{order:1;grid-column:1;grid-row:1}
+body.inicio-crm-first #panelInicioContactar{order:2;grid-column:2;grid-row:1}
+body.inicio-crm-first #panelInicioQuick{order:3;grid-column:1 / span 2;grid-row:2}
+body.inicio-crm-first #panelInicioVenc,body.inicio-crm-first #panelInicioOficios{display:none !important}
+body.inicio-crm-first #panelInicioQuick .quick-grid{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){body.inicio-crm-first #panelInicioQuick .quick-grid{grid-template-columns:repeat(2,1fr)}}
+
 body.sin-jud #panelInicioVenc,body.sin-jud #panelInicioOficios{display:none !important}
 body.sin-jud #inicioGrid2>div:not(.panel){display:contents}
 body.sin-jud #inicioGrid2>div:not(.panel)>.panel{margin:0}
@@ -185,9 +206,15 @@ body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child
 .quick-btn .qi{font-size:16px;line-height:1;}
 .quick-btn .qt{font-size:12.5px;font-weight:600;color:var(--tinta);}
 .quick-btn .qs{font-size:10.5px;color:var(--tinta-suave);}
+.uma-vigente{background:#fdf6e0;border:1px solid #e6d3a0;border-left:3px solid #c9a961;border-radius:8px;padding:9px 13px;font-size:12.5px;color:#5c4a12;margin-bottom:13px;line-height:1.5}
+.uma-vigente b{color:#3d2f00;font-size:14px}
+.uma-vigente.err{background:#faf0ee;border-color:#e6b8b0;border-left-color:#c0563f;color:#7a3226}
+.quick-ivana{display:none}
+body.inicio-crm-first .quick-ivana{display:flex}
 
 /* ══════════ Herramientas ══════════ */
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch;}
+.tool-grid>.panel{margin:0;display:flex;flex-direction:column;}
 @media (max-width:920px){.tool-grid{grid-template-columns:1fr;}}
 .tool-eyebrow{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sello);font-weight:700;}
 .f-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
@@ -201,6 +228,15 @@ body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child
 .btn-primary{background:var(--sello);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;display:inline-flex;align-items:center;gap:7px;}
 .btn-primary:hover{background:var(--sello-osc);}
 .btn-ghost{background:transparent;color:var(--tinta-suave);border:1px solid var(--filo);border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s;}
+.oculto{display:none !important}
+.cuota-box{background:#faf9f5;border:1px solid var(--filo);border-left:3px solid var(--champan);border-radius:10px;padding:13px;margin:8px 0 2px}
+.cuota-box .montos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:9px}
+.cuota-box .montos-grid label{font-size:10px}
+.cuota-hint{font-size:11.5px;color:var(--champan-oscuro);margin-top:8px;background:#fdf6e0;border-radius:6px;padding:7px 10px}
+.cuota-tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:5px;background:#f8f1de;color:var(--champan-oscuro);white-space:nowrap;letter-spacing:.03em}
+.cuotas-pend-tile{background:var(--carta);border:1px solid #cdd9ea;border-left:3px solid var(--champan);border-radius:9px;padding:11px 13px}
+.cuotas-pend-tile .num{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.cuotas-pend-tile .lbl{font-size:10px;color:var(--tinta-suave)}
 .btn-ghost:hover{border-color:var(--sello);color:var(--sello);background:var(--laurel);}
 .res-box{margin-top:12px;background:#fbfaf6;border:1px solid var(--filo);border-left:3px solid var(--sello);border-radius:var(--radio-s);padding:13px 15px;font-size:13px;display:none;}
 .res-box.on{display:block;}
@@ -260,6 +296,9 @@ body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child
 .btn-logout{flex:0 0 auto;margin-left:auto;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.24);color:#fff !important;font-size:11px;font-weight:700;letter-spacing:.05em;padding:7px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:inherit}
 .btn-logout:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.45)}
 .btn-logout .ic{flex-shrink:0;display:block}
+.btn-logout .lbl-logout{display:inline}
+@media (max-width:1180px){.ribbon>div:first-child .ribbon-sub{display:none}}
+@media (max-width:1080px){.btn-logout .lbl-logout{display:none}.btn-logout{padding:7px 10px}}
 .btn-io:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.45);color:#fff;}
 .side-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;}
 .btn-side{padding:7px 6px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap;}
@@ -414,7 +453,7 @@ body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child
 .list-area::-webkit-scrollbar-thumb{border-color:var(--papel);}
 
 /* ══ Responsivo: barras que se acomodan en pantallas angostas ══ */
-@media (max-width:820px){
+@media (max-width:760px){
   .ribbon,.exp-topbar{flex-wrap:wrap;height:auto;padding:10px 14px;row-gap:8px;}
   .ribbon-sep{display:none;}
   .page-body{padding:22px 16px 50px;}
@@ -476,6 +515,12 @@ body.caja-ori #paginaCaja th:nth-child(6),body.caja-ori #paginaCaja td:nth-child
 @media (max-width:400px){
   .ribbon-nav .pill-nav{font-size:10px;padding:8px 3px;}
 }
+
+/* Hoja de prueba: scroll horizontal cuando las columnas (notas) no entran */
+#causaDetalleCuerpo table{min-width:720px}
+#causaDetalleCuerpo .prueba-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+#causaDetalleCuerpo .prueba-scroll::-webkit-scrollbar{height:9px}
+#causaDetalleCuerpo .prueba-scroll::-webkit-scrollbar-thumb{background:#cfc9ba;border-radius:99px}
 
 /* ══ Caja ══ */
 .tabla-caja{width:100%;border-collapse:collapse;font-size:12.5px;}
@@ -629,11 +674,30 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 }
 .crm-mini-wrap{margin-top:2px}
 .crm-mini{font-size:12px;color:var(--tinta-suave)}
-.crm-toolbar{display:flex;gap:9px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.crm-toolbar{display:flex;gap:9px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.crm-chip{font-size:12px;font-weight:600;color:#5a5648;background:#f4f2ec;border:1px solid #ddd8cc;border-radius:20px;padding:7px 14px;cursor:pointer;white-space:nowrap;transition:.13s;font-family:inherit}
+.crm-chip:hover{border-color:#b9b2a2}
+.crm-chip.on{background:#14294a;border-color:#14294a;color:#fff}
+.crm-btn-filtros{font-size:12px;font-weight:600;color:#5a5648;background:#f4f2ec;border:1px solid #ddd8cc;border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;transition:.13s}
+.crm-btn-filtros:hover{border-color:#b9b2a2}
+.crm-btn-filtros.on{background:#eef2f8;border-color:#9db9dd;color:#1b3a6b}
+.crm-fbadge{background:#1b3a6b;color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px}
+.crm-filtros-panel{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.crm-limpiar{font-size:12px;color:#b3372a;background:none;border:1px solid #e4c4c0;border-radius:20px;padding:8px 15px;cursor:pointer;font-family:inherit;font-weight:600;margin-left:auto;transition:.13s}
+.crm-limpiar:hover{background:#faf0ee}
+.crm-metricas{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px}
+@media (max-width:900px){.crm-metricas{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.crm-metricas{grid-template-columns:repeat(2,1fr)}}
+.crm-metrica{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;background:var(--carta,#fff);border:1px solid #e6e2d8;border-left:3px solid #1b3a6b;border-radius:9px;padding:11px 13px;cursor:pointer;transition:.13s;font-family:inherit}
+.crm-metrica:hover{box-shadow:0 4px 14px rgba(27,58,107,.1);transform:translateY(-1px)}
+.crm-metrica-num{font-size:22px;font-weight:700;color:#1a241d;font-variant-numeric:tabular-nums;line-height:1}
+.crm-metrica-lbl{font-size:10.5px;color:#7a7566;line-height:1.3}
 .crm-search{flex:1;min-width:200px;position:relative}
 .crm-search input{width:100%;padding:10px 13px;border:1px solid var(--filo);border-radius:9px;font-size:13px;font-family:inherit;background:var(--carta)}
-.crm-toolbar select{padding:10px 12px;border:1px solid var(--filo);border-radius:9px;font-size:12.5px;font-family:inherit;background:var(--carta);color:var(--tinta)}
-.crm-orden{font-weight:600;border-color:var(--sello)!important;color:var(--sello)!important}
+.crm-toolbar select,.crm-filtros-panel select{padding:9px 34px 9px 15px;border:1px solid #ddd8cc;border-radius:20px;font-size:12.5px;font-family:inherit;background:#f4f2ec;color:#5a5648;font-weight:600;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5648' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;transition:.13s}
+.crm-toolbar select:hover,.crm-filtros-panel select:hover{border-color:#b9b2a2}
+.crm-filtros-panel select.activo{background-color:#eef2f8;border-color:#9db9dd;color:#1b3a6b;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231b3a6b' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")}
+.crm-orden{background-color:#eef2f8!important;border-color:#9db9dd!important;color:#1b3a6b!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231b3a6b' stroke-width='3' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")!important}
 .crm-btn-nuevo{background:var(--sello);border:none;color:#fff;border-radius:9px;padding:10px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 .crm-btn-nuevo:hover{background:var(--sello-osc)}
 .crm-lista{display:flex;flex-direction:column;gap:9px}
@@ -649,6 +713,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .crm-chips{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
 .cchip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.03em}
 .cchip.pack{background:var(--crm-azul-bg);color:var(--crm-azul);border:1px solid #cfe0f0}
+.cchip.pack-venc{background:#f9e3df;color:#b3372a}
 .cchip.pack-fin{background:#eef1ec;color:#7a8578}
 .cchip.doc-si{background:var(--crm-rojo-bg);color:var(--crm-rojo)}
 .crm-row .tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
@@ -728,6 +793,8 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
 .crm-item-del:hover{background:var(--crm-rojo-bg)}
 .crm-add-fila{background:var(--laurel);border:1px dashed var(--sello);color:var(--sello);border-radius:8px;padding:8px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:8px}
 .crm-serv-label{font-size:11px;font-weight:600;color:var(--tinta-suave);margin:12px 0 8px}
+.crm-serv-del{background:none;border:none;color:#b3372a;cursor:pointer;font-size:12px;padding:0 4px;margin-left:6px;flex-shrink:0;opacity:.65}
+.crm-serv-del:hover{opacity:1}
 .crm-tabla{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--carta);border:1px solid var(--filo);border-radius:8px;overflow:hidden}
 .crm-tabla th{background:var(--bosque);color:#e8efe9;text-align:left;padding:7px 11px;font-size:10px;text-transform:uppercase}
 .crm-tabla td{padding:8px 11px;border-bottom:1px solid var(--filo-suave)}.crm-tabla tr:last-child td{border-bottom:none}
@@ -959,7 +1026,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
           </div>
           <div id="inicioVencimientos"></div>
         </div>
-        <div>
+        <div id="inicioColDer">
           <div class="panel" id="panelInicioQuick">
             <div class="panel-h"><h3>Accesos rápidos</h3></div>
             <div class="quick-grid">
@@ -980,6 +1047,18 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               </button>
               <button class="quick-btn" onclick="navTo('herramientas');setTimeout(()=>document.getElementById('toolPlazos').scrollIntoView({behavior:'smooth'}),80)">
                 <span class="qi">📅</span><span class="qt">Calcular plazo</span><span class="qs">Días hábiles y feria</span>
+              </button>
+              <button class="quick-btn quick-ivana" onclick="navTo('crm');setTimeout(abrirNuevoCliente,80)">
+                <span class="qi">👤</span><span class="qt">Alta de cliente</span><span class="qs">Cargar en el CRM</span>
+              </button>
+              <button class="quick-btn quick-ivana" onclick="navTo('crm');setTimeout(()=>{const b=document.getElementById('crmBuscar');if(b)b.focus()},120)">
+                <span class="qi">🔍</span><span class="qt">Buscar cliente</span><span class="qs">Ir directo al CRM</span>
+              </button>
+              <button class="quick-btn quick-ivana" onclick="navTo('herramientas');setTimeout(()=>document.getElementById('toolUma').scrollIntoView({behavior:'smooth'}),80)">
+                <span class="qi">🧮</span><span class="qt">Calculadora UMA</span><span class="qs">Honorarios Ley 27.423</span>
+              </button>
+              <button class="quick-btn quick-ivana" onclick="navTo('cajasoc')">
+                <span class="qi">💼</span><span class="qt">Caja societaria</span><span class="qs">Ingresos y gastos</span>
               </button>
             </div>
           </div>
@@ -1135,6 +1214,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel" id="toolUma">
           <div class="panel-h"><div><span class="tool-eyebrow">Honorarios · Ley 27.423</span><h3>Conversor UMA</h3></div></div>
           <div class="panel-b">
+            <div class="uma-vigente" id="umaVigente">Buscando el valor vigente…</div>
             <div class="f-row">
               <div class="f-col"><label>Valor UMA vigente ($)</label><input type="text" inputmode="decimal" id="umaValor" placeholder="Según última acordada CSJN" oninput="fmtMiles(this);guardarUma();convUma('uma')"></div>
             </div>
@@ -1143,7 +1223,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               <div class="f-col"><label>Importe en pesos ($)</label><input type="text" inputmode="decimal" id="umaPesos" placeholder="Ej: 500.000" oninput="fmtMiles(this);convUma('pesos')"></div>
             </div>
             <div class="res-box" id="umaRes"></div>
-            <div class="res-nota">El valor de la UMA se actualiza por acordada de la CSJN. Cargalo una vez y queda guardado en este equipo.</div>
+            <div class="res-nota">El valor se toma automáticamente del listado del CPACF (Ley 27.423) al abrir el sitio. Si no se pudiera conectar, queda el último valor conocido; también podés editarlo a mano.</div>
           </div>
         </div>
 
@@ -1313,8 +1393,23 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
               <button class="btn-ghost" onclick="document.getElementById('cajaAdjInput').click()" id="cjAdjBtn">📎 Adjuntar foto / PDF</button>
             </div>
             <label class="check-row" style="margin:0 0 8px"><input type="checkbox" id="cjComOri"> Comisión de Ori</label>
-            <button class="btn-primary" style="margin-bottom:2px" onclick="registrarPago()">+ Registrar pago</button>
           </div>
+          <label class="check-row" style="margin:2px 0 0;color:var(--champan-oscuro,#8a6d1f)"><input type="checkbox" id="cjEsCuota" onchange="cjToggleCuota('jud')"> 💳 Este pago es una cuota de un plan de pagos</label>
+          <div class="cuota-box oculto" id="cjCuotaBox">
+            <div class="f-row" style="margin-bottom:0;align-items:end">
+              <div class="f-col" style="flex:0 0 250px"><label>Plan de pago</label>
+                <select id="cjPlan" onchange="cjPlanChange('jud')"><option value="__nuevo">➕ Plan nuevo para este cliente</option></select>
+              </div>
+              <div class="f-col" style="flex:0 0 135px" id="cjWrapTotal"><label>Cantidad de cuotas</label>
+                <select id="cjTotal" onchange="cjRenderCuotaUI('jud')"><option>2</option><option>3</option><option selected>4</option></select>
+              </div>
+              <div class="f-col" style="flex:0 0 170px"><label>¿Qué cuota paga?</label><select id="cjNro"></select></div>
+            </div>
+            <label class="check-row" id="cjWrapPers" style="margin-top:10px"><input type="checkbox" id="cjPers" onchange="cjRenderCuotaUI('jud')"> Las cuotas tienen distinto monto (ej: la 1ª más alta)</label>
+            <div class="montos-grid oculto" id="cjMontosGrid"></div>
+            <div class="cuota-hint" id="cjCuotaHint"></div>
+          </div>
+          <div style="margin-top:12px"><button class="btn-primary" style="margin-bottom:2px" onclick="registrarPago()">+ Registrar pago</button></div>
           <datalist id="clientesList"></datalist>
           <datalist id="receptoresList"></datalist>
         </div>
@@ -1324,6 +1419,18 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel-h"><h3>Pagos del mes</h3><span class="mini" id="cajaMesLabel"></span></div>
         <div style="overflow-x:auto"><table class="tabla-caja" id="cajaTabla"></table></div>
         <div class="panel-empty" id="cajaVacia" style="display:none">Sin pagos registrados este mes.</div>
+      </div>
+
+      <!-- Balance de cuotas pendientes (junta ambas cajas) -->
+      <div class="panel lista-amplia" style="margin-top:16px" id="panelCuotasPend">
+        <div class="panel-h"><h3>Cuotas pendientes de cobro</h3>
+          <button class="btn-primary" style="padding:6px 13px;font-size:12px;margin:0" onclick="descargarBalanceCuotas('jud')">⬇ Descargar balance</button>
+        </div>
+        <div style="padding:14px 16px">
+          <div class="stat-tiles" id="cuotasPendTiles" style="margin-bottom:14px"></div>
+          <div style="overflow-x:auto"><table class="tabla-caja" id="cuotasPendTabla"></table></div>
+          <div class="panel-empty" id="cuotasPendVacia" style="display:none">No hay cuotas pendientes. Cuando registres un pago en cuotas, las siguientes se proyectan acá.</div>
+        </div>
       </div>
 
       <div class="grid-caja-4" style="margin-top:16px">
@@ -1389,7 +1496,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
           <div class="f-row" style="align-items:end">
             <div class="f-col" style="flex:0 0 145px"><label>Fecha</label><input type="date" id="csFecha"></div>
             <div class="f-col" style="flex:0 0 130px"><label>Tipo</label>
-              <select id="csTipo"><option value="ingreso">▲ Ingreso</option><option value="gasto">▼ Gasto ordinario</option><option value="gasto_esc">▼ Gasto escribanía</option></select>
+              <select id="csTipo" onchange="csToggleCuotaVisibilidad()"><option value="ingreso">▲ Ingreso</option><option value="gasto">▼ Gasto ordinario</option><option value="gasto_esc">▼ Gasto escribanía</option></select>
             </div>
             <div class="f-col" style="flex:1;min-width:160px;position:relative"><label>Cliente / proveedor</label><input id="csContra" placeholder="Branca e Hijos SAS" autocomplete="off" oninput="csSugRender()" onfocus="csSugRender()" onkeydown="csSugTecla(event)"><div id="csSugBox" class="cj-sug" style="display:none"></div></div>
             <div class="f-col" style="flex:1.3;min-width:180px"><label>Concepto</label><input id="csConcepto" placeholder="Constitución SAS / Tasa IGJ"></div>
@@ -1407,8 +1514,23 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
             </div>
             <div class="f-col" style="flex:0 0 150px"><label id="csReceptorLabel">Recibió el efectivo</label><input id="csReceptor" placeholder="Kevin / Ivana" list="csReceptoresList"></div>
             <button class="btn-ghost" style="margin-bottom:2px" id="csAdjBtn" onclick="document.getElementById('csAdjInput').click()">📎 Adjuntar foto / PDF</button>
-            <button class="btn-primary" style="margin-bottom:2px" onclick="registrarMovSoc()">+ Registrar</button>
           </div>
+          <label class="check-row" id="csCuotaChkWrap" style="margin:2px 0 0;color:var(--champan-oscuro,#8a6d1f)"><input type="checkbox" id="csEsCuota" onchange="cjToggleCuota('soc')"> 💳 Este ingreso es una cuota de un plan de pagos</label>
+          <div class="cuota-box oculto" id="csCuotaBox">
+            <div class="f-row" style="margin-bottom:0;align-items:end">
+              <div class="f-col" style="flex:0 0 250px"><label>Plan de pago</label>
+                <select id="csPlan" onchange="cjPlanChange('soc')"><option value="__nuevo">➕ Plan nuevo para este cliente</option></select>
+              </div>
+              <div class="f-col" style="flex:0 0 135px" id="csWrapTotal"><label>Cantidad de cuotas</label>
+                <select id="csTotal" onchange="cjRenderCuotaUI('soc')"><option>2</option><option>3</option><option selected>4</option></select>
+              </div>
+              <div class="f-col" style="flex:0 0 170px"><label>¿Qué cuota paga?</label><select id="csNro"></select></div>
+            </div>
+            <label class="check-row" id="csWrapPers" style="margin-top:10px"><input type="checkbox" id="csPers" onchange="cjRenderCuotaUI('soc')"> Las cuotas tienen distinto monto (ej: la 1ª más alta)</label>
+            <div class="montos-grid oculto" id="csMontosGrid"></div>
+            <div class="cuota-hint" id="csCuotaHint"></div>
+          </div>
+          <div style="margin-top:12px"><button class="btn-primary" style="margin-bottom:2px" onclick="registrarMovSoc()">+ Registrar</button></div>
         </div>
       </div>
 
@@ -1428,6 +1550,18 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="panel-h"><h3>▼ Gastos escribanía</h3><span class="mini" id="csMiniEsc"></span></div>
         <div style="overflow-x:auto"><table class="tabla-caja" id="csTablaEsc"></table></div>
         <div class="panel-empty" id="csVaciaEsc" style="display:none">Sin gastos de escribanía este mes.</div>
+      </div>
+
+      <!-- Balance de cuotas pendientes (junta ambas cajas) -->
+      <div class="panel lista-amplia" style="margin-top:16px" id="panelCuotasPendSoc">
+        <div class="panel-h"><h3>Cuotas pendientes de cobro</h3>
+          <button class="btn-primary" style="padding:6px 13px;font-size:12px;margin:0" onclick="descargarBalanceCuotas('soc')">⬇ Descargar balance</button>
+        </div>
+        <div style="padding:14px 16px">
+          <div class="stat-tiles" id="cuotasPendTilesSoc" style="margin-bottom:14px"></div>
+          <div style="overflow-x:auto"><table class="tabla-caja" id="cuotasPendTablaSoc"></table></div>
+          <div class="panel-empty" id="cuotasPendVaciaSoc" style="display:none">No hay cuotas pendientes. Cuando registres un ingreso en cuotas, las siguientes se proyectan acá.</div>
+        </div>
       </div>
 
       <div class="grid-caja-4" style="margin-top:16px">
@@ -1500,11 +1634,25 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
         <div class="crm-mini-wrap"><span id="crmMini" class="crm-mini"></span></div>
       </div>
 
-      <!-- Toolbar: búsqueda + filtros + orden + nuevo -->
+      <!-- Métricas de cartera -->
+      <div class="crm-metricas" id="crmMetricas"></div>
+
+      <!-- Toolbar: búsqueda + acciones rápidas + más filtros + nuevo -->
       <div class="crm-toolbar">
         <div class="crm-search">
           <input id="crmBuscar" placeholder="Buscar cliente por nombre…" oninput="crmSetFiltro('texto', this.value)">
         </div>
+        <button class="crm-chip" id="chipReunion" onclick="crmToggleChip('reunion')">📅 Con reunión pendiente</button>
+        <button class="crm-chip" id="chipVence" onclick="crmToggleChip('vencePack')">⏳ Pack vence este mes</button>
+        <select id="crmOrden" class="crm-orden" onchange="crmSetFiltro('orden', this.value)">
+          <option value="proximo">⇅ Próximos a contactar</option>
+          <option value="nombre">Nombre (A-Z)</option>
+          <option value="ultimo">Último contacto</option>
+        </select>
+        <button class="crm-btn-nuevo" onclick="abrirNuevoCliente()">+ Nuevo cliente</button>
+      </div>
+      <!-- Filtros por atributo (siempre visibles) -->
+      <div class="crm-filtros-panel" id="crmFiltrosPanel">
         <select id="crmFiltroTipo" onchange="crmSetFiltro('tipo', this.value)">
           <option value="">Todos los tipos</option>
           <option value="AC">Asociación Civil</option>
@@ -1540,12 +1688,7 @@ body.locked .ofi-overlay,body.locked #causaDetalleOverlay{display:none !importan
           <option value="si">Con pendiente</option>
           <option value="no">Sin pendiente</option>
         </select>
-        <select id="crmOrden" class="crm-orden" onchange="crmSetFiltro('orden', this.value)">
-          <option value="proximo">⇅ Próximos a contactar</option>
-          <option value="nombre">Nombre (A-Z)</option>
-          <option value="ultimo">Último contacto</option>
-        </select>
-        <button class="crm-btn-nuevo" onclick="abrirNuevoCliente()">+ Nuevo cliente</button>
+        <button class="crm-limpiar" onclick="crmLimpiarFiltros()">Limpiar filtros</button>
       </div>
 
       <!-- Listado -->
@@ -3766,6 +3909,7 @@ function abrirCausaDetalle(id) {
   document.getElementById('causaDetalleSub').textContent = `${exp.expediente} · ${exp.juzgado}`;
   renderCausaDetalle(exp);
   document.getElementById('causaDetalleOverlay').classList.add('open');
+  (window.requestAnimationFrame || setTimeout)(ajustarNotasExpediente, 0);
 }
 function closeCausaDetalle() { document.getElementById('causaDetalleOverlay').classList.remove('open'); }
 
@@ -3847,7 +3991,7 @@ function renderCausaDetalle(exp) {
     if (parte.pericial?.length) {
       html += `<div style="padding:12px 16px;border-bottom:1px solid #f0ece4">
         <div style="font-size:11px;font-weight:700;color:#6a6858;letter-spacing:0.05em;margin-bottom:8px">PERICIAL</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <div class="prueba-scroll"><table style="width:100%;border-collapse:collapse;font-size:12px">
           <thead><tr style="background:#f8f7f4">
             <th style="padding:6px 8px;text-align:left;border-bottom:1px solid #e4e0d8;color:#6a6858;font-weight:600">Tipo</th>
             <th style="padding:6px 8px;text-align:left;border-bottom:1px solid #e4e0d8;color:#6a6858;font-weight:600">Perito</th>
@@ -3879,27 +4023,36 @@ function renderCausaDetalle(exp) {
             </span>
           </td>
           <td style="padding:6px 8px;text-align:center;white-space:nowrap">
+            <div style="display:flex;flex-direction:column;gap:3px;align-items:center">
             ${!per.acepto_cargo
-              ? `<button onclick="registrarPeritoEvento(${exp.id},${pi},${peri},'acepto_cargo')" style="font-size:10px;background:#856404;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer">Aceptó cargo</button>`
+              ? `<button onclick="registrarPeritoEvento(${exp.id},${pi},${peri},'acepto_cargo')" style="font-size:10px;background:#856404;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;width:100%">Aceptó cargo</button>`
               : !per.presento_informe
-              ? `<button onclick="registrarPeritoEvento(${exp.id},${pi},${peri},'presento_informe')" style="font-size:10px;background:#155724;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer">Presentó informe</button>`
+              ? `<button onclick="registrarPeritoEvento(${exp.id},${pi},${peri},'presento_informe')" style="font-size:10px;background:#155724;color:#fff;border:none;padding:3px 8px;border-radius:4px;cursor:pointer;width:100%">Presentó informe</button>`
               : ''}
-            ${per.impugnaciones ? `<span style="font-size:10px;color:#7f2020;display:block;margin-top:3px">Impugnado</span>` : ''}
+            <div style="display:flex;gap:3px">
+              <button onclick="reemplazarPerito(${exp.id},${pi},${peri})" title="Remover y designar otro perito" style="font-size:10px;background:#0c5460;color:#fff;border:none;padding:3px 7px;border-radius:4px;cursor:pointer">Reemplazar</button>
+              <button onclick="toggleImpugnarPerito(${exp.id},${pi},${peri})" title="${per.impugnaciones?'Quitar impugnación':'Impugnar informe'}" style="font-size:10px;background:${per.impugnaciones?'#7f2020':'#eceae2'};color:${per.impugnaciones?'#fff':'#6a6858'};border:none;padding:3px 7px;border-radius:4px;cursor:pointer">${per.impugnaciones?'Impugnado ✓':'Impugnar'}</button>
+              <button onclick="eliminarPerito(${exp.id},${pi},${peri})" title="Eliminar pericia" style="font-size:10px;background:none;border:1px solid #e4c4c0;color:#b3372a;padding:3px 6px;border-radius:4px;cursor:pointer">✕</button>
+            </div>
+            </div>
           </td>
-          <td style="padding:8px 8px">
-            <input value="${per.notas||''}" onchange="updatePerito(${exp.id},${pi},${peri},'notas',this.value)"
-              style="border:none;background:transparent;font-size:11px;width:100%;color:#6a6858" placeholder="Notas...">
+          <td style="padding:8px 8px;min-width:200px">
+            <textarea onchange="updatePerito(${exp.id},${pi},${peri},'notas',this.value)" rows="1"
+              oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+              style="border:1px solid #ece8e0;background:#fdfdfb;border-radius:6px;font-size:11px;width:100%;color:#6a6858;font-family:inherit;padding:5px 7px;resize:vertical;line-height:1.4;overflow:hidden;min-height:30px" placeholder="Notas...">${esc(per.notas||'')}</textarea>
           </td>
         </tr>`;
       });
-      html += `</tbody></table></div>`;
+      html += `</tbody></table></div>
+        <button onclick="agregarPerito(${exp.id},${pi})" style="margin-top:8px;font-size:11px;background:#f8f7f4;border:1px dashed #c9c4b8;color:#6a6858;padding:5px 12px;border-radius:5px;cursor:pointer">+ Agregar pericia</button>
+      </div>`;
     }
 
     // ── TESTIMONIAL ──
     if (parte.testimonial?.length) {
       html += `<div style="padding:12px 16px">
         <div style="font-size:11px;font-weight:700;color:#6a6858;letter-spacing:0.05em;margin-bottom:8px">TESTIMONIAL</div>
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <div class="prueba-scroll"><table style="width:100%;border-collapse:collapse;font-size:12px">
           <thead><tr style="background:#f8f7f4">
             <th style="padding:6px 8px;text-align:left;border-bottom:1px solid #e4e0d8;color:#6a6858;font-weight:600">Testigo</th>
             <th style="padding:6px 8px;text-align:center;border-bottom:1px solid #e4e0d8;color:#6a6858;font-weight:600">Estado</th>
@@ -3914,8 +4067,19 @@ function renderCausaDetalle(exp) {
         const pasada1 = test.audiencia1 && new Date(test.audiencia1 + 'T12:00:00') < hoy;
         const proxima1 = test.audiencia1 && !pasada1 && diasHabilesRestantes(test.audiencia1) <= 5;
 
+        // Estado del testigo: si hay estado manual lo usamos; si no, se infiere de fecha/realizada
+        const EST_TESTIGO = {
+          declaro:      {bg:'#d4edda', col:'#155724', icon:'✓',  label:'Declaró'},
+          no_comparecio:{bg:'#fde8e6', col:'#7f2020', icon:'✗',  label:'No compareció'},
+          decaido:      {bg:'#f3e4e2', col:'#8a3d2e', icon:'⊘',  label:'Decaído'},
+          desistido:    {bg:'#eceae2', col:'#6a6858', icon:'—',  label:'Desistido'},
+          renuncio:     {bg:'#eceae2', col:'#6a6858', icon:'—',  label:'Renunció'}
+        };
         let testBg, testCol, testIcon, testLabel;
-        if (test.realizada) {
+        if (test.estado && EST_TESTIGO[test.estado]) {
+          const e = EST_TESTIGO[test.estado];
+          testBg=e.bg; testCol=e.col; testIcon=e.icon; testLabel=e.label;
+        } else if (test.realizada) {
           testBg='#d4edda'; testCol='#155724'; testIcon='✓'; testLabel='Declaró';
         } else if (pasada1 && !test.realizada) {
           testBg='#fde8e6'; testCol='#7f2020'; testIcon='✗'; testLabel='No compareció';
@@ -3930,12 +4094,21 @@ function renderCausaDetalle(exp) {
         html += `<tr style="border-bottom:1px solid #f0ece4">
           <td style="padding:8px 8px;font-weight:600">${test.testigo}</td>
           <td style="padding:6px 8px;text-align:center">
-            <span style="display:inline-flex;align-items:center;gap:4px;background:${testBg};color:${testCol};font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap">
+            <span style="display:inline-flex;align-items:center;gap:4px;background:${testBg};color:${testCol};font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap;margin-bottom:4px">
               ${testIcon} ${testLabel}
             </span>
+            <select onchange="setEstadoTestigo(${exp.id},${pi},${ti},this.value)" style="display:block;margin:2px auto 0;border:1px solid #e4e0d8;border-radius:4px;font-size:10px;padding:2px 4px;background:#fff;cursor:pointer;max-width:130px">
+              <option value="">— automático —</option>
+              <option value="declaro" ${test.estado==='declaro'?'selected':''}>Declaró</option>
+              <option value="no_comparecio" ${test.estado==='no_comparecio'?'selected':''}>No compareció</option>
+              <option value="decaido" ${test.estado==='decaido'?'selected':''}>Se lo tiene por decaído</option>
+              <option value="desistido" ${test.estado==='desistido'?'selected':''}>Desistido</option>
+              <option value="renuncio" ${test.estado==='renuncio'?'selected':''}>Renunció</option>
+            </select>
           </td>
-          <td style="padding:7px 8px;text-align:center;font-size:11px;color:#6a6858">
-            ${test.audiencia1 ? formatFechaCorta(test.audiencia1) : '—'}
+          <td style="padding:7px 8px;text-align:center">
+            <input value="${test.audiencia1?formatFechaCorta(test.audiencia1):''}" onchange="updateTestigoFecha(${exp.id},${pi},${ti},'audiencia1',this.value)"
+              style="border:1px solid #e4e0d8;border-radius:4px;font-size:11px;width:90px;text-align:center;padding:2px 4px" placeholder="DD/MM/AAAA">
           </td>
           <td style="padding:7px 8px;text-align:center">
             <input value="${test.audiencia2||''}" onchange="updateTestigo(${exp.id},${pi},${ti},'audiencia2',this.value)"
@@ -3954,13 +4127,19 @@ function renderCausaDetalle(exp) {
             <input value="${test.link||''}" onchange="updateTestigo(${exp.id},${pi},${ti},'link',this.value)"
               style="border:1px solid #e4e0d8;border-radius:4px;font-size:11px;width:120px;padding:3px 5px" placeholder="Zoom / Meet…">
           </td>
-          <td style="padding:7px 8px">
-            <input value="${test.notas||''}" onchange="updateTestigo(${exp.id},${pi},${ti},'notas',this.value)"
-              style="border:none;background:transparent;font-size:12px;width:100%" placeholder="Notas...">
+          <td style="padding:7px 8px;min-width:210px">
+            <div style="display:flex;align-items:flex-start;gap:6px">
+              <textarea onchange="updateTestigo(${exp.id},${pi},${ti},'notas',this.value)" rows="1"
+                oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                style="border:1px solid #ece8e0;background:#fdfdfb;border-radius:6px;font-size:12px;flex:1;min-width:0;font-family:inherit;padding:5px 7px;resize:vertical;line-height:1.4;overflow:hidden;min-height:30px" placeholder="Notas...">${esc(test.notas||'')}</textarea>
+              <button onclick="eliminarTestigo(${exp.id},${pi},${ti})" title="Eliminar testigo" style="font-size:11px;background:none;border:none;color:#b3372a;cursor:pointer;flex-shrink:0;padding-top:6px">✕</button>
+            </div>
           </td>
         </tr>`;
       });
-      html += `</tbody></table></div>`;
+      html += `</tbody></table></div>
+        <button onclick="agregarTestigo(${exp.id},${pi})" style="margin-top:8px;font-size:11px;background:#f8f7f4;border:1px dashed #c9c4b8;color:#6a6858;padding:5px 12px;border-radius:5px;cursor:pointer">+ Agregar testigo</button>
+      </div>`;
     }
 
     html += `</div>`;
@@ -3975,6 +4154,11 @@ function renderCausaDetalle(exp) {
   </div>`;
 
   document.getElementById('causaDetalleCuerpo').innerHTML = html;
+}
+function ajustarNotasExpediente() {
+  document.querySelectorAll('#causaDetalleCuerpo textarea').forEach(ta => {
+    ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px';
+  });
 }
 
 // ── Acciones sobre prueba informativa ──
@@ -4040,6 +4224,75 @@ function updatePerito(expId, pi, peri, campo, valor) {
 function updateTestigo(expId, pi, ti, campo, valor) {
   const exp = expedientes.find(e => e.id === expId);
   exp.partes[pi].testimonial[ti][campo] = valor;
+  saveExpedientes(); renderExpedientes();
+}
+function setEstadoTestigo(expId, pi, ti, estado) {
+  const exp = expedientes.find(e => e.id === expId);
+  const t = exp.partes[pi].testimonial[ti];
+  t.estado = estado || null;
+  // "declaró" implica realizada; los demás estados negativos la desmarcan
+  if (estado === 'declaro') t.realizada = true;
+  else if (estado) t.realizada = false;
+  saveExpedientes(); renderExpedientes();
+}
+function updateTestigoFecha(expId, pi, ti, campo, valor) {
+  const exp = expedientes.find(e => e.id === expId);
+  const iso = fechaAISO(valor);
+  exp.partes[pi].testimonial[ti][campo] = iso;
+  saveExpedientes(); renderExpedientes();
+}
+function fechaAISO(txt) {
+  txt = (txt || '').trim();
+  if (!txt) return null;
+  const m = txt.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+  if (!m) return txt.match(/^\d{4}-\d{2}-\d{2}$/) ? txt : null;
+  let [, d, mo, y] = m;
+  if (y.length === 2) y = '20' + y;
+  return `${y}-${mo.padStart(2,'0')}-${d.padStart(2,'0')}`;
+}
+function agregarTestigo(expId, pi) {
+  const nombre = prompt('Nombre del testigo:');
+  if (!nombre || !nombre.trim()) return;
+  const exp = expedientes.find(e => e.id === expId);
+  if (!exp.partes[pi].testimonial) exp.partes[pi].testimonial = [];
+  exp.partes[pi].testimonial.push({ testigo: nombre.trim(), audiencia1: null, audiencia2: null, realizada: false, estado: null, notas: '' });
+  saveExpedientes(); renderExpedientes();
+}
+function eliminarTestigo(expId, pi, ti) {
+  if (!confirm('¿Eliminar este testigo de la hoja de prueba?')) return;
+  const exp = expedientes.find(e => e.id === expId);
+  exp.partes[pi].testimonial.splice(ti, 1);
+  saveExpedientes(); renderExpedientes();
+}
+function agregarPerito(expId, pi) {
+  const tipo = prompt('Tipo de pericia (ej: CONTABLE, MÉDICA, PSICOLÓGICA):');
+  if (!tipo || !tipo.trim()) return;
+  const exp = expedientes.find(e => e.id === expId);
+  if (!exp.partes[pi].pericial) exp.partes[pi].pericial = [];
+  exp.partes[pi].pericial.push({ tipo: tipo.trim().toUpperCase(), perito: '', acepto_cargo: null, presento_informe: null, impugnaciones: null, notas: '' });
+  saveExpedientes(); renderExpedientes();
+}
+function eliminarPerito(expId, pi, peri) {
+  if (!confirm('¿Eliminar esta pericia de la hoja de prueba?')) return;
+  const exp = expedientes.find(e => e.id === expId);
+  exp.partes[pi].pericial.splice(peri, 1);
+  saveExpedientes(); renderExpedientes();
+}
+function reemplazarPerito(expId, pi, peri) {
+  const exp = expedientes.find(e => e.id === expId);
+  const per = exp.partes[pi].pericial[peri];
+  const nuevo = prompt('Nombre del nuevo perito (reemplaza al anterior y reinicia el estado):', '');
+  if (nuevo === null) return;
+  const anterior = per.perito;
+  per.perito = nuevo.trim();
+  per.acepto_cargo = null; per.presento_informe = null; per.impugnaciones = null;
+  if (anterior) per.notas = (per.notas ? per.notas + ' — ' : '') + 'Reemplazó a ' + anterior;
+  saveExpedientes(); renderExpedientes();
+}
+function toggleImpugnarPerito(expId, pi, peri) {
+  const exp = expedientes.find(e => e.id === expId);
+  const per = exp.partes[pi].pericial[peri];
+  per.impugnaciones = per.impugnaciones ? null : hoyISO();
   saveExpedientes(); renderExpedientes();
 }
 
@@ -4197,11 +4450,11 @@ function filaAExpediente(f) {
 function pagoAFila(p) {
   return { id: p.id, fecha: p.fecha ?? null, cliente: p.cliente ?? null, concepto: p.concepto ?? null,
     monto: p.monto ?? 0, moneda: p.moneda ?? 'ARS', metodo: p.metodo ?? null, receptor: p.receptor ?? null,
-    comision_ori: !!p.comisionOri, revisado: !!p.revisado, cliente_id: p.clienteId ?? null, adjunto_path: (CAJA_ADJ[p.id] && CAJA_ADJ[p.id].path) || null };
+    comision_ori: !!p.comisionOri, revisado: !!p.revisado, cliente_id: p.clienteId ?? null, plan_id: p.planId ?? null, nro_cuota: p.nroCuota ?? null, adjunto_path: (CAJA_ADJ[p.id] && CAJA_ADJ[p.id].path) || null };
 }
 function filaAPago(f) {
   return { id: f.id, fecha: f.fecha, cliente: f.cliente, concepto: f.concepto, monto: Number(f.monto),
-    moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado, clienteId: f.cliente_id || null };
+    moneda: f.moneda, metodo: f.metodo, receptor: f.receptor, comisionOri: !!f.comision_ori, revisado: !!f.revisado, clienteId: f.cliente_id || null, planId: f.plan_id || null, nroCuota: f.nro_cuota || null };
 }
 
 
@@ -4230,7 +4483,7 @@ function clienteAFila(c) {
     repro_compl_fecha: c.reproComplFecha || null, repro_amparo: !!c.reproAmparo,
     repro_amparo_fecha: c.reproAmparoFecha || null, repro_aprob_fecha: c.reproAprobFecha || null,
     pack_tipo: c.packTipo || null, pack_situacion: c.packSituacion || null,
-    pack_estado_txt: c.packEstadoTxt || null, pack_servicios: c.packServicios || [],
+    pack_estado_txt: c.packEstadoTxt || null, pack_vence: c.packVence || null, pack_servicios: c.packServicios || [],
     doc_pendiente: !!c.docPendiente, doc_pendiente_que: c.docPendienteQue || null,
     reuniones: c.reuniones || [],
     ultimo_contacto: c.ultimoContacto || null, proximo_contacto: c.proximoContacto || null,
@@ -4249,7 +4502,7 @@ function filaACliente(f) {
     reproComplFecha: f.repro_compl_fecha || '', reproAmparo: !!f.repro_amparo,
     reproAmparoFecha: f.repro_amparo_fecha || '', reproAprobFecha: f.repro_aprob_fecha || '',
     packTipo: f.pack_tipo || '', packSituacion: f.pack_situacion || 'vigente',
-    packEstadoTxt: f.pack_estado_txt || '', packServicios: f.pack_servicios || [],
+    packEstadoTxt: f.pack_estado_txt || '', packVence: f.pack_vence || '', packServicios: f.pack_servicios || [],
     docPendiente: !!f.doc_pendiente, docPendienteQue: f.doc_pendiente_que || '',
     reuniones: f.reuniones || [],
     ultimoContacto: f.ultimo_contacto || '', proximoContacto: f.proximo_contacto || '',
@@ -4264,15 +4517,19 @@ function sbDelCliente(id) { if (SB_ON) sbDelete('clientes', id).catch(sbAvisarEr
 async function sbCargarTodo() {
   if (!SB_ON) return;
   try {
-    const [rCasos, rExp, rCaja, rCfg, rTareas, rClientes, rCajaSoc] = await Promise.all([
+    const [rCasos, rExp, rCaja, rCfg, rTareas, rClientes, rCajaSoc, rPlanes] = await Promise.all([
       sbSelect('casos').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('expedientes').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('caja').catch(e => { sbAvisarError(e); return null; }),
       sbSelect('config').catch(() => null),
       sbSelect('tareas').catch(() => null),
       sbSelect('clientes').catch(() => null),
-      sbSelect('caja_soc').catch(() => null)
+      sbSelect('caja_soc').catch(() => null),
+      sbSelect('planes_cuotas').catch(() => null)
     ]);
+
+    // Planes de cuotas (tabla nueva; si no existe todavía, se queda con lo local)
+    if (rPlanes) { PLANES = rPlanes.map(filaAPlan); savePlanesLocal(); }
 
     // Caja societaria
     if (rCajaSoc) {
@@ -4330,11 +4587,46 @@ async function sbCargarTodo() {
       if (typeof saveClientesLocal === 'function') saveClientesLocal();
     }
 
+    // Reconciliar pagos de caja con clientes del CRM (vincular por nombre los que no tienen clienteId)
+    try { reconciliarPagosClientes(); } catch (e) {}
+
     return true;
   } catch (e) {
     sbAvisarError(e);
     return false;
   }
+}
+
+// Vincula pagos de caja (judicial y societaria) a clientes del CRM por nombre,
+// cuando el clienteId no quedó guardado. Solo escribe si hubo cambios.
+function reconciliarPagosClientes() {
+  if (typeof CLIENTES === 'undefined' || !CLIENTES.length) return;
+  if (typeof __normNombre !== 'function') return;
+  // índice nombre normalizado → id de cliente
+  const idx = {};
+  CLIENTES.forEach(c => { const n = __normNombre(c.entidad); if (n) idx[n] = c.id; });
+  let cambiosCaja = false;
+  if (typeof CAJA !== 'undefined') {
+    CAJA.forEach(p => {
+      if (p.clienteId == null) {
+        const cid = idx[__normNombre(p.cliente)];
+        if (cid != null) { p.clienteId = cid; cambiosCaja = true; if (typeof sbPushPago === 'function') sbPushPago(p); }
+      }
+    });
+    if (cambiosCaja && typeof saveCajaLocal === 'function') saveCajaLocal();
+  }
+  // Caja societaria (ingresos): vincular por contraparte
+  let cambiosSoc = false;
+  if (typeof CAJASOC !== 'undefined') {
+    CAJASOC.forEach(mv => {
+      if ((mv.tipo || 'ingreso') === 'ingreso' && mv.clienteId == null) {
+        const cid = idx[__normNombre(mv.contraparte)];
+        if (cid != null) { mv.clienteId = cid; cambiosSoc = true; if (typeof sbPushMovSoc === 'function') sbPushMovSoc(mv); }
+      }
+    });
+    if (cambiosSoc && typeof saveCajaSoc === 'function') saveCajaSoc();
+  }
+  return cambiosCaja || cambiosSoc;
 }
 
 // ── Push helpers: se llaman desde las funciones save* de cada módulo ──
@@ -4633,8 +4925,8 @@ function renderInicio() {
   getAudienciasManuales().forEach(a => { if (a.fecha) items.push({ fecha: a.fecha, t: 'Audiencia — ' + a.titulo + (a.hora ? ' · ' + a.hora + ' h' : ''), s: a.asignada ? 'Asignada a ' + a.asignada : 'Cargada en la agenda', tag: 'aud', go: 'agenda' }); });
   oficios.forEach(o => { if (o.vencimiento) items.push({ fecha: o.vencimiento, t: 'Control de oficio — ' + (o.oficio.entidad||''), s: o.exp.caratula, tag: 'ofi', go: 'expedientes', expId: o.exp.id }); });
   items.sort((a,b) => a.fecha.localeCompare(b.fecha));
-  // Mostrar como máximo los 4 vencidos más recientes + lo que viene
-  const vencidos = items.filter(i => i.fecha < hoy).slice(-4);
+  // Vencidos: mostrar oficios/tareas pasados (hay que reiterarlos), pero NO audiencias ya pasadas
+  const vencidos = items.filter(i => i.fecha < hoy && i.tag !== 'aud').slice(-4);
   const futuros = items.filter(i => i.fecha >= hoy);
   const todos = [...vencidos, ...futuros];
   const { slice: proximos, controles } = paginar('venc', todos, 'renderInicio');
@@ -4689,7 +4981,11 @@ function renderContactarInicio() {
 
 // ── Packs por finalizar (vencimiento a 30 días o menos) ──
 function packVencimiento(c) {
-  if (!c || c.packSituacion !== 'vigente' || !c.packEstadoTxt) return '';
+  if (!c || c.packSituacion !== 'vigente') return '';
+  // 1) campo explícito de fecha (el que carga el usuario en la ficha)
+  if (c.packVence && /^\d{4}-\d{2}-\d{2}$/.test(c.packVence)) return c.packVence;
+  // 2) fallback: parsear del texto de detalle
+  if (!c.packEstadoTxt) return '';
   const txt = String(c.packEstadoTxt);
   // preferir la fecha que sigue a "finaliza/vence"; si no, la primera fecha del texto
   let m = txt.match(/(?:finaliza|vence)[^\d]{0,15}(\d{1,2})\/(\d{1,2})\/(\d{2,4})/i);
@@ -4930,9 +5226,90 @@ function calcularPlazo() {
 }
 
 // ── Herramientas: UMA ──
+const UMA_META_KEY = 'jc-uma-meta-v1';
+let __umaEstado = '';
+const UMA_FUENTE = 'https://www.cpacf.org.ar/noticia/5201/valores-uma-pjn-ley-27423';
+const UMA_SEED = { monto: 98112, res: 'Res 1352/26', fecha: '09/06/2026' };
+function sembrarUmaSiFalta() {
+  const v = parseFloat(appStore.getItem(UMA_KEY));
+  let meta = {};
+  try { meta = JSON.parse(appStore.getItem(UMA_META_KEY) || '{}'); } catch (e) {}
+  // Si no hay valor, o hay valor pero sin resolución (dato viejo), sembrar el conocido
+  if (!(v > 0)) {
+    appStore.setItem(UMA_KEY, String(UMA_SEED.monto));
+    appStore.setItem(UMA_META_KEY, JSON.stringify({ res: UMA_SEED.res, fecha: UMA_SEED.fecha }));
+  } else if (!meta.res) {
+    appStore.setItem(UMA_META_KEY, JSON.stringify({ res: UMA_SEED.res, fecha: UMA_SEED.fecha }));
+  }
+}
 function cargarUmaCampo() {
+  sembrarUmaSiFalta();
   const v = parseFloat(appStore.getItem(UMA_KEY));
   if (v > 0 && document.getElementById('umaValor')) document.getElementById('umaValor').value = fmtNumStr(v);
+  pintarUmaVigente();
+}
+function pintarUmaVigente(estado) {
+  const box = document.getElementById('umaVigente');
+  if (!box) return;
+  if (estado && estado !== 'cargando') __umaEstado = estado; else if (!estado && __umaEstado) estado = __umaEstado;
+  let meta = {};
+  try { meta = JSON.parse(appStore.getItem(UMA_META_KEY) || '{}'); } catch (e) {}
+  const v = parseFloat(appStore.getItem(UMA_KEY));
+  box.classList.remove('err');
+  if (estado === 'cargando') { box.textContent = 'Buscando el valor vigente…'; return; }
+  if (v > 0) {
+    const res = meta.res ? ` conforme <b>${esc(meta.res)}</b>` : '';
+    const fe = meta.fecha ? ` (${esc(meta.fecha)})` : '';
+    box.innerHTML = `Valor actual del UMA: <b>${fmtARS.format(v)}</b>${res}${fe}.`;
+  } else {
+    box.classList.add('err');
+    box.textContent = 'No se pudo obtener el valor del UMA. Cargalo a mano en el campo de abajo.';
+  }
+}
+// Parsea la tabla del CPACF y devuelve la fila más reciente {monto, res, fecha}
+function parsearUmaHTML(txt) {
+  // Buscar todas las filas "Res XXX/YY ... DD/MM/YYYY ... $ MONTO"
+  // La página lista la más nueva primero. Tomamos la primera coincidencia con monto.
+  const re = /(?:Res\s*|Acordada\s*)?([0-9]{1,4}\/[0-9]{2,4})[^0-9]*?([0-3]?[0-9]\/[0-1]?[0-9]\/[0-9]{2,4})\s*\$\s*([0-9][0-9.]*(?:,[0-9]{2})?)/gi;
+  let m;
+  while ((m = re.exec(txt)) !== null) {
+    const montoRaw = m[3].replace(/\./g, '').replace(',', '.');
+    const monto = parseFloat(montoRaw);
+    if (monto > 1000) { // filtrar valores viejos ínfimos por si el regex agarra basura
+      return { res: 'Res ' + m[1], fecha: m[2], monto: Math.round(monto) };
+    }
+  }
+  return null;
+}
+async function actualizarUmaDesdeCPACF() {
+  pintarUmaVigente('cargando');
+  // Proxies CORS de respaldo (el sitio corre en el navegador; cpacf no manda CORS headers)
+  const proxies = [
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u),
+    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+    u => 'https://thingproxy.freeboard.io/fetch/' + u
+  ];
+  for (const armar of proxies) {
+    try {
+      const resp = await fetch(armar(UMA_FUENTE), { cache: 'no-store' });
+      if (!resp.ok) continue;
+      const txt = await resp.text();
+      const fila = parsearUmaHTML(txt);
+      if (fila && fila.monto > 0) {
+        appStore.setItem(UMA_KEY, String(fila.monto));
+        appStore.setItem(UMA_META_KEY, JSON.stringify({ res: fila.res, fecha: fila.fecha, actualizado: hoyISO() }));
+        const campo = document.getElementById('umaValor');
+        if (campo) campo.value = fmtNumStr(fila.monto);
+        pintarUmaVigente();
+        try { convUma('uma'); } catch (e) {}
+        return true;
+      }
+    } catch (e) { /* probar siguiente proxy */ }
+  }
+  // Sin conexión: dejar el último valor conocido
+  pintarUmaVigente('offline');
+  return false;
 }
 function guardarUma() {
   const v = numDe(document.getElementById('umaValor').value);
@@ -5475,8 +5852,61 @@ function resetLiquidacion() {
 const CAJA_KEY = 'jc-caja-v1';
 const CAJA_ADJ_KEY = 'jc-caja-adj-v1';
 const DOLAR_KEY = 'jc-dolar-v1';
+const PLANES_KEY = 'jc-planes-v1';
 var CAJA = [];
 var CAJA_ADJ = {};
+// ═══ Planes de cuotas: {id, caja:'jud'|'soc', cliente, clienteId, concepto, moneda, total, montos:[], pagadas:[nros]} ═══
+var PLANES = [];
+function loadPlanes() { try { PLANES = JSON.parse(appStore.getItem(PLANES_KEY) || '[]'); } catch(e) { PLANES = []; } }
+function savePlanesLocal() { appStore.setItem(PLANES_KEY, JSON.stringify(PLANES)); }
+function savePlanes() { savePlanesLocal(); (PLANES||[]).forEach(sbPushPlan); }
+function planAFila(p) {
+  return { id: p.id, caja: p.caja ?? 'jud', cliente: p.cliente ?? null, cliente_id: p.clienteId ?? null,
+    concepto: p.concepto ?? null, moneda: p.moneda ?? 'ARS', total: p.total ?? 0,
+    montos: p.montos ?? [], pagadas: p.pagadas ?? [] };
+}
+function filaAPlan(f) {
+  return { id: f.id, caja: f.caja || 'jud', cliente: f.cliente, clienteId: f.cliente_id || null,
+    concepto: f.concepto, moneda: f.moneda || 'ARS', total: Number(f.total) || 0,
+    montos: Array.isArray(f.montos) ? f.montos.map(Number) : [], pagadas: Array.isArray(f.pagadas) ? f.pagadas.map(Number) : [] };
+}
+function sbPushPlan(p) { if (SB_ON) sbUpsert('planes_cuotas', planAFila(p)).catch(sbAvisarError); }
+function sbDelPlan(id) { if (SB_ON) sbDelete('planes_cuotas', id).catch(sbAvisarError); }
+function planPorId(id) { return (PLANES||[]).find(p => String(p.id) === String(id)); }
+// Suma meses a una fecha ISO; si cae sábado o domingo, corre al viernes anterior
+function fechaCuotaProx(baseISO, meses) {
+  const d = new Date((baseISO||hoyISO()) + 'T12:00:00');
+  d.setMonth(d.getMonth() + meses);
+  const dow = d.getDay();
+  if (dow === 6) d.setDate(d.getDate() - 1);
+  else if (dow === 0) d.setDate(d.getDate() - 2);
+  return d.toISOString().slice(0, 10);
+}
+// Cuotas pendientes de todos los planes activos (ambas cajas), proyectadas a futuro
+function cuotasPendientesTodas(cajaFiltro) {
+  const items = [];
+  (PLANES||[]).forEach(plan => {
+    if (cajaFiltro && plan.caja !== cajaFiltro) return;
+    if ((plan.pagadas||[]).length >= plan.total) return;
+    const pagosPlan = (CAJA_TODAS()).filter(p => String(p.planId) === String(plan.id)).sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+    const ult = pagosPlan[pagosPlan.length - 1];
+    const base = ult ? ult.fecha : hoyISO();
+    const ultNro = ult ? ult.nroCuota : 0;
+    for (let i = 1; i <= plan.total; i++) {
+      if ((plan.pagadas||[]).includes(i)) continue;
+      const fecha = fechaCuotaProx(base, Math.max(1, i - ultNro));
+      items.push({ fecha, cliente: plan.cliente, concepto: plan.concepto, caja: plan.caja, moneda: plan.moneda, nro: i, total: plan.total, monto: (plan.montos||[])[i-1] || 0, plan });
+    }
+  });
+  items.sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+  return items;
+}
+// Une los pagos de ambas cajas (para rastrear cuotas de un plan)
+function CAJA_TODAS() {
+  const jud = (CAJA||[]).map(p => ({ ...p, _caja: 'jud' }));
+  const soc = (typeof CAJASOC !== 'undefined' ? CAJASOC : []).map(p => ({ ...p, _caja: 'soc' }));
+  return jud.concat(soc);
+}
 var __adjStaged = null;   // comprobante elegido antes de registrar el pago
 var __adjTarget = null;   // id de pago al que se adjunta a posteriori
 
@@ -5504,15 +5934,15 @@ function loadCajaSoc() {
 }
 function saveCajaSoc() { appStore.setItem(CAJASOC_KEY, JSON.stringify(CAJASOC)); }
 function saveCajaSocAdj() { appStore.setItem(CAJASOC_ADJ_KEY, JSON.stringify(CAJASOC_ADJ)); }
-function movAFila(m) {
+function movAFila(m) {  /* incluye plan de cuotas */
   return { id: m.id, fecha: m.fecha, tipo: m.tipo, contraparte: m.contraparte || '',
     concepto: m.concepto || '', monto: m.monto, moneda: m.moneda, metodo: m.metodo || '',
-    receptor: m.receptor || '', adjunto_path: (CAJASOC_ADJ[m.id] || {}).path || null };
+    receptor: m.receptor || '', cliente_id: m.clienteId ?? null, plan_id: m.planId ?? null, nro_cuota: m.nroCuota ?? null, adjunto_path: (CAJASOC_ADJ[m.id] || {}).path || null };
 }
 function filaAMov(f) {
   return { id: f.id, fecha: f.fecha, tipo: f.tipo, contraparte: f.contraparte || '',
     concepto: f.concepto || '', monto: Number(f.monto) || 0, moneda: f.moneda || 'ARS',
-    metodo: f.metodo || '', receptor: f.receptor || '' };
+    metodo: f.metodo || '', receptor: f.receptor || '', clienteId: f.cliente_id || null, planId: f.plan_id || null, nroCuota: f.nro_cuota || null };
 }
 function sbPushMovSoc(m) { if (SB_ON) sbUpsert('caja_soc', movAFila(m)).catch(sbAvisarError); }
 function sbDelMovSoc(id) { if (SB_ON) sbDelete('caja_soc', id).catch(sbAvisarError); }
@@ -5584,6 +6014,13 @@ function initCajaSoc() {
   labelReceptorSoc();
   renderCajaSocDatalists();
 }
+function csToggleCuotaVisibilidad() {
+  const tipo = document.getElementById('csTipo').value;
+  const wrap = document.getElementById('csCuotaChkWrap');
+  const esIngreso = tipo === 'ingreso';
+  if (wrap) wrap.style.display = esIngreso ? '' : 'none';
+  if (!esIngreso) { const chk = document.getElementById('csEsCuota'); if (chk) chk.checked = false; cjResetCuota('soc'); }
+}
 function registrarMovSoc() {
   const fecha = document.getElementById('csFecha').value;
   const tipo = document.getElementById('csTipo').value;
@@ -5594,7 +6031,31 @@ function registrarMovSoc() {
   const m = { id: Date.now(), fecha, tipo, contraparte, concepto, monto,
     moneda: document.getElementById('csMoneda').value, metodo: document.getElementById('csMetodo').value,
     receptor: document.getElementById('csReceptor').value.trim() };
+  // Cuotas (solo ingresos): crear/actualizar plan y linkear
+  let cliIdSoc = null, esCuotaSoc = false;
+  if (tipo === 'ingreso') {
+    if (typeof CLIENTES !== 'undefined') { const mm = CLIENTES.find(c => (c.entidad||'').trim().toLowerCase() === contraparte.toLowerCase()); if (mm) cliIdSoc = mm.id; }
+    if (cliIdSoc != null) m.clienteId = cliIdSoc;
+    const infoCuota = cjProcesarCuota('soc', { cliente: contraparte, clienteId: cliIdSoc, concepto, monto, moneda: m.moneda });
+    if (infoCuota) {
+      esCuotaSoc = true;
+      m.planId = infoCuota.planId; m.nroCuota = infoCuota.nroCuota;
+      const plan = planPorId(infoCuota.planId);
+      if (cliIdSoc && plan && (plan.pagadas||[]).length === 1 && typeof agregarServicioContratado === 'function') {
+        agregarServicioContratado(cliIdSoc, plan.concepto + ' (plan ' + plan.total + ' cuotas)', fecha);
+      }
+    }
+  }
   CAJASOC.push(m); saveCajaSoc(); sbPushMovSoc(m);
+  // Ingreso normal (no cuota) vinculado a un cliente del CRM: ofrecer registrarlo como servicio contratado
+  if (tipo === 'ingreso' && cliIdSoc && concepto && !esCuotaSoc && typeof agregarServicioContratado === 'function') {
+    setTimeout(() => {
+      const cli = clientePorId(cliIdSoc);
+      if (cli && confirm('¿Registrar «' + concepto + '» como servicio contratado de ' + cli.entidad + '?')) {
+        agregarServicioContratado(cliIdSoc, concepto, fecha);
+      }
+    }, 100);
+  }
   if (__adjStagedSoc) {
     const st = __adjStagedSoc; __adjStagedSoc = null;
     sbGuardarComprobanteSoc(m.id, st.file).then(info => {
@@ -5603,15 +6064,35 @@ function registrarMovSoc() {
     }).catch(e => sbAvisarError(e));
   }
   ['csContra','csConcepto','csMonto','csReceptor'].forEach(id => document.getElementById(id).value = '');
+  cjResetCuota('soc');
   const b = document.getElementById('csAdjBtn'); if (b) b.textContent = '📎 Adjuntar foto / PDF';
   document.getElementById('csMes').value = fecha.slice(0, 7);
   renderCajaSocDatalists(); renderCajaSoc();
 }
 function eliminarMovSoc(id) {
   if (!confirm('¿Eliminar este movimiento?')) return;
+  const mov = CAJASOC.find(m => m.id === id);
   CAJASOC = CAJASOC.filter(m => m.id !== id);
   delete CAJASOC_ADJ[id];
-  saveCajaSoc(); saveCajaSocAdj(); sbDelMovSoc(id); renderCajaSoc();
+  saveCajaSoc(); saveCajaSocAdj(); sbDelMovSoc(id);
+  // Si era un ingreso vinculado a un cliente y se había sumado como servicio, quitarlo
+  if (mov && mov.tipo === 'ingreso' && mov.concepto && typeof quitarServicioContratado === 'function') {
+    const cid = mov.clienteId != null ? mov.clienteId : __clienteIdPorNombre(mov.contraparte);
+    if (cid != null) {
+      // Si era una cuota, el servicio se guardó con el sufijo "(plan N cuotas)"
+      let etiqueta = mov.concepto;
+      if (mov.planId) { const pl = planPorId(mov.planId); if (pl) etiqueta = pl.concepto + ' (plan ' + pl.total + ' cuotas)'; }
+      quitarServicioContratado(cid, etiqueta);
+    }
+  }
+  renderCajaSoc();
+}
+// Busca el id de cliente del CRM por nombre normalizado
+function __clienteIdPorNombre(nombre) {
+  if (typeof CLIENTES === 'undefined' || typeof __normNombre !== 'function') return null;
+  const n = __normNombre(nombre);
+  const c = CLIENTES.find(x => __normNombre(x.entidad) === n);
+  return c ? c.id : null;
 }
 function __socDatosMes(mes) {
   const movs = CAJASOC.filter(m => (m.fecha || '').startsWith(mes)).sort((a, b) => (a.fecha || '').localeCompare(b.fecha || ''));
@@ -5658,7 +6139,7 @@ function renderCajaSoc() {
     return `<tr>
       <td style="white-space:nowrap">${formatFechaCorta(m.fecha)}</td>
       <td style="font-weight:600">${esc(m.contraparte || '—')}</td>
-      <td>${esc(m.concepto || '—')}</td>
+      <td>${esc(m.concepto || '—')}${m.planId ? ' <span class="cuota-tag">CUOTA ' + m.nroCuota + '/' + ((planPorId(m.planId)||{}).total||'?') + '</span>' : ''}</td>
       <td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:${gasto ? '#b3372a' : '#1e7a48'}">${sim}${fmtNumStr(m.monto)}${pesif && m.moneda === 'USD' ? `<br><span style="font-weight:400;font-size:10.5px;color:var(--tinta-suave)">≈ $ ${fmtNumStr(m.monto * dolar)}</span>` : ''}</td>
       <td style="font-size:11.5px">${met}${m.receptor ? ' → ' + esc(m.receptor) : ''}</td>
       <td>${CAJASOC_ADJ[m.id]
@@ -5695,6 +6176,7 @@ function renderCajaSoc() {
   if (eServ) eServ.innerHTML = rServ.length ? rServ.slice(0, 8).map((r, i) => filaRankS(r, i, maxS)).join('') : '<div class="panel-empty">Sin ingresos este mes.</div>';
   const eCli = document.getElementById('csRankingCli');
   if (eCli) eCli.innerHTML = rCli.length ? rCli.slice(0, 8).map((r, i) => filaRankS(r, i, maxC)).join('') : '<div class="panel-empty">Sin ingresos este mes.</div>';
+  renderCuotasPendientes('Soc');
 }
 
 function descargarReporteCajaSoc() {
@@ -5972,6 +6454,160 @@ function verComprobante(id) {
   a.href = adj.data; a.download = adj.nombre || 'comprobante';
   a.click();
 }
+// ═══════════ UI DE CUOTAS (compartida judicial 'cj' / societaria 'cs') ═══════════
+function __cuotaIds(caja) {
+  const p = caja === 'soc' ? 'cs' : 'cj';
+  return { es:p+'EsCuota', box:p+'CuotaBox', plan:p+'Plan', total:p+'Total', wrapTotal:p+'WrapTotal',
+    nro:p+'Nro', pers:p+'Pers', wrapPers:p+'WrapPers', grid:p+'MontosGrid', hint:p+'CuotaHint',
+    cliente: caja === 'soc' ? 'csContra' : 'cjCliente', concepto: caja === 'soc' ? 'csConcepto' : 'cjConcepto',
+    monto: caja === 'soc' ? 'csMonto' : 'cjMonto', moneda: caja === 'soc' ? 'csMoneda' : 'cjMoneda' };
+}
+function cjToggleCuota(caja) {
+  const id = __cuotaIds(caja);
+  const on = document.getElementById(id.es).checked;
+  document.getElementById(id.box).classList.toggle('oculto', !on);
+  if (on) { cjRefrescarPlanes(caja); cjPlanChange(caja); }
+}
+function cjRefrescarPlanes(caja) {
+  const id = __cuotaIds(caja);
+  const cli = (document.getElementById(id.cliente).value || '').trim().toLowerCase();
+  const sel = document.getElementById(id.plan);
+  const act = (PLANES||[]).filter(p => p.caja === caja && (p.cliente||'').toLowerCase() === cli && (p.pagadas||[]).length < p.total);
+  sel.innerHTML = '<option value="__nuevo">➕ Plan nuevo para este cliente</option>' +
+    act.map(p => `<option value="${p.id}">${esc(p.concepto)} · pagó ${(p.pagadas||[]).length}/${p.total}</option>`).join('');
+}
+function cjPlanChange(caja) {
+  const id = __cuotaIds(caja);
+  const nuevo = document.getElementById(id.plan).value === '__nuevo';
+  document.getElementById(id.wrapTotal).classList.toggle('oculto', !nuevo);
+  document.getElementById(id.wrapPers).classList.toggle('oculto', !nuevo);
+  if (!nuevo) { document.getElementById(id.pers).checked = false; document.getElementById(id.grid).classList.add('oculto'); }
+  cjRenderCuotaUI(caja);
+}
+function cjRenderCuotaUI(caja) {
+  const id = __cuotaIds(caja);
+  const v = document.getElementById(id.plan).value, sel = document.getElementById(id.nro);
+  if (v === '__nuevo') {
+    const total = parseInt(document.getElementById(id.total).value);
+    sel.innerHTML = ''; for (let i=1;i<=total;i++) sel.innerHTML += `<option value="${i}">Cuota ${i} de ${total}</option>`;
+  } else {
+    const p = planPorId(v); sel.innerHTML = '';
+    for (let i=1;i<=p.total;i++){ const pg=(p.pagadas||[]).includes(i); sel.innerHTML += `<option value="${i}" ${pg?'disabled':''}>Cuota ${i} de ${p.total}${pg?' (paga)':''}</option>`; }
+    const prox = [...Array(p.total).keys()].map(i=>i+1).find(i=>!(p.pagadas||[]).includes(i)); if (prox) sel.value = prox;
+  }
+  const pers = document.getElementById(id.pers).checked, grid = document.getElementById(id.grid), nuevo = v === '__nuevo';
+  grid.classList.toggle('oculto', !(pers && nuevo));
+  if (pers && nuevo) {
+    const total = parseInt(document.getElementById(id.total).value); grid.innerHTML = '';
+    for (let i=1;i<=total;i++) grid.innerHTML += `<div><label>Cuota ${i}</label><input type="text" inputmode="decimal" id="${id.grid}_${i}" placeholder="monto" oninput="fmtMiles(this)"></div>`;
+  }
+  const h = document.getElementById(id.hint);
+  if (v === '__nuevo') h.textContent = 'Al registrar se crea el plan y podés agendar en Calendar todas las cuotas siguientes con un botón (si una cae fin de semana, se corre al viernes anterior).';
+  else { const p = planPorId(v); const f = p.total - (p.pagadas||[]).length - 1; h.textContent = f>0 ? `Después de esta cuota quedarán ${f} pendientes en el plan.` : 'Es la última cuota: el plan queda saldado y sale de pendientes.'; }
+}
+// Procesa la parte de cuotas al registrar un pago. Devuelve {planId, nroCuota} o null si no es cuota.
+// Muta PLANES (crea o actualiza) y guarda.
+function cjProcesarCuota(caja, datosPago) {
+  const id = __cuotaIds(caja);
+  const chk = document.getElementById(id.es);
+  if (!chk || !chk.checked) return null;
+  const monto = datosPago.monto;
+  let nro = parseInt(document.getElementById(id.nro).value);
+  const sel = document.getElementById(id.plan).value;
+  let plan;
+  if (sel === '__nuevo') {
+    const total = parseInt(document.getElementById(id.total).value);
+    const pers = document.getElementById(id.pers).checked;
+    const montos = [];
+    for (let i=1;i<=total;i++) {
+      const el = document.getElementById(id.grid + '_' + i);
+      montos.push(pers && el ? (numDe(el.value) || monto) : monto);
+    }
+    montos[nro-1] = monto;
+    plan = { id: Date.now() + Math.floor(Math.random()*1000), caja, cliente: datosPago.cliente, clienteId: datosPago.clienteId || null,
+      concepto: datosPago.concepto || 'Plan de pago', moneda: datosPago.moneda || 'ARS', total, montos, pagadas: [] };
+    PLANES.push(plan);
+  } else {
+    plan = planPorId(sel);
+    plan.montos[nro-1] = monto;
+    if (!plan.clienteId && datosPago.clienteId) plan.clienteId = datosPago.clienteId;
+  }
+  if (!(plan.pagadas||[]).includes(nro)) plan.pagadas.push(nro);
+  savePlanes();
+  return { planId: plan.id, nroCuota: nro };
+}
+// Limpia el sub-panel de cuotas tras registrar
+function cjResetCuota(caja) {
+  const id = __cuotaIds(caja);
+  const chk = document.getElementById(id.es); if (chk) chk.checked = false;
+  const box = document.getElementById(id.box); if (box) box.classList.add('oculto');
+}
+function calendarURLCuota(plan, nro, fechaISO) {
+  const d0 = fechaISO.replace(/-/g,'');
+  const d1 = new Date(fechaISO + 'T12:00:00'); d1.setDate(d1.getDate()+1);
+  const d1s = d1.toISOString().slice(0,10).replace(/-/g,'');
+  const txt = `Cobrar cuota ${nro}/${plan.total} — ${plan.concepto} — ${plan.cliente}`;
+  const det = `Cuota ${nro} de ${plan.total} del plan "${plan.concepto}".\nCliente: ${plan.cliente}\nCaja: ${plan.caja==='soc'?'Societaria':'Judicial'}\nMonto estimado: ${(plan.moneda==='USD'?'u$s ':'$ ')+fmtNumStr((plan.montos||[])[nro-1]||0)}`;
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(txt)
+    + '&dates=' + d0 + '/' + d1s + '&details=' + encodeURIComponent(det) + '&ctz=America/Argentina/Buenos_Aires';
+}
+
+// Render del panel de cuotas pendientes (ambas cajas). suf: '' para judicial, 'Soc' para societaria
+function renderCuotasPendientes(suf) {
+  suf = suf || '';
+  const tabla = document.getElementById('cuotasPendTabla' + suf);
+  if (!tabla) return;
+  const caja = suf === 'Soc' ? 'soc' : 'jud';
+  const items = cuotasPendientesTodas(caja);
+  const vacia = document.getElementById('cuotasPendVacia' + suf);
+  const tiles = document.getElementById('cuotasPendTiles' + suf);
+  if (!items.length) { tabla.innerHTML = ''; if (vacia) vacia.style.display = 'block'; if (tiles) tiles.innerHTML = ''; return; }
+  if (vacia) vacia.style.display = 'none';
+  // Totales por moneda
+  let totArs = 0, totUsd = 0, esteMesArs = 0;
+  const ym = hoyISO().slice(0, 7);
+  items.forEach(x => { if (x.moneda === 'USD') totUsd += x.monto; else { totArs += x.monto; if (x.fecha.slice(0,7) === ym) esteMesArs += x.monto; } });
+  if (tiles) tiles.innerHTML = `
+    <div class="cuotas-pend-tile"><div class="num">$ ${fmtNumStr(totArs)}${totUsd ? ' · u$s ' + fmtNumStr(totUsd) : ''}</div><div class="lbl">Total por cobrar</div></div>
+    <div class="cuotas-pend-tile"><div class="num">${items.length}</div><div class="lbl">Cuotas pendientes</div></div>
+    <div class="cuotas-pend-tile"><div class="num">$ ${fmtNumStr(esteMesArs)}</div><div class="lbl">A cobrar este mes (ARS)</div></div>`;
+  const cab = '<thead><tr><th>Cobrar el</th><th>Cliente</th><th>Concepto</th><th>Cuota</th><th style="text-align:right">Monto</th><th></th></tr></thead>';
+  let filas = '', mesAct = '';
+  items.forEach(x => {
+    const y = x.fecha.slice(0, 7);
+    if (y !== mesAct) { mesAct = y; filas += `<tr><td colspan="6" style="background:#f4f2ec;font-weight:700;color:#1b3a6b;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em">${mesLargo(y)}</td></tr>`; }
+    const sim = x.moneda === 'USD' ? 'u$s ' : '$ ';
+    filas += `<tr>
+      <td style="white-space:nowrap">${formatFechaCorta(x.fecha)}</td>
+      <td style="font-weight:600">${esc(x.cliente)}</td>
+      <td>${esc(x.concepto)}</td>
+      <td><b>${x.nro}/${x.total}</b></td>
+      <td style="text-align:right;font-variant-numeric:tabular-nums;font-weight:600">${sim}${fmtNumStr(x.monto)}</td>
+      <td><button class="mini-btn" onclick="window.open(calendarURLCuota(planPorId('${x.plan.id}'),${x.nro},'${x.fecha}'),'_blank')">📅 Agendar</button></td>
+    </tr>`;
+  });
+  tabla.innerHTML = cab + '<tbody>' + filas + '</tbody>';
+}
+function descargarBalanceCuotas(caja) {
+  const items = cuotasPendientesTodas(caja);
+  if (!items.length) { alert('No hay cuotas pendientes para exportar.'); return; }
+  const nombreCaja = caja === 'soc' ? 'Societaria' : 'Judicial';
+  let totArs = 0, totUsd = 0;
+  items.forEach(x => { if (x.moneda === 'USD') totUsd += x.monto; else totArs += x.monto; });
+  let filas = '', mesAct = '';
+  items.forEach(x => {
+    const y = x.fecha.slice(0, 7);
+    if (y !== mesAct) { mesAct = y; filas += `<tr class="mh"><td colspan="5">${mesLargo(y)}</td></tr>`; }
+    const sim = x.moneda === 'USD' ? 'u$s ' : '$ ';
+    filas += `<tr><td>${formatFechaCorta(x.fecha)}</td><td>${esc(x.cliente)}</td><td>${esc(x.concepto)}</td><td>${x.nro}/${x.total}</td><td class="der">${sim}${fmtNumStr(x.monto)}</td></tr>`;
+  });
+  const totTxt = '$ ' + fmtNumStr(totArs) + (totUsd ? ' · u$s ' + fmtNumStr(totUsd) : '');
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Cuotas pendientes</title><style>body{font-family:system-ui,sans-serif;color:#1a241d;background:#f6f5ef;padding:30px}.hoja{max-width:800px;margin:0 auto;background:#fff;border:1px solid #dcd9cc;border-radius:12px;padding:34px}h1{font-size:24px;margin:0 0 2px}h1 em{color:#1b3a6b;font-style:italic}.sub{color:#5c6157;font-size:12px;border-bottom:3px double #1a241d;padding-bottom:12px;margin-bottom:18px}.tot{background:#fdf6e0;border:1.5px solid #d9b83f;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:14px}.tot b{font-size:19px;color:#3d2f00}table{width:100%;border-collapse:collapse;font-size:12px}th{text-transform:uppercase;font-size:10px;letter-spacing:.05em;color:#5c6157;text-align:left;border-bottom:1.5px solid #1a241d;padding:7px 8px}td{padding:7px 8px;border-bottom:1px solid #eceada}td.der{text-align:right;font-weight:600}.mh td{background:#f4f0e6;font-weight:700;color:#1b3a6b;text-transform:uppercase;font-size:10px;letter-spacing:.05em}</style></head><body><div class="hoja"><h1>Cuotas <em>pendientes de cobro</em></h1><div class="sub">WE Legal · Caja ${nombreCaja} · generado el ${formatFechaCorta(hoyISO())}</div><div class="tot">Total por cobrar: <b>${totTxt}</b> · ${items.length} cuotas en ${new Set(items.map(i=>i.fecha.slice(0,7))).size} meses</div><table><thead><tr><th>Cobrar el</th><th>Cliente</th><th>Concepto</th><th>Cuota</th><th style="text-align:right">Monto</th></tr></thead><tbody>${filas}</tbody></table></div></body></html>`;
+  const blob = new Blob([doc], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cuotas-pendientes-' + (caja==='soc'?'societaria':'judicial') + '-' + hoyISO() + '.html'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+}
+
 function registrarPago() {
   const fecha = document.getElementById('cjFecha').value;
   const cliente = document.getElementById('cjCliente').value.trim();
@@ -5994,10 +6630,20 @@ function registrarPago() {
     comisionOri: document.getElementById('cjComOri').checked,
     revisado: false
   };
+  // Cuotas: si el pago es parte de un plan, crear/actualizar el plan y linkear
+  const infoCuota = cjProcesarCuota('jud', { cliente, clienteId, concepto, monto, moneda: pago.moneda });
+  if (infoCuota) {
+    pago.planId = infoCuota.planId; pago.nroCuota = infoCuota.nroCuota;
+    const plan = planPorId(infoCuota.planId);
+    // Reflejar el plan como servicio contratado del cliente (una sola vez, al crearse)
+    if (clienteId && plan && (plan.pagadas||[]).length === 1 && typeof agregarServicioContratado === 'function') {
+      agregarServicioContratado(clienteId, plan.concepto + ' (plan ' + plan.total + ' cuotas)', fecha);
+    }
+  }
   CAJA.unshift(pago); saveCaja();
   sbPushPago(pago);
-  // Si quedó vinculado a un cliente y hay concepto, ofrecer registrarlo como servicio contratado
-  if (clienteId && concepto && typeof agregarServicioContratado === 'function') {
+  // Si quedó vinculado a un cliente y hay concepto (y NO es cuota), ofrecer registrarlo como servicio contratado
+  if (clienteId && concepto && !infoCuota && typeof agregarServicioContratado === 'function') {
     setTimeout(() => {
       const cli = clientePorId(clienteId);
       if (cli && confirm('¿Registrar «' + concepto + '» como servicio contratado de ' + cli.entidad + '?')) {
@@ -6014,6 +6660,7 @@ function registrarPago() {
   }
   ['cjCliente','cjConcepto','cjMonto','cjReceptor'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cjComOri').checked = false;
+  cjResetCuota('jud');
   const b = document.getElementById('cjAdjBtn'); if (b) b.textContent = '📎 Adjuntar foto / PDF';
   document.getElementById('cajaMes').value = fecha.slice(0, 7);
   renderCajaDatalists(); renderCaja();
@@ -6096,7 +6743,7 @@ function renderCaja() {
       return `<tr>
         <td style="white-space:nowrap">${formatFechaCorta(p.fecha)}</td>
         <td style="font-weight:600">${esc(p.cliente)}${p.comisionOri ? ' <span class="chip-ori">Ori</span>' : ''}</td>
-        <td>${esc(p.concepto || '—')}</td>
+        <td>${esc(p.concepto || '—')}${p.planId ? ` <span class="cuota-tag">CUOTA ${p.nroCuota}/${(planPorId(p.planId)||{}).total||'?'}</span>` : ''}</td>
         <td class="monto ${p.moneda === 'USD' ? 'usd' : ''}">${montoTxt(p)}${pesif && p.moneda === 'USD' ? `<br><span style="font-weight:400;font-size:10.5px;color:var(--tinta-suave)">≈ $ ${fmtNumStr(p.monto * dolar)}</span>` : ''}</td>
         <td style="font-size:11.5px">${met}${p.receptor ? ' → ' + esc(p.receptor) : ''}</td>
         <td class="monto">${sim}${fmtNumStr(c.k)}</td>
@@ -6151,6 +6798,7 @@ function renderCaja() {
     <div class="res-row"><span class="k">Pesos</span><span class="v">$ ${fmtNumStr(t.oArs)}</span></div>
     <div class="res-row"><span class="k">Dólares</span><span class="v">u$s ${fmtNumStr(t.oUsd)}</span></div>
     ${dolar > 0 ? `<div class="res-row res-total"><span class="k">Total pesificado</span><span class="v">$ ${fmtNumStr(oPes)}</span></div>` : ''}`;
+  renderCuotasPendientes('');
 }
 // ── Balance mensual descargable (HTML imprimible) ──
 function descargarReporteCaja() {
@@ -6301,8 +6949,7 @@ body{background:
 input,select,textarea{transition:border-color .18s var(--ease),box-shadow .18s var(--ease)}
 input:focus,select:focus,textarea:focus{border-color:var(--sello)!important;box-shadow:var(--anillo);outline:none}
 .crm-search input{border-radius:11px;height:42px}
-.crm-toolbar select{border-radius:11px;height:42px;cursor:pointer}
-.crm-toolbar select:hover{border-color:#cfccbd}
+.crm-toolbar select{height:auto;cursor:pointer}
 
 /* ══ Modales y fichas: entrada suave + profundidad ══ */
 .crm-modal-ov{background:rgba(8,17,12,.55);backdrop-filter:blur(6px)}
@@ -6569,6 +7216,7 @@ function cerrarSesion() {
   document.body.classList.add('locked');
   document.body.classList.remove('caja-ori');
   document.body.classList.remove('sin-jud');
+  document.body.classList.remove('inicio-crm-first');
   const u = document.getElementById('loginUser'), p = document.getElementById('loginPass');
   if (u) u.value = ''; if (p) p.value = '';
   const err = document.getElementById('loginError'); if (err) err.textContent = '';
@@ -6584,14 +7232,18 @@ function permisoPagina(p) {
 function aplicarPermisos() {
   const pf = perfilActual();
   document.querySelectorAll('[data-nav="expedientes"]').forEach(b => b.style.display = pf.expedientes ? '' : 'none');
-  document.querySelectorAll('[data-nav="caja"]').forEach(b => b.style.display = pf.cajaJud !== false ? '' : 'none');
-  document.querySelectorAll('[data-nav="cajasoc"]').forEach(b => b.style.display = pf.cajaSoc ? '' : 'none');
+  // Cajas: si tiene ACCESO A AMBAS (judicial full + societaria) → menú combinado; si no, botones individuales
+  const ambasCajas = pf.cajaJud === 'full' && pf.cajaSoc;
+  document.querySelectorAll('[data-nav-cajas]').forEach(w => w.style.display = ambasCajas ? '' : 'none');
+  document.querySelectorAll('[data-nav="caja"]').forEach(b => b.style.display = (!ambasCajas && pf.cajaJud !== false) ? '' : 'none');
+  document.querySelectorAll('[data-nav="cajasoc"]').forEach(b => b.style.display = (!ambasCajas && pf.cajaSoc) ? '' : 'none');
   const po = document.getElementById('panelInicioOficios');
   if (po) po.style.display = pf.inicioJud ? '' : 'none';
   const pv = document.getElementById('panelInicioVenc');
   if (pv) pv.style.display = pf.inicioJud ? '' : 'none';
   document.body.classList.toggle('caja-ori', pf.cajaJud === 'ori');
   document.body.classList.toggle('sin-jud', !pf.inicioJud);
+  document.body.classList.toggle('inicio-crm-first', usuarioActual() === 'ivana');
   // Agenda solo-tareas para perfiles sin sector judicial
   const optAud = document.querySelector('#tTipo option[value="audiencia"]');
   if (optAud) { optAud.hidden = !pf.inicioJud; optAud.disabled = !pf.inicioJud; }
@@ -6612,15 +7264,30 @@ function intentarLogin() {
 loadConfig();
 loadCaja();
 loadCajaSoc();
-// Botón de caja societaria en todas las barras de navegación
+loadPlanes();
+try { sembrarUmaSiFalta(); actualizarUmaDesdeCPACF(); } catch (e) {}
+// Botón de caja societaria + menú combinado "Cajas" en todas las barras
 document.querySelectorAll('[data-navbar]').forEach(nav => {
-  if (nav.querySelector('[data-nav="cajasoc"]')) return;
   const ref = nav.querySelector('[data-nav="caja"]');
-  const b = document.createElement('button');
-  b.className = 'pill-nav'; b.dataset.nav = 'cajasoc';
-  b.setAttribute('onclick', "navTo('cajasoc')");
-  b.textContent = '💼 Caja societaria';
-  if (ref) ref.after(b); else nav.appendChild(b);
+  if (!nav.querySelector('[data-nav="cajasoc"]')) {
+    const b = document.createElement('button');
+    b.className = 'pill-nav'; b.dataset.nav = 'cajasoc';
+    b.setAttribute('onclick', "navTo('cajasoc')");
+    b.textContent = '💼 Caja societaria';
+    if (ref) ref.after(b); else nav.appendChild(b);
+  }
+  // Menú desplegable "Cajas" (solo se muestra a quienes tienen ambas cajas)
+  if (!nav.querySelector('[data-nav-cajas]')) {
+    const wrap = document.createElement('div');
+    wrap.className = 'nav-cajas'; wrap.setAttribute('data-nav-cajas', '');
+    wrap.style.display = 'none';
+    wrap.innerHTML = '<button class="pill-nav nav-cajas-btn" type="button">💰 Cajas <span class="nav-caret">▾</span></button>'
+      + '<div class="nav-cajas-menu"><div class="nav-cajas-inner">'
+      + '<button class="nav-cajas-item" onclick="navTo(\'caja\')">💰 Caja judicial</button>'
+      + '<button class="nav-cajas-item" onclick="navTo(\'cajasoc\')">💼 Caja societaria</button>'
+      + '</div></div>';
+    if (ref) ref.before(wrap); else nav.appendChild(wrap);
+  }
 });
 // Botón de cerrar sesión en todos los ribbons (tamaño uniforme)
 document.querySelectorAll('.ribbon').forEach(r => {
@@ -6629,7 +7296,7 @@ document.querySelectorAll('.ribbon').forEach(r => {
   b.className = 'btn-logout'; b.setAttribute('data-logout', '');
   b.setAttribute('onclick', 'cerrarSesion()');
   b.title = 'Cerrar sesión y cambiar de usuario';
-  b.innerHTML = '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff5b49" stroke-width="2.6" stroke-linecap="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="11"/></svg> CERRAR SESIÓN';
+  b.innerHTML = '<svg class="ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff5b49" stroke-width="2.6" stroke-linecap="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="11"/></svg><span class="lbl-logout">CERRAR SESIÓN</span>';
   r.appendChild(b);
 });
 if (sesionActiva()) aplicarPermisos();
@@ -6793,7 +7460,7 @@ function clienteVacio() {
     reproTienen: 'no_aplica', reproFechaSol: '', repro3132Fecha: '', repro3132Exp: '',
     repro1780Fecha: '', repro1780Exp: '', reproComplFecha: '',
     reproAmparo: false, reproAmparoFecha: '', reproAprobFecha: '',
-    packTipo: '', packSituacion: 'vigente', packEstadoTxt: '', packServicios: [],
+    packTipo: '', packSituacion: 'vigente', packEstadoTxt: '', packVence: '', packServicios: [],
     docPendiente: false, docPendienteQue: '',
     reuniones: [],
     ultimoContacto: '', proximoContacto: '', proximoNota: '', bitacora: [],
@@ -6860,11 +7527,27 @@ function agregarServicioContratado(id, concepto, fecha) {
   saveClientesLocal();
   if (typeof sbPushCliente === 'function') sbPushCliente(cli);
 }
+// Elimina un servicio contratado por su índice (desde el botón de la ficha)
+function eliminarServicioContratado(id, idx) {
+  const cli = clientePorId(id);
+  if (!cli || !cli.servicios || !cli.servicios[idx]) return;
+  const s = cli.servicios[idx];
+  if (!confirm('¿Quitar «' + (s.concepto || s.nombre || 'servicio') + '» de los servicios contratados?')) return;
+  cli.servicios.splice(idx, 1);
+  saveClientesLocal();
+  if (typeof sbPushCliente === 'function') sbPushCliente(cli);
+  if (typeof refrescarFicha === 'function') {
+    const ov = document.getElementById('crmFichaOverlay');
+    if (ov && ov.classList.contains('on') && String(ov.dataset.cliId) === String(id)) refrescarFicha(id);
+  }
+}
 function quitarServicioContratado(id, concepto) {
   const cli = clientePorId(id);
   if (!cli || !cli.servicios) return;
-  // Quita la primera coincidencia por concepto (el que se había agregado desde ese pago)
-  const i = cli.servicios.findIndex(s => (s.concepto || '') === (concepto || ''));
+  // Quita la primera coincidencia por concepto (normalizada, tolera acentos/mayúsculas)
+  const objetivo = (typeof __normNombre === 'function') ? __normNombre(concepto) : (concepto || '').toLowerCase();
+  let i = cli.servicios.findIndex(s => (s.concepto || '') === (concepto || ''));
+  if (i < 0 && typeof __normNombre === 'function') i = cli.servicios.findIndex(s => __normNombre(s.concepto || s.nombre || '') === objetivo);
   if (i > -1) {
     cli.servicios.splice(i, 1);
     saveClientesLocal();
@@ -6876,16 +7559,40 @@ function quitarServicioContratado(id, concepto) {
   }
 }
 
+// Normaliza un nombre para comparar: sin acentos, sin puntuación, espacios colapsados, minúsculas
+function __normNombre(s) {
+  return (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[.,;:()"']/g, ' ').replace(/\s+/g, ' ').trim();
+}
 // ── Pagos del cliente (se leen de la caja, no se guardan acá) ──
 function pagosDeCliente(id) {
-  if (typeof CAJA === 'undefined') return [];
-  return (CAJA || []).filter(p => p.clienteId === id);
+  const cli = (typeof clientePorId === 'function') ? clientePorId(id) : null;
+  const nom = cli ? __normNombre(cli.entidad) : null;
+  const coincide = (idPago, nombrePago) => {
+    if (idPago != null && String(idPago) === String(id)) return true;
+    if (nom && __normNombre(nombrePago) === nom) return true;
+    return false;
+  };
+  const out = [];
+  // Caja judicial
+  if (typeof CAJA !== 'undefined') {
+    (CAJA || []).forEach(p => { if (coincide(p.clienteId, p.cliente)) out.push({ ...p, _origen: 'jud' }); });
+  }
+  // Caja societaria: solo los ingresos (los gastos no son pagos de clientes)
+  if (typeof CAJASOC !== 'undefined') {
+    (CAJASOC || []).forEach(m => {
+      if ((m.tipo || 'ingreso') !== 'ingreso') return;
+      if (coincide(m.clienteId, m.contraparte)) out.push({ id: m.id, fecha: m.fecha, cliente: m.contraparte, concepto: m.concepto, monto: m.monto, moneda: m.moneda, clienteId: m.clienteId, planId: m.planId, nroCuota: m.nroCuota, _origen: 'soc' });
+    });
+  }
+  out.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+  return out;
 }
 
 // ══════════════════════════════════════════════════════════════════
 //  MÓDULO CRM — vista (listado paginado + filtros)  · Etapa 1
 // ══════════════════════════════════════════════════════════════════
-var __crmFiltros = { texto: '', tipo: '', encargada: '', repro: '', pack: '', situacion: '', doc: '', orden: 'proximo' };
+var __crmFiltros = { texto: '', tipo: '', encargada: '', repro: '', pack: '', situacion: '', doc: '', reunion: '', vencePack: '', orden: 'proximo' };
 
 const TIPO_LABEL = { 'AC': 'Asoc. Civil', 'Sociedad': 'Sociedad', 'Cooperativa': 'Cooperativa', 'Persona fisica': 'Persona física' };
 const TIPO_CLS = { 'AC': 'ac', 'Sociedad': 'sas', 'Cooperativa': 'coop', 'Persona fisica': 'pf' };
@@ -6906,6 +7613,20 @@ function reproInfo(cli) {
   return { cls: 'no', txt: 'No aplica' };
 }
 
+// ¿Tiene alguna reunión sin realizar/cancelar?
+function tieneReunionPendiente(c) {
+  return (c.reuniones || []).some(r => {
+    const e = (r.estado || '').toLowerCase();
+    return e && e !== 'realizada' && e !== 'hecha' && e !== 'cancelada' && e !== 'realizado';
+  });
+}
+// ¿El pack vence dentro del mes calendario actual?
+function packVenceEsteMes(c) {
+  const venc = packVencimiento(c);
+  if (!venc) return false;
+  return venc.slice(0, 7) === hoyISO().slice(0, 7);
+}
+
 // Aplica filtros + orden a la lista de clientes
 function clientesFiltrados() {
   let arr = (CLIENTES || []).slice();
@@ -6918,6 +7639,8 @@ function clientesFiltrados() {
   if (f.situacion) arr = arr.filter(c => (c.packSituacion || '') === f.situacion);
   if (f.doc === 'si') arr = arr.filter(c => c.docPendiente);
   if (f.doc === 'no') arr = arr.filter(c => !c.docPendiente);
+  if (f.reunion === 'si') arr = arr.filter(c => tieneReunionPendiente(c));
+  if (f.vencePack === 'si') arr = arr.filter(c => packVenceEsteMes(c));
 
   if (f.orden === 'nombre') {
     arr.sort((a, b) => (a.entidad || '').localeCompare(b.entidad || ''));
@@ -6946,6 +7669,8 @@ function renderCRM() {
   const cont = document.getElementById('crmLista');
   if (!cont) return;
   poblarFiltrosCRM();
+  renderCrmMetricas();
+  sincronizarControlesCRM();
   const arr = clientesFiltrados();
   const hoy = (typeof hoyISO === 'function') ? hoyISO() : new Date().toISOString().slice(0, 10);
 
@@ -6970,7 +7695,11 @@ function renderCRM() {
     // Chips: pack, situación, doc pendiente
     let chips = '';
     if (c.packTipo) chips += `<span class="cchip pack">Pack ${esc(c.packTipo)}</span>`;
-    if (c.packSituacion === 'vigente') chips += `<span class="cchip pack">● Vigente</span>`;
+    if (c.packSituacion === 'vigente') {
+      const vp = packVencimiento(c);
+      const vencido = vp && vp < hoy;
+      chips += `<span class="cchip ${vencido ? 'pack-venc' : 'pack'}">● Vigente${vp ? (vencido ? ' · venció ' : ' · hasta ') + fmtFechaCortaCRM(vp) : ''}</span>`;
+    }
     else if (c.packSituacion === 'finalizado') chips += `<span class="cchip pack-fin">● Finalizado</span>`;
     if (c.docPendiente) chips += `<span class="cchip doc-si">⚠ Doc. pendiente${c.docPendienteQue ? ': ' + esc(c.docPendienteQue.slice(0, 24)) : ''}</span>`;
 
@@ -7020,6 +7749,64 @@ function poblarFiltrosCRM() {
 }
 
 // Handlers de filtros
+function crmToggleChip(campo) {
+  __crmFiltros[campo] = __crmFiltros[campo] === 'si' ? '' : 'si';
+  __paginas['crm'] = 0;
+  renderCRM();
+}
+function crmLimpiarFiltros() {
+  __crmFiltros = { texto: '', tipo: '', encargada: '', repro: '', pack: '', situacion: '', doc: '', reunion: '', vencePack: '', orden: __crmFiltros.orden };
+  const b = document.getElementById('crmBuscar'); if (b) b.value = '';
+  __paginas['crm'] = 0;
+  renderCRM();
+}
+// Refleja el estado de los filtros en chips, badge y selects
+function sincronizarControlesCRM() {
+  const f = __crmFiltros;
+  const chR = document.getElementById('chipReunion'); if (chR) chR.classList.toggle('on', f.reunion === 'si');
+  const chV = document.getElementById('chipVence'); if (chV) chV.classList.toggle('on', f.vencePack === 'si');
+  // reflejar en los selects (por si se limpió), y recién ahí marcar los activos
+  const set = (id, v) => { const el = document.getElementById(id); if (el && el.value !== v) el.value = v; };
+  set('crmFiltroTipo', f.tipo); set('crmFiltroEncargada', f.encargada); set('crmFiltroRepro', f.repro);
+  set('crmFiltroPack', f.pack); set('crmFiltroSituacion', f.situacion); set('crmFiltroDoc', f.doc); set('crmOrden', f.orden);
+  const marcar = (id) => { const el = document.getElementById(id); if (el) el.classList.toggle('activo', !!el.value); };
+  ['crmFiltroTipo','crmFiltroEncargada','crmFiltroRepro','crmFiltroPack','crmFiltroSituacion','crmFiltroDoc'].forEach(marcar);
+}
+// Panel de métricas de cartera (sobre TODOS los clientes, no los filtrados)
+function renderCrmMetricas() {
+  const cont = document.getElementById('crmMetricas');
+  if (!cont) return;
+  const todos = CLIENTES || [];
+  const total = todos.length;
+  const vigentes = todos.filter(c => c.packSituacion === 'vigente').length;
+  const reproAprob = todos.filter(c => (c.reproTienen || '') === 'aprobado').length;
+  const docPend = todos.filter(c => c.docPendiente).length;
+  const venceMes = todos.filter(packVenceEsteMes).length;
+  const reuPend = todos.filter(tieneReunionPendiente).length;
+  const cel = (num, lbl, filtro, color) => `
+    <button class="crm-metrica" ${filtro ? `onclick="${filtro}"` : ''} style="${color ? 'border-left-color:' + color : ''}">
+      <span class="crm-metrica-num">${num}</span>
+      <span class="crm-metrica-lbl">${lbl}</span>
+    </button>`;
+  cont.innerHTML =
+    cel(total, 'Clientes en cartera', "crmLimpiarFiltros()", '#1b3a6b') +
+    cel(vigentes, 'Con pack vigente', "crmAplicarUno('situacion','vigente')", '#1e7a48') +
+    cel(venceMes, 'Packs vencen este mes', "crmAplicarChip('vencePack')", '#c9862b') +
+    cel(reuPend, 'Con reunión pendiente', "crmAplicarChip('reunion')", '#2b6cb0') +
+    cel(reproAprob, 'REPROCANN aprobado', "crmAplicarUno('repro','aprobado')", '#1e7a48') +
+    cel(docPend, 'Docs. sin retirar', "crmAplicarUno('doc','si')", '#b3372a');
+}
+// Desde una métrica: fijar un único filtro de atributo y mostrarlo
+function crmAplicarUno(campo, valor) {
+  crmLimpiarFiltros();
+  __crmFiltros[campo] = valor;
+  renderCRM();
+}
+function crmAplicarChip(campo) {
+  crmLimpiarFiltros();
+  __crmFiltros[campo] = 'si';
+  renderCRM();
+}
 function crmSetFiltro(campo, valor) {
   __crmFiltros[campo] = valor;
   __paginas['crm'] = 0; // volver a la primera página al filtrar
@@ -7042,7 +7829,7 @@ function abrirNuevoCliente(prefill) {
   // Prefill opcional (ej: desde caja con el nombre ya escrito)
   ov.querySelector('#nc_entidad').value = (prefill && prefill.entidad) || '';
   ['tipo','estado','cuit','registro','encargada','referente','telefono','mail','driveLink',
-   'reproTienen','reproFechaSol','reproAprobFecha','packTipo','packSituacion','packEstadoTxt',
+   'reproTienen','reproFechaSol','reproAprobFecha','packTipo','packSituacion','packEstadoTxt','packVence',
    'docPendiente_sel','docPendienteQue','proximoContacto','proximoNota','bitaNota','observaciones'].forEach(k => {
     const el = ov.querySelector('#nc_' + k); if (el) el.value = '';
   });
@@ -7069,7 +7856,7 @@ function guardarNuevoCliente() {
     encargada: g('encargada'), referente: g('referente'), telefono: g('telefono'),
     mail: g('mail'), driveLink: g('driveLink'),
     reproTienen: g('reproTienen'), reproFechaSol: g('reproFechaSol'), reproAprobFecha: g('reproAprobFecha'),
-    packTipo: g('packTipo'), packSituacion: g('packSituacion') || 'vigente', packEstadoTxt: g('packEstadoTxt'),
+    packTipo: g('packTipo'), packSituacion: g('packSituacion') || 'vigente', packEstadoTxt: g('packEstadoTxt'), packVence: fechaAISO(g('packVence')) || '',
     docPendiente: gc('docPendiente'), docPendienteQue: g('docPendienteQue'),
     proximoContacto: g('proximoContacto'), proximoNota: g('proximoNota'),
     observaciones: g('observaciones'), bitacora: []
@@ -7125,6 +7912,7 @@ function htmlFormNuevoCliente() {
         <div class="crm-fgrid">
           <div class="crm-fld"><label>Tipo de pack</label><select id="nc_packTipo"><option value="">—</option><option>PS</option><option>PF</option><option>PFCS</option><option>AM</option></select></div>
           <div class="crm-fld"><label>Situación</label><select id="nc_packSituacion"><option value="vigente">Vigente</option><option value="finalizado">Finalizado</option></select></div>
+          <div class="crm-fld"><label>Vigente hasta</label><input id="nc_packVence" placeholder="DD/MM/AAAA"></div>
           <div class="crm-fld full"><label>Estado del pack (detalle)</label><input id="nc_packEstadoTxt" placeholder="Ej: Grupo cerrado 12/02/2025"></div>
         </div>
         <div class="crm-serv-label" style="margin-top:10px">Servicios del pack — marcá el estado de cada uno</div>
@@ -7231,6 +8019,8 @@ function guardarSeccion(id, sec) {
     const amp = gc('reproAmparo'); if (amp !== undefined) cambios.reproAmparo = amp;
   } else if (sec === 'pack') {
     ['packTipo', 'packSituacion', 'packEstadoTxt'].forEach(k => { const v = g(k); if (v !== undefined) cambios[k] = v.trim(); });
+    const pvRaw = g('packVence');
+    if (pvRaw !== undefined) cambios.packVence = fechaAISO(pvRaw.trim()) || '';
     // servicios: leer filas
     const filas = [...ov.querySelectorAll('[data-serv-row]')];
     cambios.packServicios = filas.map(f => ({
@@ -7501,6 +8291,7 @@ function accPack(c, editar) {
     body = `<div class="crm-fgrid">
         <div class="crm-fld"><label>Tipo de pack</label><select id="f_packTipo"><option value=""></option>${['PS', 'PF', 'PFCS', 'AM'].map(p => `<option${c.packTipo === p ? ' selected' : ''}>${p}</option>`).join('')}</select></div>
         <div class="crm-fld"><label>Situación</label><select id="f_packSituacion"><option value="vigente"${c.packSituacion === 'vigente' ? ' selected' : ''}>Vigente</option><option value="finalizado"${c.packSituacion === 'finalizado' ? ' selected' : ''}>Finalizado</option></select></div>
+        <div class="crm-fld"><label>Vigente hasta</label><input id="f_packVence" value="${c.packVence ? fmtFechaCortaCRM(c.packVence) : ''}" placeholder="DD/MM/AAAA"></div>
         <div class="crm-fld full"><label>Estado del pack (detalle)</label><input id="f_packEstadoTxt" value="${esc(c.packEstadoTxt || '')}" placeholder="Ej: Grupo cerrado 12/02/2025"></div>
       </div>
       <div class="crm-serv-label">Servicios — marcá el estado de cada uno</div>
@@ -7511,6 +8302,7 @@ function accPack(c, editar) {
     body = `<div class="crm-datos" style="margin-bottom:10px">
         <div class="crm-dato"><span>Tipo de pack</span><b>${val(c.packTipo)}</b></div>
         <div class="crm-dato"><span>Situación</span><b>${c.packSituacion === 'vigente' ? '<span style="color:var(--crm-verde)">● Vigente</span>' : (c.packSituacion === 'finalizado' ? '<span style="color:var(--tinta-suave)">● Finalizado</span>' : '—')}</b></div>
+        <div class="crm-dato"><span>Vigente hasta</span><b>${c.packVence ? fmtFechaCortaCRM(c.packVence) : '—'}</b></div>
         ${c.packEstadoTxt ? `<div class="crm-dato full" style="grid-column:1/-1"><span>Estado (detalle)</span><b>${esc(c.packEstadoTxt)}</b></div>` : ''}
       </div>
       ${servs.length ? `<div class="crm-lista-items">${servs.map(s => `<div class="crm-item-linea ${s.estado === 'enviado' ? 'ok' : 'pend'}"><span>${s.estado === 'enviado' ? '✅' : '⏳'}</span>${esc(s.nombre)}</div>`).join('')}</div>` : '<div class="crm-vacio">Sin servicios cargados.</div>'}`;
@@ -7573,7 +8365,7 @@ function accPagos(c) {
 
   // Bloque de servicios contratados
   body += `<div class="crm-serv-label">Servicios contratados</div>`;
-  body += servs.length ? `<div class="crm-lista-items">${servs.map(s => `<div class="crm-item-linea ok"><span>\u2713</span>${esc(s.concepto || s.nombre || '')}<span class="crm-item-fecha">${s.fecha ? fmtFechaCortaCRM(s.fecha) : ''}</span></div>`).join('')}</div>`
+  body += servs.length ? `<div class="crm-lista-items">${servs.map((s, si) => `<div class="crm-item-linea ok"><span>\u2713</span><span style="flex:1">${esc(s.concepto || s.nombre || '')}</span><span class="crm-item-fecha">${s.fecha ? fmtFechaCortaCRM(s.fecha) : ''}</span><button class="crm-serv-del" title="Quitar servicio" onclick="eliminarServicioContratado(${id},${si})">\u2715</button></div>`).join('')}</div>`
     : '<div class="crm-vacio">Sin servicios registrados. Al cargar un pago en Caja podés sumarlo acá.</div>';
 
   return `<div class="${accCls(id,'pagos',false)}">${accHead(id, 'pagos', 'HISTORIAL DE PAGOS \u00b7 SERVICIOS CONTRATADOS', resumen, false)}<div class="acc-body">${body}</div></div>`;
