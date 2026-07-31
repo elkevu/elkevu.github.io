@@ -63,15 +63,20 @@ def main():
     noticias = obtener_noticias()
     print(f"Encontradas en el sitio: {len(noticias)}")
 
-    # upsert: si la url ya existe, no hace nada; si es nueva, la inserta.
-    # Asi el scraper puede correr todos los dias sin duplicar nada.
-    resultado = (
-        supabase.table("novedades_juridicas")
-        .upsert(noticias, on_conflict="url", ignore_duplicates=True)
-        .execute()
-    )
+    # Traemos las urls que ya tenemos guardadas, para no duplicar.
+    existentes = supabase.table("novedades_juridicas").select("url").execute()
+    urls_guardadas = {fila["url"] for fila in existentes.data}
 
-    print(f"Procesadas {len(resultado.data)} fila(s) (nuevas o ya existentes).")
+    nuevas = [n for n in noticias if n["url"] not in urls_guardadas]
+
+    if not nuevas:
+        print("No hay novedades nuevas desde la última corrida.")
+        return
+
+    supabase.table("novedades_juridicas").insert(nuevas).execute()
+    print(f"Insertadas {len(nuevas)} novedad(es) nueva(s):")
+    for n in nuevas:
+        print(f"  - [{n['fuente']}] {n['titulo']}")
 
 
 if __name__ == "__main__":
